@@ -81,9 +81,11 @@ export function DashboardClient() {
         </CardHeader>
         <CardContent className="flex-grow">
           <div className="flex flex-col gap-4">
-            <Button variant="outline" size="lg" className="justify-start gap-4">
-              <Wind className="size-5 text-primary" />
-              <span>Breathing Exercise</span>
+            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/tools/relaxation/box-breathing">
+                <Wind className="size-5 text-primary" />
+                <span>Breathing Exercise</span>
+              </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
               <Link href="/tools/thought-record">
