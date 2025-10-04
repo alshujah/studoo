@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const trackingModules = [
-    { title: "Daily Mood Check-ins", description: "Record your emotional state." },
+    { href: "/track/mood", title: "Daily Mood Check-ins", description: "Record your emotional state." },
     { title: "Anxiety Symptom Checklist (GAD-7)", description: "Monitor anxiety symptoms." },
     { title: "Depression Symptom Monitoring (PHQ-9)", description: "Track symptoms using a standard scale." },
     { title: "Panic Attack Logging", description: "Record details of panic attacks." },
@@ -66,16 +66,18 @@ export default function TrackPage() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md D:text-3xl">Track</h1>
+        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Track</h1>
       </div>
        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {trackingModules.map((module) => (
-            <Card key={module.title}>
-                <CardHeader>
-                    <CardTitle>{module.title}</CardTitle>
-                    <CardDescription>{module.description}</CardDescription>
-                </CardHeader>
-            </Card>
+            <Link href={module.href || "#"} key={module.title} className="block hover:bg-muted/50 rounded-lg">
+              <Card className="h-full">
+                  <CardHeader>
+                      <CardTitle>{module.title}</CardTitle>
+                      <CardDescription>{module.description}</CardDescription>
+                  </CardHeader>
+              </Card>
+            </Link>
         ))}
       </div>
     </main>
