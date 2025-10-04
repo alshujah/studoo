@@ -32,6 +32,13 @@ export function ArtTherapyTool() {
         contextRef.current = context;
       }
     }
+  }, []);
+
+  useEffect(() => {
+    if (contextRef.current) {
+        contextRef.current.strokeStyle = brushColor;
+        contextRef.current.lineWidth = brushSize;
+    }
   }, [brushColor, brushSize]);
 
   const startDrawing = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
