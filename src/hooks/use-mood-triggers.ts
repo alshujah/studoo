@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition, useCallback } from 'react';
-import { useFirestore, useMemoFirebase } from '@/firebase';
+import { useFirestore } from '@/firebase';
 import { collection, getDocs, query, where, orderBy, Timestamp } from 'firebase/firestore';
 import { getMoodTriggers } from '@/app/dashboard/actions';
 import { subDays } from 'date-fns';
@@ -39,6 +39,12 @@ export function useMoodTriggers(userId: string) {
                 );
 
                 const snapshot = await getDocs(moodLogsQuery);
+                if (snapshot.docs.length < 5) {
+                    setTriggers([]);
+                    setError("Not enough mood logs in the last 30 days to identify triggers. Please add at least 5 logs.");
+                    return;
+                }
+                
                 const moodLogs: MoodLog[] = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
@@ -46,12 +52,6 @@ export function useMoodTriggers(userId: string) {
                     timestamp: (doc.data().timestamp as Timestamp).toDate().toISOString()
                 } as MoodLog));
 
-                if (moodLogs.length < 5) {
-                    setError("Not enough mood logs in the last 30 days to identify triggers. Please add at least 5 logs.");
-                    setTriggers([]);
-                    return;
-                }
-                
                 // 2. Call the AI flow with the logs
                 const result = await getMoodTriggers({ moodLogs: JSON.stringify(moodLogs) });
 
@@ -62,11 +62,13 @@ export function useMoodTriggers(userId: string) {
                     }
                 } else {
                     setError(result.error || "An unknown error occurred during analysis.");
+                    setTriggers([]);
                 }
 
             } catch (e: any) {
                 console.error("Error finding mood triggers:", e);
                 setError(e.message || "Failed to fetch or analyze mood logs.");
+                setTriggers([]);
             }
         });
     }, [userId, firestore]);

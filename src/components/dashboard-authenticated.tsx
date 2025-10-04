@@ -242,7 +242,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                 <p className="text-sm text-muted-foreground">Not enough data to identify triggers. Keep logging your mood to see insights here.</p>
             )}
 
-            {!triggers && !isLoadingTriggers && (
+            {!triggers && !isLoadingTriggers && !triggersError && (
                  <p className="text-sm text-muted-foreground">Click the button to analyze your recent mood logs and identify potential triggers.</p>
             )}
 
