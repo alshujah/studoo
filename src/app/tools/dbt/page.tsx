@@ -1,20 +1,22 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'DBT Tools | Rejoyn',
 };
 
 const dbtTools = [
-    { title: "Distress Tolerance Skills", description: "Survive crisis situations." },
-    { title: "Emotion Regulation Strategies", description: "Manage and change intense emotions." },
-    { title: "Interpersonal Effectiveness", description: "Maintain relationships and self-respect." },
-    { title: "Radical Acceptance Exercises", description: "Accept reality as it is." },
-    { title: "STOP Skill", description: "Stop, Take a step back, Observe, Proceed." },
-    { title: "TIPP Technique", description: "Temperature, Intense exercise, Paced breathing, Paired muscle relaxation." },
-    { title: "Walking the Middle Path", description: "Find synthesis between opposites." },
-    { title: "Pros and Cons", description: "Weigh the advantages and disadvantages." },
-    { title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
+    { href: "#", title: "Distress Tolerance Skills", description: "Survive crisis situations." },
+    { href: "#", title: "Emotion Regulation Strategies", description: "Manage and change intense emotions." },
+    { href: "#", title: "Interpersonal Effectiveness", description: "Maintain relationships and self-respect." },
+    { href: "#", title: "Radical Acceptance Exercises", description: "Accept reality as it is." },
+    { href: "#", title: "STOP Skill", description: "Stop, Take a step back, Observe, Proceed." },
+    { href: "/tools/dbt/tipp-technique", title: "TIPP Technique", description: "Temperature, Intense exercise, Paced breathing, Paired muscle relaxation." },
+    { href: "#", title: "Walking the Middle Path", description: "Find synthesis between opposites." },
+    { href: "#", title: "Pros and Cons", description: "Weigh the advantages and disadvantages." },
+    { href: "#", title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
 ];
 
 export default function DBTPage() {
@@ -25,12 +27,14 @@ export default function DBTPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {dbtTools.map((tool) => (
-            <Card key={tool.title}>
-                <CardHeader>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>{tool.description}</CardDescription>
-                </CardHeader>
-            </Card>
+            <Link href={tool.href || '#'} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+                <Card className="h-full">
+                    <CardHeader>
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                    </CardHeader>
+                </Card>
+            </Link>
         ))}
       </div>
     </main>
