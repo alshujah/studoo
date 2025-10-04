@@ -1,8 +1,18 @@
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Profile | Zenith Wellness',
+  title: 'Profile | Zenith',
 };
+
+const profileModules = [
+    { title: "Goal Setting Tools", description: "Define and track your wellness goals." },
+    { title: "Vision Board Creation", description: "Visualize your ideal future." },
+    { title: "Habit Building Support", description: "Form positive, lasting habits." },
+    { title: "Achievement Badges", description: "Celebrate your progress and milestones." },
+    { title: "Streak Tracking", description: "Maintain momentum with daily streaks." },
+    { title: "Personal Growth Metrics", description: "Track your journey over time." },
+];
 
 export default function ProfilePage() {
   return (
@@ -10,15 +20,15 @@ export default function ProfilePage() {
       <div className="flex items-center">
         <h1 className="font-headline text-2xl font-semibold md:text-3xl">Profile</h1>
       </div>
-      <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h3 className="text-2xl font-bold tracking-tight">
-            Profile and progress tracking coming soon
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            View your achievements, set goals, and customize your experience.
-          </p>
-        </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {profileModules.map((module) => (
+            <Card key={module.title}>
+                <CardHeader>
+                    <CardTitle>{module.title}</CardTitle>
+                    <CardDescription>{module.description}</CardDescription>
+                </CardHeader>
+            </Card>
+        ))}
       </div>
     </main>
   );
