@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const somaticTools = [
     { href: "/tools/emdr", title: "EMDR (Eye Movement Desensitization)", description: "Digital bilateral stimulation for trauma." },
     { title: "Somatic Experiencing Exercises", description: "Body-based trauma release techniques." },
-    { title: "Dance/Movement Therapy", description: "Guided movement exercises with motion tracking." },
+    { href: "/tools/dance-therapy", title: "Dance/Movement Therapy", description: "Guided movement exercises with motion tracking." },
     { title: "Nature Therapy (Ecotherapy)", description: "Virtual nature experiences and outdoor activity planning." },
 ];
 
