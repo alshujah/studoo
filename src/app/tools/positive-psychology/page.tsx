@@ -10,6 +10,10 @@ const positivePsychologyTools = [
     { title: "Acts of Kindness", description: "Track and plan acts of kindness." },
     { title: "Savoring Exercises", description: "Mindfully appreciate positive experiences." },
     { title: "Meaning and Purpose", description: "Explore your personal sense of purpose." },
+    { title: "Gratitude Journaling", description: "Daily positive reflections." },
+    { title: "Self-Esteem Building", description: "Exercises to build healthy self-esteem." },
+    { title: "Optimism Training", description: "Cultivate a more positive outlook." },
+    { title: "Life Satisfaction Assessments", description: "Evaluate your overall well-being." },
 ];
 
 export default function PositivePsychologyPage() {

@@ -14,6 +14,10 @@ const educationalModules = [
     { title: "Mental Health Myths Debunking", description: "Separating fact from fiction." },
     { title: "Mental Health First Aid Training", description: "Learn how to help others." },
     { title: "Stigma Reduction Content", description: "Promoting open conversations." },
+    { title: "Cognitive Biases Education", description: "Learn about common thinking traps." },
+    { title: "Therapy Preparation Guides", description: "Get the most out of your therapy." },
+    { title: "Recovery Stories/Testimonials", description: "Read stories of hope and recovery." },
+    { title: "Communication Skills", description: "Improve your interpersonal effectiveness." },
 ];
 
 export default function LearnPage() {

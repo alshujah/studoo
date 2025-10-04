@@ -10,6 +10,8 @@ const actTools = [
     { title: "Committed Action Planning", description: "Take steps towards your values." },
     { title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
     { title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
+    { title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
+    { title: "Attention Training", description: "Focus redirection techniques." },
 ];
 
 export default function ACTPage() {

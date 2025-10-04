@@ -12,6 +12,8 @@ const mindfulnessTools = [
     { title: "Walking Meditation", description: "Practice mindfulness in motion." },
     { title: "Loving-Kindness Meditation", description: "Cultivate compassion for self and others." },
     { title: "Progressive Muscle Relaxation", description: "Release physical tension." },
+    { title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
+    { title: "Visualization Exercises", description: "Create calming mental imagery." },
 ];
 
 export default function MindfulnessPage() {

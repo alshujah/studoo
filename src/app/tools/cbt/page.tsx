@@ -11,6 +11,8 @@ const cbtTools = [
     { title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
     { title: "Behavioral Activation", description: "Schedule activities to combat depression." },
     { title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
+    { title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
+    { title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
 ];
 
 export default function CBTPage() {

@@ -12,6 +12,8 @@ const profileModules = [
     { title: "Achievement Badges", description: "Celebrate your progress and milestones." },
     { title: "Streak Tracking", description: "Maintain momentum with daily streaks." },
     { title: "Personal Growth Metrics", description: "Track your journey over time." },
+    { title: "Coping Skills Library", description: "Your personalized coping toolbox." },
+    { title: "Progress Reports", description: "Exportable summaries for your therapist." },
 ];
 
 export default function ProfilePage() {

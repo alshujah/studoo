@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User } from 'lucide-react';
+import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, Shield, Wind, HelpCircle } from 'lucide-react';
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -28,7 +28,7 @@ export function SidebarNav() {
         <SidebarMenuItem key={item.href}>
           <SidebarMenuButton
             asChild
-            isActive={pathname === item.href}
+            isActive={pathname.startsWith(item.href) && (item.href !== '/dashboard' || pathname === '/dashboard')}
             tooltip={{ children: item.label }}
           >
             <Link href={item.href}>
