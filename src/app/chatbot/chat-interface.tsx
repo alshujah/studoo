@@ -1,0 +1,127 @@
+'use client';
+
+import React, { useState, useRef, useEffect, useTransition } from 'react';
+import { Bot, Send, User, Loader } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import type { ChatMessage } from '@/lib/types';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { getAiResponse } from './actions';
+import { useToast } from '@/hooks/use-toast';
+
+
+const initialMessages: ChatMessage[] = [
+    { role: 'assistant', content: "Hello! I'm your AI Coach. How can I help you today?" },
+];
+
+export function ChatInterface() {
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  const [input, setInput] = useState('');
+  const [isPending, startTransition] = useTransition();
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+        const viewport = scrollAreaRef.current.querySelector('div[data-radix-scroll-area-viewport]');
+        if (viewport) {
+            viewport.scrollTop = viewport.scrollHeight;
+        }
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isPending) return;
+
+    const newMessages: ChatMessage[] = [...messages, { role: 'user', content: input }];
+    setMessages(newMessages);
+    setInput('');
+
+    startTransition(async () => {
+      const result = await getAiResponse(newMessages);
+      if (result.success && result.data) {
+        setMessages(result.data);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: result.error || "An unknown error occurred.",
+        });
+        // Restore previous messages on error
+        setMessages(messages);
+      }
+    });
+  };
+
+  return (
+    <div className="flex h-[calc(100vh-3.5rem)] flex-col md:h-full">
+      <ScrollArea className="flex-1" ref={scrollAreaRef}>
+        <div className="p-4 md:p-6">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={cn(
+                'flex items-start gap-4 mb-6',
+                message.role === 'user' ? 'justify-end' : 'justify-start'
+              )}
+            >
+              {message.role === 'assistant' && (
+                <Avatar className="h-8 w-8 border">
+                  <AvatarFallback><Bot size={16}/></AvatarFallback>
+                </Avatar>
+              )}
+              <div
+                className={cn(
+                  'max-w-md rounded-lg p-3 text-sm',
+                  message.role === 'user'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted'
+                )}
+              >
+                <p>{message.content}</p>
+              </div>
+               {message.role === 'user' && (
+                <Avatar className="h-8 w-8 border">
+                  <AvatarFallback><User size={16}/></AvatarFallback>
+                </Avatar>
+              )}
+            </div>
+          ))}
+           {isPending && (
+            <div className="flex items-start gap-4 mb-6 justify-start">
+              <Avatar className="h-8 w-8 border">
+                <AvatarFallback><Bot size={16}/></AvatarFallback>
+              </Avatar>
+              <div className="max-w-md rounded-lg p-3 bg-muted flex items-center">
+                <Loader className="animate-spin size-4" />
+              </div>
+            </div>
+          )}
+        </div>
+      </ScrollArea>
+      <div className="border-t p-4 md:p-6">
+        <form onSubmit={handleSubmit} className="flex items-center gap-4">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            autoComplete="off"
+            disabled={isPending}
+            className="flex-1"
+          />
+          <Button type="submit" size="icon" disabled={isPending || !input.trim()}>
+            <Send className="h-4 w-4" />
+            <span className="sr-only">Send</span>
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+}
