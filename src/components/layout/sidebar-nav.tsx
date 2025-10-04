@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, PenSquare } from 'lucide-react';
+import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, PenSquare, BrainCircuit } from 'lucide-react';
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -16,6 +16,7 @@ const navItems = [
   { href: '/track/journal', icon: PenSquare, label: 'Journal' },
   { href: '/tools', icon: Sprout, label: 'Tools' },
   { href: '/chatbot', icon: Bot, label: 'AI Coach' },
+  { href: '/ai-features', icon: BrainCircuit, label: 'AI Features' },
   { href: '/learn', icon: BookOpen, label: 'Learn' },
   { href: '/profile', icon: User, label: 'Profile' },
 ];
@@ -25,7 +26,7 @@ export function SidebarNav() {
 
   const isActive = (href: string) => {
     if (href === '/dashboard') return pathname === href;
-    if (href === '/track') return pathname === href || pathname.startsWith('/track/');
+    if (href === '/track') return pathname.startsWith('/track');
     return pathname.startsWith(href);
   };
 
