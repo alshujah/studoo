@@ -12,6 +12,8 @@ const actTools = [
     { title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
     { title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
     { title: "Attention Training", description: "Focus redirection techniques." },
+    { title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
+    { title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
 ];
 
 export default function ACTPage() {

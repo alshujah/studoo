@@ -13,6 +13,8 @@ const cbtTools = [
     { title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
     { title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
     { title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
+    { title: "Attention Training", description: "Practice focus redirection techniques." },
+    { title: "Decentering Techniques", description: "Create distance from your thoughts." },
 ];
 
 export default function CBTPage() {

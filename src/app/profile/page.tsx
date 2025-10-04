@@ -14,6 +14,9 @@ const profileModules = [
     { title: "Personal Growth Metrics", description: "Track your journey over time." },
     { title: "Coping Skills Library", description: "Your personalized coping toolbox." },
     { title: "Progress Reports", description: "Exportable summaries for your therapist." },
+    { title: "Success Visualization", description: "Mentally rehearse achieving your goals." },
+    { title: "Before & After Comparisons", description: "See how far you've come." },
+    { title: "Avatar Customization", description: "Personalize your in-app identity." },
 ];
 
 export default function ProfilePage() {

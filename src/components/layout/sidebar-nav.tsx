@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, Shield, Wind, HelpCircle } from 'lucide-react';
+import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, PenSquare } from 'lucide-react';
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -13,6 +13,7 @@ import {
 const navItems = [
   { href: '/dashboard', icon: LayoutGrid, label: 'Dashboard' },
   { href: '/track', icon: ClipboardList, label: 'Track' },
+  { href: '/track/journal', icon: PenSquare, label: 'Journal' },
   { href: '/tools', icon: Sprout, label: 'Tools' },
   { href: '/chatbot', icon: Bot, label: 'AI Coach' },
   { href: '/learn', icon: BookOpen, label: 'Learn' },
@@ -22,13 +23,19 @@ const navItems = [
 export function SidebarNav() {
   const pathname = usePathname();
 
+  const isActive = (href: string) => {
+    if (href === '/dashboard') return pathname === href;
+    if (href === '/track') return pathname === href || pathname.startsWith('/track/');
+    return pathname.startsWith(href);
+  };
+
   return (
     <SidebarMenu>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
           <SidebarMenuButton
             asChild
-            isActive={pathname.startsWith(item.href) && (item.href !== '/dashboard' || pathname === '/dashboard')}
+            isActive={isActive(item.href)}
             tooltip={{ children: item.label }}
           >
             <Link href={item.href}>

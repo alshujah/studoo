@@ -18,6 +18,8 @@ const educationalModules = [
     { title: "Therapy Preparation Guides", description: "Get the most out of your therapy." },
     { title: "Recovery Stories/Testimonials", description: "Read stories of hope and recovery." },
     { title: "Communication Skills", description: "Improve your interpersonal effectiveness." },
+    { title: "Medication Information", description: "Details on common medications." },
+    { title: "Coping Mechanisms Explained", description: "Learn how different strategies work." },
 ];
 
 export default function LearnPage() {

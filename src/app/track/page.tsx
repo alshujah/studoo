@@ -7,17 +7,21 @@ export const metadata: Metadata = {
 
 const trackingModules = [
     { title: "Daily Mood Check-ins", description: "Record your emotional state." },
-    { title: "Anxiety Symptom Checklist", description: "Monitor anxiety symptoms (GAD-7)." },
-    { title: "Depression Symptom Monitoring", description: "Track symptoms using PHQ-9." },
+    { title: "Anxiety Symptom Checklist (GAD-7)", description: "Monitor anxiety symptoms." },
+    { title: "Depression Symptom Monitoring (PHQ-9)", description: "Track symptoms using a standard scale." },
     { title: "Panic Attack Logging", description: "Record details of panic attacks." },
     { title: "Sleep Quality Tracking", description: "Monitor your sleep patterns." },
     { title: "Activity Logging", description: "Track daily activities and their impact." },
-    { title: "Gratitude Journaling", description: "Daily positive reflections." },
     { title: "Medication Adherence", description: "Track your medication intake." },
     { title: "Social Interaction Tracking", description: "Log your social engagements." },
     { title: "Substance Use Tracking", description: "Monitor alcohol, caffeine, etc." },
     { title: "Worry/Rumination Logging", description: "Externalize and manage worries." },
     { title: "Success/Achievement Logging", description: "Record your accomplishments." },
+    { title: "Energy Level Monitoring", description: "Track your energy levels throughout the day." },
+    { title: "Physical Symptom Recording", description: "Log headaches, tension, pain, etc." },
+    { title: "Side Effect Documentation", description: "Note any medication side effects." },
+    { title: "Screen Time Monitoring", description: "Track your time on digital devices." },
+    { title: "Eating Habits Logging", description: "Monitor your nutritional intake." },
 ];
 
 export default function TrackPage() {

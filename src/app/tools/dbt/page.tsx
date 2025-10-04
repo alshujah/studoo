@@ -12,6 +12,8 @@ const dbtTools = [
     { title: "Radical Acceptance Exercises", description: "Accept reality as it is." },
     { title: "STOP Skill", description: "Stop, Take a step back, Observe, Proceed." },
     { title: "TIPP Technique", description: "Temperature, Intense exercise, Paced breathing, Paired muscle relaxation." },
+    { title: "Walking the Middle Path", description: "Find synthesis between opposites." },
+    { title: "Pros and Cons", description: "Weigh the advantages and disadvantages." },
 ];
 
 export default function DBTPage() {

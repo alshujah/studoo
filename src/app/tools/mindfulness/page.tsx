@@ -14,6 +14,8 @@ const mindfulnessTools = [
     { title: "Progressive Muscle Relaxation", description: "Release physical tension." },
     { title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
     { title: "Visualization Exercises", description: "Create calming mental imagery." },
+    { title: "Mindfulness Bells/Reminders", description: "Periodic sounds to bring you to the present." },
+    { title: "Present-Moment Awareness", description: "Exercises to focus on the here and now." },
 ];
 
 export default function MindfulnessPage() {
