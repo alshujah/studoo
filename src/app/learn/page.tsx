@@ -47,6 +47,15 @@ const educationalModules = [
     { title: "Buddy/Accountability System", description: "Partner up for mutual support." },
     { title: "Story Sharing Platforms", description: "Share and read stories of recovery." },
     { title: "Peer Mentorship Programs", description: "Get guidance from a trained peer." },
+    { title: "Family Education Resources", description: "Resources for your loved ones." },
+    { title: "Caregiver Support Tools", description: "Support for those who care for others." },
+    { title: "Social Skills Training", description: "Practice and improve social interactions." },
+    { title: "Perinatal Mental Health", description: "Support for new and expecting parents." },
+    { title: "Adolescent-Specific Content", description: "Content tailored for teenagers." },
+    { title: "Geriatric Mental Health Tools", description: "Resources for older adults." },
+    { title: "LGBTQ+ Specific Resources", description: "Culturally competent resources." },
+    { title: "Cultural Adaptation Options", description: "Content adapted for different cultures." },
+    { title: "Gender-Specific Content", description: "Content tailored to different gender identities." }
 ];
 
 export default function LearnPage() {

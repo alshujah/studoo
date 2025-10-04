@@ -16,6 +16,8 @@ const crisisTools = [
     { title: "Suicide Risk Assessment", description: "Access resources for suicide risk management." },
     { title: "Crisis Text Line Integration", description: "Connect with a crisis counselor via text." },
     { title: "Therapist/Emergency Contact Alerts", description: "Notify your support system in a crisis." },
+    { title: "Flashback Coping Strategies", description: "Tools to manage flashbacks." },
+    { title: "Trigger Management Plans", description: "Develop plans to manage triggers." },
 ];
 
 export default function CrisisManagementPage() {

@@ -36,6 +36,26 @@ const profileModules = [
     { title: "Two-Factor Authentication", description: "Add an extra layer of security." },
     { title: "Data Export Options", description: "Export your data for your own records." },
     { title: "Third-Party Sharing Controls", description: "Manage how your data is shared." },
+    { title: "Loved One/Supporter Portal", description: "Share progress with trusted contacts." },
+    { title: "Leaderboards", description: "Optional leaderboards for motivation." },
+    { title: "Virtual Rewards/Unlockables", description: "Unlock new content and features." },
+    { title: "Experience Points (XP)", description: "Earn XP for using the app." },
+    { title: "Daily/Weekly Missions", description: "Complete missions for rewards." },
+    { title: "Collectibles", description: "Collect items as you progress." },
+    { title: "Mini-Games", description: "Therapeutic or relaxation-focused games." },
+    { title: "Gentle Nudges", description: "Autonomy-preserving reminders." },
+    { title: "Location-Based Reminders", description: "Reminders based on your location." },
+    { title: "Mood Check-in Prompts", description: "Prompts to check in with your mood." },
+    { title: "Cloud Backup", description: "Keep your data safe and synced." },
+    { title: "Data Portability", description: "Take your data with you." },
+    { title: "Account Recovery Options", description: "Recover your account if you lose access." },
+    { title: "Multi-User Support", description: "Support for family accounts." },
+    { title: "Data Retention Policies", description: "Clear policies on how your data is stored." },
+    { title: "Audit Logs", description: "Track access to your data." },
+    { title: "Simple, Intuitive Navigation", description: "Easy to find what you need." },
+    { title: "Clean, Minimalist Design", description: "A calming and focused interface." },
+    { title: "Accessibility Features", description: "Support for screen readers and more." },
+    { title: "Dark Mode Option", description: "A dark theme for your comfort." }
 ];
 
 export default function ProfilePage() {

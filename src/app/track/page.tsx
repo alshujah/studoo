@@ -49,6 +49,14 @@ const trackingModules = [
     { title: "Worry Time Scheduling", description: "Set aside a specific time to worry." },
     { title: "Values Card Sort", description: "Sort values to clarify what's important." },
     { title: "Life Balance Wheel", description: "Assess and balance different life areas." },
+    { title: "Well-being Assessments", description: "Warwick-Edinburgh Mental Well-Being Scale." },
+    { title: "Personality Assessments", description: "Understand your personality traits." },
+    { title: "Coping Style Evaluation", description: "Evaluate your coping self-efficacy." },
+    { title: "PTSD Assessments", description: "Assessments for post-traumatic stress disorder." },
+    { title: "Sobriety Tracking", description: "Track your journey in addiction recovery." },
+    { title: "Chronic Pain Management", description: "Tools for managing chronic pain." },
+    { title: "Bipolar Disorder Mood Stabilization", description: "Tools for mood stabilization." },
+    { title: "Schizophrenia Symptom Management", description: "Tools to help manage symptoms." }
 ];
 
 export default function TrackPage() {
