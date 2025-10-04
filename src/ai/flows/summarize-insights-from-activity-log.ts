@@ -52,3 +52,5 @@ const summarizeInsightsFromActivityLogFlow = ai.defineFlow(
   async input => {
     const {output} = await summarizeInsightsFromActivityLogPrompt(input);
     return output!;
+  }
+);
