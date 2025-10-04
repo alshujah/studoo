@@ -9,7 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function DanceTherapyTool() {
-  const [hasCameraPermission, setHasCameraPermission] = useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [isSessionActive, setIsSessionActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
@@ -69,17 +69,9 @@ export function DanceTherapyTool() {
                 </CardHeader>
                 <CardContent>
                     <div className="w-full aspect-video rounded-md bg-muted flex items-center justify-center border">
-                        {isSessionActive ? (
-                             <video ref={videoRef} className="w-full h-full object-cover rounded-md" autoPlay muted playsInline style={{ transform: 'scaleX(-1)' }} />
-                        ) : (
-                            <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                                <CameraOff size={48} />
-                                <p>Session is not active</p>
-                            </div>
-                        )}
-                       
+                        <video ref={videoRef} className="w-full h-full object-cover rounded-md" autoPlay muted playsInline style={{ transform: 'scaleX(-1)' }} />
                     </div>
-                     {isSessionActive && !hasCameraPermission && (
+                     {isSessionActive && hasCameraPermission === false && (
                             <Alert variant="destructive" className="mt-4">
                                 <AlertTitle>Camera Access Required</AlertTitle>
                                 <AlertDescription>
