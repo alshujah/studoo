@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 
 const relaxationTools = [
     { href: "/tools/relaxation/box-breathing", title: "Box Breathing (4-4-4-4)", description: "A simple and effective breathing exercise." },
-    { title: "Diaphragmatic Breathing", description: "Deep belly breathing to calm your body." },
-    { title: "4-7-8 Breathing Technique", description: "A popular technique for relaxation and sleep." },
-    { title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
-    { title: "Safe Place Visualization", description: "Create a calming mental sanctuary." },
-    { title: "Binaural Beats/Sound Therapy", description: "Listen to sounds designed for relaxation." },
+    { href: "#", title: "Diaphragmatic Breathing", description: "Deep belly breathing to calm your body." },
+    { href: "#", title: "4-7-8 Breathing Technique", description: "A popular technique for relaxation and sleep." },
+    { href: "#", title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
+    { href: "#", title: "Safe Place Visualization", description: "Create a calming mental sanctuary." },
+    { href: "#", title: "Binaural Beats/Sound Therapy", description: "Listen to sounds designed for relaxation." },
 ];
 
 export default function RelaxationPage() {
