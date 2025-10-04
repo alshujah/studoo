@@ -13,7 +13,7 @@ const journalModules = [
     { href: "#", title: "Worry/Rumination Log", description: "Externalize and manage worries." },
     { href: "#", title: "Success/Achievement Log", description: "Record your accomplishments." },
     { href: "#", title: "Dream Journal", description: "Record and explore your dreams." },
-    { href: "#", title: "Photo Journaling", description: "Use images to capture your moments." },
+    { href: "/track/journal/photo", title: "Photo Journaling", description: "Use images to capture your moments." },
     { href: "#", title: "Voice Journaling", description: "Speak your thoughts instead of writing." },
     { href: "#", title: "Self-Compassion Journal", description: "Focus on kindness and understanding towards yourself." },
     { href: "#", title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
