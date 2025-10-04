@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { MoodChart } from './mood-chart';
+import { ChatInterface } from '@/app/chatbot/chat-interface';
 
 const moodIcons = [
   { mood: 'Happy', icon: '😊' },
@@ -74,21 +75,14 @@ export function DashboardClient() {
         </CardFooter>
       </Card>
 
-      <Card className="col-span-1 flex flex-col">
+      <Card className="col-span-1 md:col-span-2 xl:col-span-1 flex flex-col h-[500px]">
         <CardHeader>
           <CardTitle className="font-headline">AI Coach</CardTitle>
           <CardDescription>Talk through your thoughts with your AI companion.</CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow flex items-center justify-center">
-            <Bot className="size-16 text-muted-foreground/50" />
+        <CardContent className="flex-grow p-0">
+            <ChatInterface className="h-full" />
         </CardContent>
-        <CardFooter>
-          <Button asChild className="w-full bg-primary/90 hover:bg-primary">
-            <Link href="/chatbot">
-              Start a conversation
-            </Link>
-          </Button>
-        </CardFooter>
       </Card>
       
       <Card className="col-span-1 md:col-span-2">

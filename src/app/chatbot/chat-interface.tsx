@@ -16,7 +16,11 @@ const initialMessages: ChatMessage[] = [
     { role: 'assistant', content: "Hello! I'm your AI Coach. How can I help you today?" },
 ];
 
-export function ChatInterface() {
+interface ChatInterfaceProps {
+    className?: string;
+}
+
+export function ChatInterface({ className }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
@@ -61,7 +65,7 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col md:h-full">
+    <div className={cn("flex h-[calc(100vh-3.5rem)] flex-col md:h-full", className)}>
       <ScrollArea className="flex-1" ref={scrollAreaRef}>
         <div className="p-4 md:p-6">
           {messages.map((message, index) => (
@@ -106,7 +110,7 @@ export function ChatInterface() {
           )}
         </div>
       </ScrollArea>
-      <div className="border-t p-4 md:p-6">
+      <div className="border-t p-4 md:px-6 md:py-4">
         <form onSubmit={handleSubmit} className="flex items-center gap-4">
           <Input
             value={input}
