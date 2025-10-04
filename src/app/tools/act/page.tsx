@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 
 const actTools = [
     { href: "/tools/act/values-clarification", title: "Values Clarification Exercises", description: "Identify what truly matters to you." },
-    { title: "Committed Action Planning", description: "Take steps towards your values." },
-    { title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
-    { title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
-    { title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
-    { title: "Attention Training", description: "Focus redirection techniques." },
-    { title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
-    { title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
+    { href: "#", title: "Committed Action Planning", description: "Take steps towards your values." },
+    { href: "#", title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
+    { href: "#", title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
+    { href: "#", title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
+    { href: "#", title: "Attention Training", description: "Focus redirection techniques." },
+    { href: "#", title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
+    { href: "#", title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
 ];
 
 export default function ACTPage() {
