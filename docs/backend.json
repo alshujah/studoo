@@ -1,0 +1,117 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "User Profile",
+      "description": "Represents a user's profile information.",
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "photoURL": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the user's profile photo."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the user profile was created."
+        }
+      },
+      "required": ["displayName", "email", "createdAt"]
+    },
+    "moodLog": {
+        "title": "Mood Log",
+        "description": "A log of a user's mood at a specific point in time.",
+        "type": "object",
+        "properties": {
+            "userId": {
+                "type": "string"
+            },
+            "situation": {
+                "type": "string"
+            },
+            "coreEmotion": {
+                "type": "string"
+            },
+            "intensity": {
+                "type": "number"
+            },
+            "thoughts": {
+                "type": "string"
+            },
+            "physicalSensations": {
+                "type": "string"
+            },
+            "timestamp": {
+                "type": "string",
+                "format": "date-time"
+            }
+        },
+        "required": ["userId", "coreEmotion", "intensity", "timestamp"]
+    },
+    "journalEntry": {
+        "title": "Journal Entry",
+        "description": "A user's journal entry.",
+        "type": "object",
+        "properties": {
+            "userId": {
+                "type": "string"
+            },
+            "content": {
+                "type": "string"
+            },
+            "analysis": {
+                "type": "string"
+            },
+            "keyThemes": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "suggestedToolName": {
+                "type": "string"
+            },
+            "suggestedToolHref": {
+                "type": "string"
+            },
+            "timestamp": {
+                "type": "string",
+                "format": "date-time"
+            }
+        },
+        "required": ["userId", "content", "timestamp"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/userProfile"
+      },
+      "description": "Stores public information about a user."
+    },
+    "/users/{userId}/moodLogs/{moodLogId}": {
+        "schema": {
+            "$ref": "#/entities/moodLog"
+        },
+        "description": "Stores a user's mood logs."
+    },
+    "/users/{userId}/journalEntries/{journalEntryId}": {
+        "schema": {
+            "$ref": "#/entities/journalEntry"
+        },
+        "description": "Stores a user's journal entries."
+    }
+  }
+}
