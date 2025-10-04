@@ -3,7 +3,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, PenSquare, BrainCircuit, Smile } from 'lucide-react';
+import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, PenSquare, BrainCircuit, Smile, Rocket } from 'lucide-react';
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -25,6 +25,7 @@ const navItems = [
     ]
   },
   { href: '/tools', icon: Sprout, label: 'Tools' },
+  { href: '/programs', icon: Rocket, label: 'Programs' },
   { href: '/chatbot', icon: Bot, label: 'AI Coach' },
   { href: '/ai-features', icon: BrainCircuit, label: 'AI Features' },
   { href: '/learn', icon: BookOpen, label: 'Learn' },
