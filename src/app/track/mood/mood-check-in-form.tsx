@@ -15,9 +15,13 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Slider } from '@/components/ui/slider';
+import { useAuth, useFirestore } from '@/firebase/provider';
+import { useUser } from 'react-firebase-hooks/auth';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const coreEmotions = ["Joy", "Sadness", "Fear", "Anger", "Surprise", "Disgust", "Contentment"];
 
@@ -32,6 +36,12 @@ const formSchema = z.object({
 type MoodFormValues = z.infer<typeof formSchema>;
 
 export function MoodCheckInForm() {
+  const firestore = useFirestore();
+  const auth = useAuth();
+  const [user] = useUser(auth);
+  const { toast } = useToast();
+  const router = useRouter();
+
   const form = useForm<MoodFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,9 +52,37 @@ export function MoodCheckInForm() {
     },
   });
 
-  function onSubmit(data: MoodFormValues) {
-    console.log(data);
-    // Here you would typically save the data to a database
+  async function onSubmit(data: MoodFormValues) {
+    if (!user) {
+        toast({
+            variant: "destructive",
+            title: "Not signed in",
+            description: "You must be signed in to save a mood log.",
+        });
+        return;
+    }
+
+    try {
+      const moodLogCollection = collection(firestore, 'users', user.uid, 'moodLogs');
+      await addDoc(moodLogCollection, {
+        ...data,
+        userId: user.uid,
+        timestamp: serverTimestamp(),
+      });
+      toast({
+        title: "Check-in Saved",
+        description: "Your mood log has been successfully saved.",
+      });
+      form.reset();
+      router.push('/dashboard');
+    } catch (error) {
+      console.error("Error saving mood log:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "There was an error saving your mood log.",
+      });
+    }
   }
 
   return (
@@ -162,7 +200,9 @@ export function MoodCheckInForm() {
               )}
             />
             
-            <Button type="submit">Save Check-in</Button>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? 'Saving...' : 'Save Check-in'}
+            </Button>
           </form>
         </Form>
       </CardContent>

@@ -3,6 +3,12 @@ import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 
 import { firebaseConfig } from './config';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+export * from './provider';
+export { useCollection, useAuthState };
+
 
 // This function is used to initialize Firebase.
 // It should be called in a client component, such as a layout or a page.
