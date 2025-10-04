@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, Play, Pause, Save, Square } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -42,24 +42,13 @@ export function VoiceJournalTool() {
   };
 
   const startRecording = async () => {
-    if (!permission || !stream) {
-      // Re-request permission if it wasn't granted or stream is not set
+    if (!stream) {
       await getMicrophonePermission();
-      // Need to check for the stream again after await
-      if (stream) {
-          // Fall through to start recording logic
-      } else {
-          toast({ title: 'Microphone not ready', description: 'Please grant permission and try again.' });
-          return;
-      }
+      // This function will call itself again via the effect if permission is granted
+      return;
     }
     
-    // This check is needed because `getMicrophonePermission` is async
-    if (!stream) {
-        toast({ title: 'Microphone not ready', description: 'Please grant permission and try again.' });
-        return;
-    }
-
+    setAudio(null);
     setRecordingStatus('recording');
     const media = new MediaRecorder(stream, { mimeType: 'audio/webm' });
     mediaRecorder.current = media;
@@ -85,6 +74,14 @@ export function VoiceJournalTool() {
       setAudioChunks([]);
     };
   };
+  
+  useEffect(() => {
+    // This effect handles starting the recording after permission has been granted
+    if(permission && stream && recordingStatus === 'recording' && !mediaRecorder.current) {
+      startRecording();
+    }
+  }, [permission, stream, recordingStatus]);
+
 
   const handleSave = () => {
     if (!audio) {
