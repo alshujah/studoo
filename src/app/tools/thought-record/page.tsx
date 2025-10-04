@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ThoughtRecordForm } from './thought-record-form';
 
 export const metadata: Metadata = {
-  title: 'Thought Record | Zenith',
+  title: 'Thought Record | Rejoyn',
 };
 
 export default function ThoughtRecordPage() {

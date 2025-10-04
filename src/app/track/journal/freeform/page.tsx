@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { FreeformJournalClient } from './freeform-journal-client';
 
 export const metadata: Metadata = {
-  title: 'Freeform Journal | Zenith',
+  title: 'Freeform Journal | Rejoyn',
 };
 
 export default function FreeformJournalPage() {

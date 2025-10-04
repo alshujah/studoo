@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Journal | Zenith',
+  title: 'Journal | Rejoyn',
 };
 
 const journalModules = [

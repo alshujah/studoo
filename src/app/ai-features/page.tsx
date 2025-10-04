@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'AI Features | Zenith',
+  title: 'AI Features | Rejoyn',
 };
 
 const aiFeatures = [

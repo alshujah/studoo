@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Mindfulness Tools | Zenith',
+  title: 'Mindfulness Tools | Rejoyn',
 };
 
 const mindfulnessTools = [

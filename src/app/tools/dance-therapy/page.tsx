@@ -3,7 +3,7 @@ import { DanceTherapyTool } from './dance-therapy-tool';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata: Metadata = {
-  title: 'Dance & Movement Therapy | Zenith',
+  title: 'Dance & Movement Therapy | Rejoyn',
 };
 
 export default function DanceTherapyPage() {

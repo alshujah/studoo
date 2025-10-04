@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ValuesClarificationTool } from './values-clarification-tool';
 
 export const metadata: Metadata = {
-  title: 'Values Clarification | Zenith',
+  title: 'Values Clarification | Rejoyn',
 };
 
 export default function ValuesClarificationPage() {

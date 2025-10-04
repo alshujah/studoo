@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Profile | Zenith',
+  title: 'Profile | Rejoyn',
 };
 
 const profileModules = [

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { DashboardClient } from '@/components/dashboard-client';
 
 export const metadata: Metadata = {
-  title: 'Dashboard | Zenith',
+  title: 'Dashboard | Rejoyn',
 };
 
 export default function DashboardPage() {

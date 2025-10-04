@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Relaxation Techniques | Zenith',
+  title: 'Relaxation Techniques | Rejoyn',
 };
 
 const relaxationTools = [

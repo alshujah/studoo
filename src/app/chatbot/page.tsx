@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { ChatInterface } from './chat-interface';
 
 export const metadata: Metadata = {
-  title: 'AI Coach | Zenith',
+  title: 'AI Coach | Rejoyn',
 };
 
 export default function ChatbotPage() {

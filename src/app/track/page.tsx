@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Track | Zenith',
+  title: 'Track | Rejoyn',
 };
 
 const trackingModules = [

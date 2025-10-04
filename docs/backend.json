@@ -89,29 +89,84 @@
             }
         },
         "required": ["userId", "content", "timestamp"]
+    },
+    "gratitudeEntry": {
+        "title": "Gratitude Entry",
+        "description": "A user's gratitude journal entry.",
+        "type": "object",
+        "properties": {
+            "userId": {
+                "type": "string"
+            },
+            "entries": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "timestamp": {
+                "type": "string",
+                "format": "date-time"
+            }
+        },
+        "required": ["userId", "entries", "timestamp"]
+    },
+    "chatSession": {
+      "title": "Chat Session",
+      "description": "A single chat session between a user and the AI coach.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "type": "string", "enum": ["user", "assistant"] },
+              "content": { "type": "string" }
+            },
+            "required": ["role", "content"]
+          }
+        }
+      },
+      "required": ["userId", "createdAt", "updatedAt", "messages"]
+    },
+    "rejoyn": {
+        "title": "Rejoyn App Data",
+        "description": "A container for all user-specific data within the Rejoyn app.",
+        "type": "object",
+        "properties": {
+            "userProfile": { "$ref": "#/entities/userProfile" },
+            "moodLogs": {
+                "type": "array",
+                "items": { "$ref": "#/entities/moodLog" }
+            },
+            "journalEntries": {
+                "type": "array",
+                "items": { "$ref": "#/entities/journalEntry" }
+            },
+            "gratitudeEntries": {
+                "type": "array",
+                "items": { "$ref": "#/entities/gratitudeEntry" }
+            },
+            "chatSessions": {
+                "type": "array",
+                "items": { "$ref": "#/entities/chatSession" }
+            }
+        }
     }
   },
   "auth": {
-    "providers": ["anonymous"]
+    "providers": ["google.com"]
   },
   "firestore": {
     "/users/{userId}": {
       "schema": {
-        "$ref": "#/entities/userProfile"
+        "$ref": "#/entities/rejoyn"
       },
-      "description": "Stores public information about a user."
-    },
-    "/users/{userId}/moodLogs/{moodLogId}": {
-        "schema": {
-            "$ref": "#/entities/moodLog"
-        },
-        "description": "Stores a user's mood logs."
-    },
-    "/users/{userId}/journalEntries/{journalEntryId}": {
-        "schema": {
-            "$ref": "#/entities/journalEntry"
-        },
-        "description": "Stores a user's journal entries."
+      "description": "Stores all data for a single user."
     }
   }
 }

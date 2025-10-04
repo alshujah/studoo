@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { MoodCheckInForm } from './mood-check-in-form';
 
 export const metadata: Metadata = {
-  title: 'Mood Check-in | Zenith',
+  title: 'Mood Check-in | Rejoyn',
 };
 
 export default function MoodCheckInPage() {

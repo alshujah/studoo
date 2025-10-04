@@ -30,7 +30,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Logo className="size-8 text-primary" />
-            <span className="text-lg font-semibold font-headline">Zenith</span>
+            <span className="text-lg font-semibold font-headline">Rejoyn</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -72,7 +72,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <SidebarInset>
         <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:hidden">
           <SidebarTrigger />
-          <h1 className="text-lg font-semibold font-headline">Zenith</h1>
+          <h1 className="text-lg font-semibold font-headline">Rejoyn</h1>
         </header>
         {children}
       </SidebarInset>

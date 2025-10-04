@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Psychodynamic Therapy | Zenith',
+  title: 'Psychodynamic Therapy | Rejoyn',
 };
 
 const psychodynamicTools = [

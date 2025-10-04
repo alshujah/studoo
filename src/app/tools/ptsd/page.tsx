@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'PTSD Support | Zenith',
+  title: 'PTSD Support | Rejoyn',
 };
 
 const ptsdTools = [

@@ -28,7 +28,7 @@ export function DashboardUnauthenticated() {
     <div className="flex h-full items-center justify-center">
         <Card className="max-w-md mx-auto">
             <CardHeader className="text-center">
-                <CardTitle className="font-headline text-2xl">Welcome to Zenith</CardTitle>
+                <CardTitle className="font-headline text-2xl">Welcome to Rejoyn</CardTitle>
                 <CardDescription>Your partner in mental wellbeing. Sign in to continue.</CardDescription>
             </CardHeader>
             <CardContent>

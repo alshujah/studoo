@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'ACT Tools | Zenith',
+  title: 'ACT Tools | Rejoyn',
 };
 
 const actTools = [

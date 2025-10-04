@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Crisis Management | Zenith',
+  title: 'Crisis Management | Rejoyn',
 };
 
 const crisisTools = [

@@ -3,7 +3,7 @@ import { EmdrTool } from './emdr-tool';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata: Metadata = {
-  title: 'EMDR Tool | Zenith',
+  title: 'EMDR Tool | Rejoyn',
 };
 
 export default function EmdrPage() {

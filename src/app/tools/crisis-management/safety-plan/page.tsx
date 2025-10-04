@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { SafetyPlanForm } from './safety-plan-form';
 
 export const metadata: Metadata = {
-  title: 'Safety Plan | Zenith',
+  title: 'Safety Plan | Rejoyn',
 };
 
 export default function SafetyPlanPage() {

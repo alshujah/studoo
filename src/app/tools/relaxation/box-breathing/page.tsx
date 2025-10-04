@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { BoxBreathingTool } from './box-breathing-tool';
 
 export const metadata: Metadata = {
-  title: 'Box Breathing | Zenith',
+  title: 'Box Breathing | Rejoyn',
 };
 
 export default function BoxBreathingPage() {

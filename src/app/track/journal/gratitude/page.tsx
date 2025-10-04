@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { GratitudeForm } from './gratitude-form';
 
 export const metadata: Metadata = {
-  title: 'Gratitude Journal | Zenith',
+  title: 'Gratitude Journal | Rejoyn',
 };
 
 export default function GratitudeJournalPage() {

@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Expressive Arts Therapy | Zenith',
+  title: 'Expressive Arts Therapy | Rejoyn',
 };
 
 const artTherapyTools = [
