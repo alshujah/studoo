@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const journalModules = [
     { href: "/tools/thought-record", title: "Thought Record", description: "A CBT tool to challenge negative thoughts." },
-    { title: "Gratitude Journal", description: "Daily positive reflections." },
+    { href: "/track/journal/gratitude", title: "Gratitude Journal", description: "Daily positive reflections." },
     { title: "Worry/Rumination Log", description: "Externalize and manage worries." },
     { title: "Success/Achievement Log", description: "Record your accomplishments." },
     { title: "Dream Journal", description: "Record and explore your dreams." },

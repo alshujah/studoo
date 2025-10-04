@@ -1,12 +1,13 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'ACT Tools | Zenith',
 };
 
 const actTools = [
-    { title: "Values Clarification Exercises", description: "Identify what truly matters to you." },
+    { href: "/tools/act/values-clarification", title: "Values Clarification Exercises", description: "Identify what truly matters to you." },
     { title: "Committed Action Planning", description: "Take steps towards your values." },
     { title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
     { title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
@@ -24,12 +25,14 @@ export default function ACTPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {actTools.map((tool) => (
-            <Card key={tool.title}>
-                <CardHeader>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>{tool.description}</CardDescription>
-                </CardHeader>
-            </Card>
+            <Link href={tool.href || '#'} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+                <Card className="h-full">
+                    <CardHeader>
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                    </CardHeader>
+                </Card>
+            </Link>
         ))}
       </div>
     </main>
