@@ -28,6 +28,12 @@ const educationalModules = [
     { title: "Relationship Management Tips", description: "Improve your relationships." },
     { title: "Conflict Resolution Strategies", description: "Learn to navigate disagreements." },
     { title: "Boundary-Setting Guidance", description: "Protect your energy and well-being." },
+    { title: "Video Lessons", description: "Engaging video content on various topics." },
+    { title: "Audio Content/Podcasts", description: "Listen to experts and stories on the go." },
+    { title: "Infographics", description: "Visually engaging educational content." },
+    { title: "Interactive Modules", description: "Hands-on learning experiences." },
+    { title: "Quizzes/Knowledge Checks", description: "Test your understanding." },
+    { title: "Case Studies", description: "Learn from real-life examples." },
 ];
 
 export default function LearnPage() {

@@ -28,6 +28,17 @@ const trackingModules = [
     { title: "Trigger Event Documentation", description: "Identify events that affect your mood." },
     { title: "Emotional Self-Awareness Scoring", description: "Track improvements in recognizing emotions." },
     { title: "Multi-dimensional Mood Tracking", description: "Track energy, anxiety, depression, and stress." },
+    { title: "Habit Tracking", description: "Monitor and build positive habits." },
+    { title: "Sleep Pattern Monitoring", description: "Analyze your sleep cycles." },
+    { title: "Exercise Log", description: "Track your physical activity." },
+    { title: "Thought Pattern Analysis", description: "Identify recurring thought patterns." },
+    { title: "Coping Mechanism Usage", description: "Log which coping skills you use." },
+    { title: "Hydration Tracking", description: "Monitor your daily water intake." },
+    { title: "Mindfulness Minutes", description: "Track time spent in meditation." },
+    { title: "Productivity Log", description: "Monitor your focus and productivity." },
+    { title: "Relationship Interactions", description: "Log the quality of social interactions." },
+    { title: "Burnout Symptom Tracking", description: "Monitor signs of burnout." },
+    { title: "Self-Esteem Fluctuations", description: "Track your self-esteem over time." },
 ];
 
 export default function TrackPage() {

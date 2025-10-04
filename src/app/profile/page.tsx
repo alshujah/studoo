@@ -24,6 +24,12 @@ const profileModules = [
     { title: "Reward Scheduling", description: "Plan rewards for achieving your goals." },
     { title: "Milestone Celebrations", description: "Acknowledge significant achievements." },
     { title: "Wellness Score Calculation", description: "Get a score of your overall well-being." },
+    { title: "Push Notifications", description: "Customizable reminders and alerts." },
+    { title: "Personalized Themes", description: "Customize the look and feel of the app." },
+    { title: "Community Forum", description: "Connect with others in a safe space." },
+    { title: "Peer Support Groups", description: "Join groups based on shared experiences." },
+    { title: "Emergency Contacts", description: "Quick access to your support network." },
+    { title: "Privacy Settings", description: "Control your data and privacy." },
 ];
 
 export default function ProfilePage() {

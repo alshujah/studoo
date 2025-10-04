@@ -19,6 +19,10 @@ const journalModules = [
     { title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
     { title: "Future Self Journaling", description: "Write to your future self to build hope." },
     { title: "Expressive Writing", description: "Write about traumatic or stressful events." },
+    { title: "Sentence Completion", description: "Journal prompts to guide reflection." },
+    { title: "Story-Based Journaling", description: "Write about your life as a story." },
+    { title: "Unsent Letter", description: "Write a letter you don't intend to send." },
+    { title: "Role-Playing Journal", description: "Explore situations from different perspectives." },
 ];
 
 export default function JournalPage() {
