@@ -57,9 +57,11 @@ export function DashboardClient() {
               <Wind className="size-5 text-primary" />
               <span>Breathing Exercise</span>
             </Button>
-            <Button variant="outline" size="lg" className="justify-start gap-4">
-              <Pen className="size-5 text-primary" />
-              <span>Thought Record</span>
+            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/tools/thought-record">
+                <Pen className="size-5 text-primary" />
+                <span>Thought Record</span>
+              </Link>
             </Button>
           </div>
         </CardContent>
