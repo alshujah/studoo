@@ -3,36 +3,45 @@
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
 import type { ChatMessage } from '@/lib/types';
-import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth/next';
 import { getApps, initializeApp } from 'firebase/app';
 import { firebaseConfig } from '@/firebase/config';
-import { headers } from 'next/headers';
+import { headers, cookies } from 'next/headers';
 
 
 // This is a workaround to get the user ID on the server.
 // In a real app, you would have a more robust way to get the user.
 // NOTE: This is not a secure way to get the user ID. It is for demonstration purposes only.
 async function getUserId(): Promise<string | null> {
-    const headersList = headers();
-    const authorization = headersList.get('Authorization');
-    if (!authorization?.startsWith('Bearer ')) {
-        return null;
-    }
-    const idToken = authorization.split('Bearer ')[1];
-
-    if (!idToken) return null;
-
+    
     // We need a temporary auth instance on the server to verify the token.
     // This should not be used for client-side authentication.
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig, "server-auth");
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig, "server-auth-check");
     const auth = getAuth(app);
-    
+
     try {
-        const decodedToken = await auth.verifyIdToken(idToken);
-        return decodedToken.uid;
+        const session = await auth.verifySessionCookie(cookies().get('session')?.value || '', true);
+        return session.uid;
     } catch (e) {
-        console.error("Error verifying ID token", e);
-        return null;
+        console.error("Error verifying session cookie", e);
+        
+        // Fallback for when session cookie is not available (e.g. during dev)
+        const headersList = headers();
+        const authorization = headersList.get('Authorization');
+        if (!authorization?.startsWith('Bearer ')) {
+            return null;
+        }
+        const idToken = authorization.split('Bearer ')[1];
+
+        if (!idToken) return null;
+        
+        try {
+            const decodedToken = await auth.verifyIdToken(idToken);
+            return decodedToken.uid;
+        } catch (e) {
+             console.error("Error verifying ID token", e);
+             return null;
+        }
     }
 }
 

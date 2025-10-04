@@ -42,8 +42,8 @@ const prompt = ai.definePrompt({
   Here is a list of available tools in the app:
   - Thought Record (/tools/thought-record)
   - Breathing Exercise (/tools/relaxation)
-  - Gratitude Journal (/track/journal)
-  - Values Clarification (/tools/act)
+  - Gratitude Journal (/track/journal/gratitude)
+  - Values Clarification (/tools/act/values-clarification)
   - Mood Check-in (/track/mood)
 
   User's Journal Entry:

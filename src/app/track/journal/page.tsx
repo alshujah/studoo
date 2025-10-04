@@ -7,14 +7,14 @@ export const metadata: Metadata = {
 };
 
 const journalModules = [
+    { href: "/track/journal/freeform", title: "Freeform Journal", description: "An open space for your thoughts and feelings." },
     { href: "/tools/thought-record", title: "Thought Record", description: "A CBT tool to challenge negative thoughts." },
     { href: "/track/journal/gratitude", title: "Gratitude Journal", description: "Daily positive reflections." },
-    { href: "/track/journal/freeform", title: "Freeform Journal", description: "An open space for your thoughts and feelings." },
+    { href: "/track/journal/photo", title: "Photo Journaling", description: "Use images to capture your moments." },
+    { href: "/track/journal/voice", title: "Voice Journaling", description: "Speak your thoughts instead of writing." },
     { href: "#", title: "Worry/Rumination Log", description: "Externalize and manage worries." },
     { href: "#", title: "Success/Achievement Log", description: "Record your accomplishments." },
     { href: "#", title: "Dream Journal", description: "Record and explore your dreams." },
-    { href: "/track/journal/photo", title: "Photo Journaling", description: "Use images to capture your moments." },
-    { href: "/track/journal/voice", title: "Voice Journaling", description: "Speak your thoughts instead of writing." },
     { href: "#", title: "Self-Compassion Journal", description: "Focus on kindness and understanding towards yourself." },
     { href: "#", title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
     { href: "#", title: "Future Self Journaling", description: "Write to your future self to build hope." },

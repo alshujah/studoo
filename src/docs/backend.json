@@ -125,7 +125,7 @@
           "items": {
             "type": "object",
             "properties": {
-              "role": { "type": "string", "enum": ["user", "assistant"] },
+              "role": { "type": "string", "enum": ["user", "assistant", "tool"] },
               "content": { "type": "string" }
             },
             "required": ["role", "content"]
