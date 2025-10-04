@@ -39,7 +39,7 @@ const prompt = ai.definePrompt({
   name: 'recommendPersonalizedInterventionsPrompt',
   input: {schema: RecommendPersonalizedInterventionsInputSchema},
   output: {schema: RecommendPersonalizedInterventionsOutputSchema},
-  prompt: `Based on the user's current mood ({{{mood}}}), recent activities ({{{activities}}}), and preferences ({{{preferences}}}), recommend personalized interventions. Provide a list of specific and actionable recommendations that the user can implement to improve their well-being.`,
+  prompt: `Based on the user's current mood ({{{mood}}}), recent activities ({{{activities}}}), and preferences ({{{preferences}}}), recommend personalized interventions. Provide a list of specific and actionable recommendations that the user can implement to improve their well-being.`
 });
 
 const recommendPersonalizedInterventionsFlow = ai.defineFlow(
