@@ -3,6 +3,38 @@
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
 import type { ChatMessage } from '@/lib/types';
+import { getAuth } from 'firebase/auth';
+import { getApps, initializeApp } from 'firebase/app';
+import { firebaseConfig } from '@/firebase/config';
+import { headers } from 'next/headers';
+
+
+// This is a workaround to get the user ID on the server.
+// In a real app, you would have a more robust way to get the user.
+// NOTE: This is not a secure way to get the user ID. It is for demonstration purposes only.
+async function getUserId(): Promise<string | null> {
+    const headersList = headers();
+    const authorization = headersList.get('Authorization');
+    if (!authorization?.startsWith('Bearer ')) {
+        return null;
+    }
+    const idToken = authorization.split('Bearer ')[1];
+
+    if (!idToken) return null;
+
+    // We need a temporary auth instance on the server to verify the token.
+    // This should not be used for client-side authentication.
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig, "server-auth");
+    const auth = getAuth(app);
+    
+    try {
+        const decodedToken = await auth.verifyIdToken(idToken);
+        return decodedToken.uid;
+    } catch (e) {
+        console.error("Error verifying ID token", e);
+        return null;
+    }
+}
 
 
 export async function getAiResponse(
@@ -14,15 +46,20 @@ export async function getAiResponse(
       return { success: false, error: 'Invalid message sequence.' };
     }
     
-    // The history should not include the latest user message, as it's passed separately
+    const userId = await getUserId();
+    if (!userId) {
+        return { success: false, error: 'User not authenticated.' };
+    }
+    
     const chatHistory = messages.slice(0, -1).map(msg => ({
-        role: msg.role as 'user' | 'assistant',
+        role: msg.role as 'user' | 'assistant' | 'tool',
         content: msg.content
     }));
 
     const result = await aiTherapyChatbot({
       message: userMessage.content,
       chatHistory: chatHistory,
+      userId: userId
     });
     
     const assistantMessage: ChatMessage = { role: 'assistant' as const, content: result.response };

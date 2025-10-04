@@ -1,7 +1,7 @@
 import type { Timestamp } from 'firebase/firestore';
 
 export type ChatMessage = {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'tool';
   content: string;
 };
 

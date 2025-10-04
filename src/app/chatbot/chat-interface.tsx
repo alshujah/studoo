@@ -16,7 +16,7 @@ import { doc, setDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 
 
 const initialMessages: ChatMessage[] = [
-    { role: 'assistant', content: "Hello! I'm your AI Coach. How can I help you today?" },
+    { role: 'assistant', content: "Hello! I'm your AI Coach. I can now access your recent journal and mood logs to provide more personalized support. How can I help you today?" },
 ];
 
 interface ChatInterfaceProps {
@@ -95,7 +95,17 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         updatedAt: serverTimestamp(),
       }, { merge: true });
       
-      const result = await getAiResponse(newMessages);
+      const idToken = await user.getIdToken();
+      
+      const result = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${idToken}`
+          },
+          body: JSON.stringify({ messages: newMessages })
+      }).then(res => res.json());
+
       if (result.success && result.data) {
         const finalMessages = [...newMessages, result.data];
         setMessages(finalMessages);

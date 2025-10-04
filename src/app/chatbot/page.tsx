@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -37,6 +37,14 @@ export default function ChatbotPage() {
         })) || [];
     }, [chatsSnapshot]);
 
+    useEffect(() => {
+      // Set the first chat as active by default if none is selected
+      if(!activeChatId && chatHistory.length > 0) {
+        setActiveChatId(chatHistory[0].id);
+      }
+    }, [chatHistory, activeChatId]);
+
+
     const handleNewChat = async () => {
         if (!user) {
             toast({
@@ -47,7 +55,7 @@ export default function ChatbotPage() {
             return;
         }
 
-        const initialMessages = [{ role: 'assistant', content: "Hello! I'm your AI Coach. How can I help you today?" }];
+        const initialMessages = [{ role: 'assistant', content: "Hello! I'm your AI Coach. I can now access your recent journal and mood logs to provide more personalized support. How can I help you today?" }];
         try {
             const newChatRef = await addDoc(collection(firestore, 'users', user.uid, 'chats'), {
                 messages: initialMessages,
