@@ -3,7 +3,7 @@
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
 import type { ChatMessage } from '@/lib/types';
-import { getAuth } from 'firebase/auth/next';
+import { getAuth } from 'firebase/auth';
 import { getApps, initializeApp } from 'firebase/app';
 import { firebaseConfig } from '@/firebase/config';
 import { headers, cookies } from 'next/headers';

@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "userProfile": {
@@ -124,7 +125,7 @@
           "items": {
             "type": "object",
             "properties": {
-              "role": { "type": "string", "enum": ["user", "assistant"] },
+              "role": { "type": "string", "enum": ["user", "assistant", "tool"] },
               "content": { "type": "string" }
             },
             "required": ["role", "content"]
@@ -174,6 +175,46 @@
             }
         },
         "required": ["userId", "score", "answers", "timestamp"]
+    },
+    "iptSession": {
+      "title": "IPT Session",
+      "description": "A log of an Interpersonal Therapy exercise.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    },
+    "schema": {
+      "title": "Schema",
+      "description": "A user's identified schema.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    },
+    "sfbtGoal": {
+      "title": "SFBT Goal",
+      "description": "A user's goal in Solution-Focused Brief Therapy.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    },
+    "narrativeStory": {
+      "title": "Narrative Story",
+      "description": "A user's re-authored story in Narrative Therapy.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
     }
   },
   "auth": {
@@ -221,6 +262,22 @@
             "$ref": "#/entities/phq9Score"
         },
         "description": "Stores a user's PHQ-9 assessment scores."
+    },
+    "/users/{userId}/iptSessions/{iptSessionId}": {
+      "schema": { "$ref": "#/entities/iptSession" },
+      "description": "Stores a user's Interpersonal Therapy sessions."
+    },
+    "/users/{userId}/schemas/{schemaId}": {
+      "schema": { "$ref": "#/entities/schema" },
+      "description": "Stores a user's identified schemas."
+    },
+    "/users/{userId}/sfbtGoals/{sfbtGoalId}": {
+      "schema": { "$ref": "#/entities/sfbtGoal" },
+      "description": "Stores a user's Solution-Focused Brief Therapy goals."
+    },
+    "/users/{userId}/narrativeStories/{narrativeStoryId}": {
+      "schema": { "$ref": "#/entities/narrativeStory" },
+      "description": "Stores a user's re-authored stories from Narrative Therapy."
     }
   }
 }
