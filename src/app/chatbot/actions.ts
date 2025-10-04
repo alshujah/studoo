@@ -45,5 +45,8 @@ export async function getJournalAnalysis(
     }
     const result = await analyzeJournalEntry({ journalEntry });
     return { success: true, data: result };
+  } catch (error) {
+    console.error('Error getting journal analysis:', error);
+    return { success: false, error: 'Failed to get analysis from the AI coach.' };
   }
 }
