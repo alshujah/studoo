@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind } from 'lucide-react';
+import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind, Palette, PersonStanding, Drama } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -16,6 +16,9 @@ const toolCategories = [
     { href: "/tools/sleep", title: "Sleep Management", description: "Improve your sleep hygiene.", icon: Moon },
     { href: "/tools/crisis-management", title: "Crisis Management", description: "Immediate support for crisis situations.", icon: HelpCircle },
     { href: "/tools/relaxation", title: "Relaxation Techniques", description: "Calm your mind and body.", icon: Wind },
+    { href: "/tools/somatic-therapy", title: "Somatic Therapy", description: "Body-based trauma release.", icon: PersonStanding },
+    { href: "/tools/art-therapy", title: "Expressive Arts", description: "Emotional expression through creativity.", icon: Palette },
+    { href: "/tools/psychodynamic", title: "Psychodynamic", description: "Explore unconscious patterns.", icon: Drama },
 ];
 
 export default function ToolsPage() {
