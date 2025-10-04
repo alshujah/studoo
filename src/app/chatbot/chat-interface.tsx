@@ -1,8 +1,7 @@
-
 'use client';
 
 import React, { useState, useRef, useEffect, useTransition } from 'react';
-import { Bot, Send, User, Loader } from 'lucide-react';
+import { Bot, Send, User, Loader, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ChatMessage } from '@/lib/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -13,7 +12,7 @@ import { getAiResponse } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { doc, getDoc, setDoc, serverTimestamp, collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 
 
 const initialMessages: ChatMessage[] = [
@@ -22,13 +21,13 @@ const initialMessages: ChatMessage[] = [
 
 interface ChatInterfaceProps {
     className?: string;
+    chatId: string | null;
 }
 
-export function ChatInterface({ className }: ChatInterfaceProps) {
+export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
-  const [chatId, setChatId] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const auth = useAuth();
@@ -42,43 +41,29 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
   }, [user, firestore, chatId]);
 
   useEffect(() => {
-    if (user && firestore) {
-      const chatsRef = collection(firestore, 'users', user.uid, 'chats');
-      const q = query(chatsRef, orderBy('updatedAt', 'desc'), limit(1));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        if (!querySnapshot.empty) {
-          const latestChat = querySnapshot.docs[0];
-          setChatId(latestChat.id);
-          const data = latestChat.data();
-          if (data.messages && data.messages.length > 0) {
-            setMessages(data.messages);
-          } else {
-            setMessages(initialMessages);
-          }
-        } else {
-          // No chats exist, create a new one
-          const newChatId = `chat_${Date.now()}`;
-          setChatId(newChatId);
-          setMessages(initialMessages);
-          const newChatRef = doc(firestore, 'users', user.uid, 'chats', newChatId);
-          setDoc(newChatRef, {
-            messages: initialMessages,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-          });
-        }
-      }, (error) => {
-        console.error("Error loading chat history:", error);
-        toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Could not load chat history.",
+    if (chatDocRef) {
+        const unsubscribe = onSnapshot(chatDocRef, (doc) => {
+            if (doc.exists()) {
+                const data = doc.data();
+                 if (data.messages && data.messages.length > 0) {
+                    setMessages(data.messages);
+                } else {
+                    setMessages(initialMessages);
+                }
+            }
+        }, (error) => {
+            console.error("Error listening to chat document:", error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Could not load chat.",
+            });
         });
-      });
-
-      return () => unsubscribe();
+        return () => unsubscribe();
+    } else {
+        setMessages(initialMessages);
     }
-  }, [user, firestore, toast]);
+  }, [chatDocRef, toast]);
 
 
   const scrollToBottom = () => {
@@ -104,6 +89,12 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
     setInput('');
 
     startTransition(async () => {
+      // Optimistically update Firestore with the user's message
+      await setDoc(chatDocRef, {
+        messages: newMessages,
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
+      
       const result = await getAiResponse(newMessages);
       if (result.success && result.data) {
         const finalMessages = [...newMessages, result.data];
@@ -124,6 +115,15 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
       }
     });
   };
+  
+  if (!chatId) {
+      return (
+          <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+              <MessageSquare size={48} />
+              <p className="mt-4 text-lg">Select a conversation or start a new one.</p>
+          </div>
+      )
+  }
 
   return (
     <div className={cn("flex h-[calc(100vh-3.5rem)] flex-col md:h-full", className)}>
@@ -178,10 +178,10 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             autoComplete="off"
-            disabled={isPending || !user || !chatId}
+            disabled={isPending || !user}
             className="flex-1"
           />
-          <Button type="submit" size="icon" disabled={isPending || !input.trim() || !user || !chatId}>
+          <Button type="submit" size="icon" disabled={isPending || !input.trim() || !user}>
             <Send className="h-4 w-4" />
             <span className="sr-only">Send</span>
           </Button>

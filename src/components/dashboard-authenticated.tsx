@@ -4,12 +4,11 @@
 import React, { useState, useTransition, useMemo } from 'react';
 import Link from 'next/link';
 import type { User } from 'firebase/auth';
-import { ArrowRight, Pen, Wind, Loader, Sparkles, AlertCircle } from 'lucide-react';
+import { ArrowRight, Pen, Wind, Loader, Sparkles, AlertCircle, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { MoodChart } from './mood-chart';
-import { ChatInterface } from '@/app/chatbot/chat-interface';
 import { getJournalAnalysis } from '@/app/chatbot/actions';
 import type { AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
 import { useToast } from '@/hooks/use-toast';
@@ -250,8 +249,14 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
           <CardTitle className="font-headline">AI Coach</CardTitle>
           <CardDescription>Talk through your thoughts with your AI companion.</CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow p-0">
-            <ChatInterface className="h-full" />
+        <CardContent className="flex-grow flex items-center justify-center p-0">
+            <div className="text-center text-muted-foreground">
+                <MessageSquare className="mx-auto size-12" />
+                <p className="mt-4">Full chat experience available.</p>
+                <Button asChild variant="link">
+                    <Link href="/chatbot">Go to AI Coach <ArrowRight className="ml-2 size-4" /></Link>
+                </Button>
+            </div>
         </CardContent>
       </Card>
       
