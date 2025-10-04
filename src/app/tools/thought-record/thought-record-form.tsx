@@ -23,6 +23,7 @@ import { getAiAnalysis } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const formSchema = z.object({
   situation: z.string().min(1, 'Please describe the situation.'),

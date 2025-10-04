@@ -16,7 +16,7 @@ import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { collection, query, orderBy, limit, where, Timestamp } from 'firebase/firestore';
+import { collection, query, orderBy, limit, where, Timestamp, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useFirestore } from '@/firebase/provider';
 import type { MoodLog } from '@/lib/types';
 import { subDays, format } from 'date-fns';
@@ -97,17 +97,52 @@ export function DashboardClient() {
   }, [moodLogsSnapshot]);
 
   const handleJournalSubmit = () => {
+    if (!journalEntry.trim() || !user) {
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Journal entry cannot be empty."
+        })
+        return;
+    }
     setJournalAnalysis(null);
     startJournalTransition(async () => {
-      const result = await getJournalAnalysis(journalEntry);
-      if (result.success && result.data) {
-        setJournalAnalysis(result.data);
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Analysis Failed",
-          description: result.error || "Could not analyze the journal entry.",
+      const analysisResult = await getJournalAnalysis(journalEntry);
+      
+      try {
+        await addDoc(collection(firestore, 'users', user.uid, 'journalEntries'), {
+            userId: user.uid,
+            content: journalEntry,
+            timestamp: serverTimestamp(),
+            ...(analysisResult.success && analysisResult.data && { 
+                analysis: analysisResult.data.analysis,
+                keyThemes: analysisResult.data.keyThemes,
+                suggestedToolName: analysisResult.data.suggestedTool?.name,
+                suggestedToolHref: analysisResult.data.suggestedTool?.href,
+             })
         });
+
+        if (analysisResult.success && analysisResult.data) {
+            setJournalAnalysis(analysisResult.data);
+             toast({
+                title: "Entry Saved & Analyzed",
+                description: "Your journal entry has been saved and analyzed.",
+            });
+        } else {
+            toast({
+                title: "Entry Saved",
+                description: "Your journal entry has been saved, but AI analysis failed.",
+            });
+        }
+        setJournalEntry(''); // Clear input after successful save
+
+      } catch (saveError) {
+          console.error("Error saving journal entry:", saveError)
+          toast({
+              variant: "destructive",
+              title: "Save Failed",
+              description: "Could not save your journal entry.",
+          });
       }
     });
   };
