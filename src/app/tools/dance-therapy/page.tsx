@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { DanceTherapyTool } from './dance-therapy-tool';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
