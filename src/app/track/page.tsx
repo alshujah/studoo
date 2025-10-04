@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const trackingModules = [
     { href: "/track/mood", title: "Daily Mood Check-ins", description: "Record your emotional state." },
     { href: "/track/gad-7", title: "Anxiety Symptom Checklist (GAD-7)", description: "Monitor anxiety symptoms." },
-    { title: "Depression Symptom Monitoring (PHQ-9)", description: "Track symptoms using a standard scale." },
+    { href: "/track/phq-9", title: "Depression Symptom Monitoring (PHQ-9)", description: "Track symptoms using a standard scale." },
     { title: "Panic Attack Logging", description: "Record details of panic attacks." },
     { title: "Sleep Quality Tracking", description: "Monitor your sleep patterns." },
     { title: "Activity Logging", description: "Track daily activities and their impact." },
