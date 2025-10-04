@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useTransition, useMemo } from 'react';
@@ -135,8 +136,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                 description: "Your journal entry has been saved, but AI analysis failed.",
             });
         }
-        setJournalEntry(''); // Clear input after successful save
-
+        // Do not clear input here, user might want to see the analysis for the text they wrote
       } catch (saveError) {
           console.error("Error saving journal entry:", saveError)
           toast({
@@ -238,7 +238,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
             {isJournalPending && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader className="size-4 animate-spin" />
-                <span>Analyzing your entry...</span>
+                <span>Saving & Analyzing...</span>
               </div>
             )}
             {journalAnalysis && (
@@ -283,7 +283,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                   Saving...
                 </>
               ) : (
-                "Save Entry & Analyze"
+                "Save & Analyze"
               )}
             </Button>
              <Button asChild variant="ghost">

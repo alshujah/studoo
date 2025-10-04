@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect, useTransition } from 'react';
@@ -12,7 +13,7 @@ import { getAiResponse } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp, collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 
 
 const initialMessages: ChatMessage[] = [
@@ -21,14 +22,13 @@ const initialMessages: ChatMessage[] = [
 
 interface ChatInterfaceProps {
     className?: string;
-    chatIdProp?: string;
 }
 
-export function ChatInterface({ className, chatIdProp }: ChatInterfaceProps) {
+export function ChatInterface({ className }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
-  const [chatId, setChatId] = useState(chatIdProp || `chat_${Date.now()}`);
+  const [chatId, setChatId] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const auth = useAuth();
@@ -37,39 +37,49 @@ export function ChatInterface({ className, chatIdProp }: ChatInterfaceProps) {
 
 
   const chatDocRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
+    if (!user || !firestore || !chatId) return null;
     return doc(firestore, 'users', user.uid, 'chats', chatId);
   }, [user, firestore, chatId]);
 
   useEffect(() => {
-    if (chatIdProp) {
-        setChatId(chatIdProp);
-    }
-  }, [chatIdProp]);
-
-
-   useEffect(() => {
-    const loadChatHistory = async () => {
-      if (chatDocRef) {
-        const docSnap = await getDoc(chatDocRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
+    if (user && firestore) {
+      const chatsRef = collection(firestore, 'users', user.uid, 'chats');
+      const q = query(chatsRef, orderBy('updatedAt', 'desc'), limit(1));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const latestChat = querySnapshot.docs[0];
+          setChatId(latestChat.id);
+          const data = latestChat.data();
           if (data.messages && data.messages.length > 0) {
             setMessages(data.messages);
+          } else {
+            setMessages(initialMessages);
           }
         } else {
-            // Create a new chat document if it doesn't exist
-            await setDoc(chatDocRef, {
-                messages: initialMessages,
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp(),
-            });
-            setMessages(initialMessages);
+          // No chats exist, create a new one
+          const newChatId = `chat_${Date.now()}`;
+          setChatId(newChatId);
+          setMessages(initialMessages);
+          const newChatRef = doc(firestore, 'users', user.uid, 'chats', newChatId);
+          setDoc(newChatRef, {
+            messages: initialMessages,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          });
         }
-      }
-    };
-    loadChatHistory();
-  }, [chatDocRef]);
+      }, (error) => {
+        console.error("Error loading chat history:", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Could not load chat history.",
+        });
+      });
+
+      return () => unsubscribe();
+    }
+  }, [user, firestore, toast]);
+
 
   const scrollToBottom = () => {
     if (scrollAreaRef.current) {
@@ -168,10 +178,10 @@ export function ChatInterface({ className, chatIdProp }: ChatInterfaceProps) {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             autoComplete="off"
-            disabled={isPending || !user}
+            disabled={isPending || !user || !chatId}
             className="flex-1"
           />
-          <Button type="submit" size="icon" disabled={isPending || !input.trim() || !user}>
+          <Button type="submit" size="icon" disabled={isPending || !input.trim() || !user || !chatId}>
             <Send className="h-4 w-4" />
             <span className="sr-only">Send</span>
           </Button>
