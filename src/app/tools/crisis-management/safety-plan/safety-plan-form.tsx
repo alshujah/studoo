@@ -38,7 +38,7 @@ export function SafetyPlanForm() {
       internalCoping: '',
       socialDistractions: [{ name: '', place: '' }],
       familySupport: [{ name: '', phone: '' }],
-      professionalSupport: [{ name: '', phone: '', clinic: '' }],
+      professionalSupport: [{ name: '988 Suicide & Crisis Lifeline', phone: '988', clinic: '' }],
       environmentSafety: '',
     },
   });
@@ -148,7 +148,7 @@ export function SafetyPlanForm() {
                         <Button type="button" variant="ghost" size="icon" onClick={() => removeProf(index)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                     </div>
                 ))}
-                <Button type="button" variant="outline" size="sm" onClick={() => appendProf({ name: '988 Suicide & Crisis Lifeline', phone: '988', clinic: '' })}><PlusCircle className="mr-2 h-4 w-4" /> Add Professional</Button>
+                <Button type="button" variant="outline" size="sm" onClick={() => appendProf({ name: '', phone: '', clinic: '' })}><PlusCircle className="mr-2 h-4 w-4" /> Add Professional</Button>
             </AccordionContent>
           </AccordionItem>
 
