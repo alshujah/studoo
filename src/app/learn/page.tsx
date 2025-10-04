@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
-import { BookOpen, Brain, ShieldCheck, Users, Leaf, BarChart } from 'lucide-react';
+import { BookOpen, Brain, ShieldCheck, Users, Leaf, BarChart, Group } from 'lucide-react';
 import React from 'react';
 
 export const metadata: Metadata = {
@@ -42,6 +42,17 @@ const categories = [
             { title: "Conflict Resolution Strategies", description: "Learn to navigate disagreements." },
             { title: "Boundary-Setting Guidance", description: "Protect your energy and well-being." },
             { title: "Social Skills Training", description: "Practice and improve social interactions." },
+        ]
+    },
+    {
+        title: "Social Psychology",
+        icon: Group,
+        modules: [
+            { title: "Social Perception & Biases", description: "How we see others and common errors in judgment." },
+            { title: "The Psychology of Persuasion", description: "Understand the techniques of influence." },
+            { title: "Group Behavior & Dynamics", description: "How we behave in the presence of others." },
+            { title: "Attribution Theory", description: "Explaining our own and others' behavior." },
+            { title: "Cognitive Dissonance", description: "Understanding mental discomfort from conflicting beliefs." },
         ]
     },
     {
