@@ -41,6 +41,7 @@ export function MoodChart({ data, loading }: MoodChartProps) {
           axisLine={false}
         />
         <YAxis
+          type="number"
           domain={[0, 5]}
           tickLine={false}
           axisLine={false}

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import {
   SidebarProvider,
   Sidebar,
@@ -13,11 +12,17 @@ import {
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Logo } from '@/components/icons';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { SidebarNav } from './sidebar-nav';
+import { useAuth } from '@/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Skeleton } from '../ui/skeleton';
+import { Button } from '../ui/button';
+import { signInWithGoogle } from '@/firebase/auth/google-provider';
+import { LogOut } from 'lucide-react';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  const userAvatar = PlaceHolderImages.find((img) => img.id === 'user-avatar');
+  const auth = useAuth();
+  const [user, loading] = useAuthState(auth);
 
   return (
     <SidebarProvider>
@@ -32,16 +37,36 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <SidebarNav />
         </SidebarContent>
         <SidebarFooter>
-          <div className="flex items-center gap-3">
-            <Avatar className="size-8">
-              {userAvatar && <AvatarImage src={userAvatar.imageUrl} alt="User Avatar" />}
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-sidebar-foreground">User</span>
-              <span className="text-xs text-sidebar-foreground/70">user@email.com</span>
+          {loading ? (
+            <div className="flex items-center gap-3">
+              <Skeleton className="size-8 rounded-full" />
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-3 w-32" />
+              </div>
             </div>
-          </div>
+          ) : user ? (
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 overflow-hidden">
+                    <Avatar className="size-8">
+                        {user.photoURL && <AvatarImage src={user.photoURL} alt="User Avatar" />}
+                        <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col overflow-hidden">
+                        <span className="text-sm font-medium text-sidebar-foreground truncate">{user.displayName}</span>
+                        <span className="text-xs text-sidebar-foreground/70 truncate">{user.email}</span>
+                    </div>
+                </div>
+                <Button variant="ghost" size="icon" onClick={() => auth.signOut()} className="shrink-0">
+                    <LogOut className="size-4" />
+                </Button>
+            </div>
+
+          ) : (
+             <Button className="w-full" onClick={() => signInWithGoogle(auth)}>
+                Sign In
+             </Button>
+          )}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
