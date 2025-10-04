@@ -5,11 +5,14 @@ import { Bot, Send, User, Loader } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ChatMessage } from '@/lib/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { getAiResponse } from './actions';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
+import { useUser } from 'react-firebase-hooks/auth';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 
 const initialMessages: ChatMessage[] = [
@@ -18,14 +21,55 @@ const initialMessages: ChatMessage[] = [
 
 interface ChatInterfaceProps {
     className?: string;
+    chatIdProp?: string;
 }
 
-export function ChatInterface({ className }: ChatInterfaceProps) {
+export function ChatInterface({ className, chatIdProp }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
+  const [chatId, setChatId] = useState(chatIdProp || `chat_${Date.now()}`);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const auth = useAuth();
+  const [user] = useUser(auth);
+  const firestore = useFirestore();
+
+
+  const chatDocRef = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return doc(firestore, 'users', user.uid, 'chats', chatId);
+  }, [user, firestore, chatId]);
+
+  useEffect(() => {
+    if (chatIdProp) {
+        setChatId(chatIdProp);
+    }
+  }, [chatIdProp]);
+
+
+   useEffect(() => {
+    const loadChatHistory = async () => {
+      if (chatDocRef) {
+        const docSnap = await getDoc(chatDocRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.messages && data.messages.length > 0) {
+            setMessages(data.messages);
+          }
+        } else {
+            // Create a new chat document if it doesn't exist
+            await setDoc(chatDocRef, {
+                messages: initialMessages,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
+            });
+            setMessages(initialMessages);
+        }
+      }
+    };
+    loadChatHistory();
+  }, [chatDocRef]);
 
   const scrollToBottom = () => {
     if (scrollAreaRef.current) {
@@ -42,16 +86,23 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isPending) return;
+    if (!input.trim() || isPending || !user || !chatDocRef) return;
 
-    const newMessages: ChatMessage[] = [...messages, { role: 'user', content: input }];
+    const userMessage: ChatMessage = { role: 'user', content: input };
+    const newMessages: ChatMessage[] = [...messages, userMessage];
     setMessages(newMessages);
     setInput('');
 
     startTransition(async () => {
       const result = await getAiResponse(newMessages);
       if (result.success && result.data) {
-        setMessages(result.data);
+        const finalMessages = [...newMessages, result.data];
+        setMessages(finalMessages);
+        await setDoc(chatDocRef, {
+            messages: finalMessages,
+            updatedAt: serverTimestamp(),
+        }, { merge: true });
+
       } else {
         toast({
           variant: "destructive",
@@ -117,10 +168,10 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             autoComplete="off"
-            disabled={isPending}
+            disabled={isPending || !user}
             className="flex-1"
           />
-          <Button type="submit" size="icon" disabled={isPending || !input.trim()}>
+          <Button type="submit" size="icon" disabled={isPending || !input.trim() || !user}>
             <Send className="h-4 w-4" />
             <span className="sr-only">Send</span>
           </Button>

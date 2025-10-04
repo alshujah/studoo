@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 const journalModules = [
     { href: "/tools/thought-record", title: "Thought Record", description: "A CBT tool to challenge negative thoughts." },
     { href: "/track/journal/gratitude", title: "Gratitude Journal", description: "Daily positive reflections." },
+    { href: "/track/journal/freeform", title: "Freeform Journal", description: "An open space for your thoughts and feelings." },
     { title: "Worry/Rumination Log", description: "Externalize and manage worries." },
     { title: "Success/Achievement Log", description: "Record your accomplishments." },
     { title: "Dream Journal", description: "Record and explore your dreams." },
-    { title: "Freeform Journal", description: "An open space for your thoughts and feelings." },
     { title: "Photo Journaling", description: "Use images to capture your moments." },
     { title: "Voice Journaling", description: "Speak your thoughts instead of writing." },
     { title: "Self-Compassion Journal", description: "Focus on kindness and understanding towards yourself." },

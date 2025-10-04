@@ -110,6 +110,28 @@
             }
         },
         "required": ["userId", "entries", "timestamp"]
+    },
+    "chatSession": {
+      "title": "Chat Session",
+      "description": "A single chat session between a user and the AI coach.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "type": "string", "enum": ["user", "assistant"] },
+              "content": { "type": "string" }
+            },
+            "required": ["role", "content"]
+          }
+        }
+      },
+      "required": ["userId", "createdAt", "updatedAt", "messages"]
     }
   },
   "auth": {
@@ -139,6 +161,12 @@
             "$ref": "#/entities/gratitudeEntry"
         },
         "description": "Stores a user's gratitude journal entries."
+    },
+    "/users/{userId}/chats/{chatId}": {
+        "schema": {
+            "$ref": "#/entities/chatSession"
+        },
+        "description": "Stores the history of a chat session."
     }
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useMemo } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Bot, Pen, Wind, Loader, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,13 @@ import type { AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { useAuth } from '@/firebase';
+import { useUser } from 'react-firebase-hooks/auth';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { collection, query, orderBy, limit, where, Timestamp } from 'firebase/firestore';
+import { useFirestore } from '@/firebase/provider';
+import type { MoodLog } from '@/lib/types';
+import { subDays, format } from 'date-fns';
 
 const moodIcons = [
   { mood: 'Happy', icon: '😊' },
@@ -27,6 +34,67 @@ export function DashboardClient() {
   const [journalEntry, setJournalEntry] = useState('');
   const [journalAnalysis, setJournalAnalysis] = useState<AnalyzeJournalEntryOutput | null>(null);
   const { toast } = useToast();
+  const auth = useAuth();
+  const [user] = useUser(auth);
+  const firestore = useFirestore();
+
+  const moodLogQuery = useMemo(() => {
+    if (!user || !firestore) return null;
+    const sevenDaysAgo = subDays(new Date(), 7);
+    return query(
+        collection(firestore, 'users', user.uid, 'moodLogs'),
+        where('timestamp', '>=', sevenDaysAgo),
+        orderBy('timestamp', 'desc')
+    );
+  }, [user, firestore]);
+
+  const [moodLogsSnapshot, loadingMoodLogs] = useCollection(moodLogQuery);
+
+  const moodChartData = useMemo(() => {
+    if (!moodLogsSnapshot) {
+        const last7Days = Array.from({ length: 7 }).map((_, i) => {
+            const d = subDays(new Date(), i);
+            return { day: format(d, 'EEE'), mood: 0, date: format(d, 'yyyy-MM-dd') };
+        }).reverse();
+        return last7Days;
+    }
+
+    const moodMapping: { [key: string]: number } = {
+        'Anxious': 1,
+        'Sadness': 2,
+        'Contentment': 3,
+        'Joy': 4,
+        'Surprise': 4,
+        'Anger': 1,
+        'Disgust': 1,
+    };
+
+    const aggregatedData: { [key: string]: { total: number; count: number } } = {};
+
+    moodLogsSnapshot.docs.forEach(doc => {
+        const log = doc.data() as MoodLog;
+        if (log.timestamp) {
+             const date = (log.timestamp as Timestamp).toDate();
+             const day = format(date, 'yyyy-MM-dd');
+             const moodValue = moodMapping[log.coreEmotion] || (log.intensity / 25) + 1; // fallback
+             if (!aggregatedData[day]) {
+                 aggregatedData[day] = { total: 0, count: 0 };
+             }
+             aggregatedData[day].total += moodValue;
+             aggregatedData[day].count += 1;
+        }
+    });
+
+    const last7Days = Array.from({ length: 7 }).map((_, i) => {
+        const d = subDays(new Date(), 6 - i);
+        const dayKey = format(d, 'yyyy-MM-dd');
+        const dayData = aggregatedData[dayKey];
+        const avgMood = dayData ? Math.round(dayData.total / dayData.count) : 0;
+        return { day: format(d, 'EEE'), mood: avgMood, date: dayKey };
+    });
+
+    return last7Days;
+  }, [moodLogsSnapshot]);
 
   const handleJournalSubmit = () => {
     setJournalAnalysis(null);
@@ -54,11 +122,15 @@ export function DashboardClient() {
         </CardHeader>
         <CardContent>
           <div className="flex justify-around rounded-lg bg-muted/50 p-4">
-            {moodIcons.map(({ mood, icon }) => (
-              <Button key={mood} variant="ghost" className="h-16 w-16 flex-col gap-1 text-2xl" aria-label={mood}>
-                {icon}
-                <span className="text-xs font-normal">{mood}</span>
-              </Button>
+             {moodIcons.map(({ mood, icon }) => (
+              <Link href="/track/mood" key={mood} legacyBehavior>
+                <a className="h-16 w-16 flex-col gap-1 text-2xl text-center no-underline">
+                  <div className="flex items-center justify-center rounded-full h-12 w-12 mx-auto hover:bg-background transition-colors">
+                    {icon}
+                  </div>
+                  <span className="text-xs font-normal text-muted-foreground">{mood}</span>
+                </a>
+              </Link>
             ))}
           </div>
         </CardContent>
@@ -70,7 +142,7 @@ export function DashboardClient() {
           <CardDescription>Your mood trends over the last week.</CardDescription>
         </CardHeader>
         <CardContent>
-          <MoodChart />
+          <MoodChart data={moodChartData} loading={loadingMoodLogs} />
         </CardContent>
       </Card>
 
@@ -167,7 +239,7 @@ export function DashboardClient() {
               </div>
             )}
         </CardContent>
-        <CardFooter>
+        <CardFooter className="justify-between">
             <Button onClick={handleJournalSubmit} disabled={!journalEntry.trim() || isJournalPending}>
               {isJournalPending ? (
                 <>
@@ -177,6 +249,11 @@ export function DashboardClient() {
               ) : (
                 "Save Entry & Analyze"
               )}
+            </Button>
+             <Button asChild variant="ghost">
+              <Link href="/track/journal/freeform">
+                Go to Journal <ArrowRight className="ml-2 size-4" />
+              </Link>
             </Button>
         </CardFooter>
       </Card>

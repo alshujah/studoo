@@ -4,9 +4,10 @@ import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
 import type { ChatMessage } from '@/lib/types';
 
+
 export async function getAiResponse(
   messages: ChatMessage[]
-): Promise<{ success: boolean; data?: ChatMessage[]; error?: string }> {
+): Promise<{ success: boolean; data?: ChatMessage; error?: string }> {
   try {
     const userMessage = messages[messages.length - 1];
     if (userMessage.role !== 'user') {
@@ -23,9 +24,10 @@ export async function getAiResponse(
       message: userMessage.content,
       chatHistory: chatHistory,
     });
+    
+    const assistantMessage: ChatMessage = { role: 'assistant' as const, content: result.response };
 
-    const newMessages = [...messages, { role: 'assistant' as const, content: result.response }];
-    return { success: true, data: newMessages };
+    return { success: true, data: assistantMessage };
 
   } catch (error) {
     console.error('Error getting AI response:', error);
@@ -43,8 +45,5 @@ export async function getJournalAnalysis(
     }
     const result = await analyzeJournalEntry({ journalEntry });
     return { success: true, data: result };
-  } catch (error) {
-    console.error('Error getting AI analysis:', error);
-    return { success: false, error: 'Failed to get analysis from the AI.' };
   }
 }
