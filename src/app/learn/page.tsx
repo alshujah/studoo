@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
-import { BookOpen, Brain, HeartHand, Users, MessageCircle, BarChart, ShieldCheck, Info, Users2, Leaf } from 'lucide-react';
+import { BookOpen, Brain, ShieldCheck, Users, Leaf, BarChart } from 'lucide-react';
 import React from 'react';
 
 export const metadata: Metadata = {

@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import type { Metadata } from 'next';
-import { BrainCircuit, HeartPulse, Shield, Bot, Languages, MessageSquare, Mic, AlertTriangle, UserCheck, Activity, Droplets, Bed, Leaf, Bike, Zap, Brain, Smile, GitCommitHorizontal, Group, FolderKanban, Users, HandHeart, Eye } from 'lucide-react';
+import { BrainCircuit, HeartPulse, Shield, Bot, Languages, MessageSquare, Mic, AlertTriangle, UserCheck, Activity, Droplets, Bed, Leaf, Bike, Zap, Brain, Smile, GitCommitHorizontal, Group, FolderKanban, Users, HandHeart, Eye, Wind, Sparkles } from 'lucide-react';
 import React from 'react';
 
 export const metadata: Metadata = {

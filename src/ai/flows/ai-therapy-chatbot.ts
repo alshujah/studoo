@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -12,7 +13,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { getRecentJournalEntries, getRecentMoodLogs } from '@/ai/tools/user-data';
 import { runInUserContext } from '@/ai/user-context';
-import { AIMessage, HumanMessage, SystemMessage, ToolMessage, type BaseMessage } from 'genkit/ai';
+import { AIMessage, HumanMessage, SystemMessage, ToolMessage, type BaseMessage } from 'genkit';
 
 const AiTherapyChatbotInputSchema = z.object({
   message: z.string().describe('The user message to the chatbot.'),
