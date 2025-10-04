@@ -211,7 +211,7 @@ export function FreeformJournalClient() {
                             >
                                 <p className="text-sm font-medium truncate">{entry.content}</p>
                                 <p className="text-xs text-muted-foreground">
-                                    {format(entry.timestamp.toDate(), 'MMM d, yyyy - h:mm a')}
+                                    {entry.timestamp && format(entry.timestamp.toDate(), 'MMM d, yyyy - h:mm a')}
                                 </p>
                             </button>
                         );
