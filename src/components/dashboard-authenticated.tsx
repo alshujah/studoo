@@ -4,7 +4,7 @@
 import React, { useState, useTransition, useMemo } from 'react';
 import Link from 'next/link';
 import type { User } from 'firebase/auth';
-import { ArrowRight, Pen, Wind, Loader, Sparkles } from 'lucide-react';
+import { ArrowRight, Pen, Wind, Loader, Sparkles, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -20,6 +20,7 @@ import { collection, query, orderBy, where, Timestamp, addDoc, serverTimestamp }
 import { useFirestore, useMemoFirebase } from '@/firebase/provider';
 import type { MoodLog } from '@/lib/types';
 import { subDays, format } from 'date-fns';
+import { useMoodTriggers } from '@/hooks/use-mood-triggers';
 
 const moodIcons = [
   { mood: 'Happy', icon: '😊' },
@@ -39,6 +40,14 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
   const [journalAnalysis, setJournalAnalysis] = useState<AnalyzeJournalEntryOutput | null>(null);
   const { toast } = useToast();
   const firestore = useFirestore();
+
+  const {
+    triggers,
+    isLoading: isLoadingTriggers,
+    error: triggersError,
+    findTriggers,
+  } = useMoodTriggers(user.uid);
+
 
   const moodLogQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -181,34 +190,58 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
           <MoodChart data={moodChartData} loading={loadingMoodLogs} />
         </CardContent>
       </Card>
-
-      <Card className="col-span-1 flex flex-col">
+      
+      <Card className="col-span-1 md:col-span-2 xl:col-span-1">
         <CardHeader>
-          <CardTitle className="font-headline">Quick Tools</CardTitle>
-          <CardDescription>Access powerful tools for immediate relief.</CardDescription>
+          <CardTitle className="font-headline">Insights</CardTitle>
+          <CardDescription>Discover patterns in your well-being.</CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow">
-          <div className="flex flex-col gap-4">
-            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/tools/relaxation/box-breathing">
-                <Wind className="size-5 text-primary" />
-                <span>Breathing Exercise</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/tools/thought-record">
-                <Pen className="size-5 text-primary" />
-                <span>Thought Record</span>
-              </Link>
-            </Button>
-          </div>
+        <CardContent className="space-y-4">
+            {isLoadingTriggers && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Loader className="size-4 animate-spin" />
+                    <span>Analyzing your mood logs...</span>
+                </div>
+            )}
+            {triggersError && (
+                 <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Analysis Failed</AlertTitle>
+                    <AlertDescription>
+                       {triggersError}
+                    </AlertDescription>
+                </Alert>
+            )}
+            {triggers && triggers.length > 0 && (
+                <div className="space-y-3">
+                    {triggers.map((item, index) => (
+                        <div key={index} className="p-3 border rounded-md bg-muted/30">
+                            <h4 className="font-semibold text-primary">{item.trigger}</h4>
+                            <p className="text-sm text-muted-foreground mt-1">{item.pattern}</p>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                                {item.relatedEmotions.map(emotion => (
+                                    <Badge key={emotion} variant="secondary">{emotion}</Badge>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+             {triggers && triggers.length === 0 && !isLoadingTriggers && (
+                <p className="text-sm text-muted-foreground">Not enough data to identify triggers. Keep logging your mood to see insights here.</p>
+            )}
+
+            {!triggers && !isLoadingTriggers && (
+                 <p className="text-sm text-muted-foreground">Click the button to analyze your recent mood logs and identify potential triggers.</p>
+            )}
+
+
         </CardContent>
         <CardFooter>
-          <Button asChild variant="ghost" className="w-full">
-            <Link href="/tools">
-              See all tools <ArrowRight className="ml-2 size-4" />
-            </Link>
-          </Button>
+             <Button onClick={findTriggers} disabled={isLoadingTriggers}>
+                {isLoadingTriggers ? <Loader className="mr-2 animate-spin" /> : <Sparkles className="mr-2" />}
+                Find My Triggers
+            </Button>
         </CardFooter>
       </Card>
 
@@ -291,6 +324,36 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                 Go to Journal <ArrowRight className="ml-2 size-4" />
               </Link>
             </Button>
+        </CardFooter>
+      </Card>
+      
+       <Card className="col-span-1 flex flex-col">
+        <CardHeader>
+          <CardTitle className="font-headline">Quick Tools</CardTitle>
+          <CardDescription>Access powerful tools for immediate relief.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex-grow">
+          <div className="flex flex-col gap-4">
+            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/tools/relaxation/box-breathing">
+                <Wind className="size-5 text-primary" />
+                <span>Breathing Exercise</span>
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/tools/thought-record">
+                <Pen className="size-5 text-primary" />
+                <span>Thought Record</span>
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button asChild variant="ghost" className="w-full">
+            <Link href="/tools">
+              See all tools <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </Button>
         </CardFooter>
       </Card>
 

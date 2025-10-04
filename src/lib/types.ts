@@ -24,5 +24,5 @@ export interface MoodLog {
     intensity: number;
     thoughts: string;
     physicalSensations: string;
-    timestamp: Timestamp;
+    timestamp: Timestamp | string; // Allow string for serialization
 }

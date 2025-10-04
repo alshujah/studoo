@@ -12,12 +12,13 @@ export function DashboardClient() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6 p-4 lg:p-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6">
         <Skeleton className="h-48 col-span-1 md:col-span-2" />
         <Skeleton className="h-48 col-span-1 md:col-span-2" />
         <Skeleton className="h-96 col-span-1" />
         <Skeleton className="h-96 col-span-1 md:col-span-2 xl:col-span-1" />
         <Skeleton className="h-96 col-span-1 md:col-span-2" />
+        <Skeleton className="h-96 col-span-1" />
       </div>
     );
   }
