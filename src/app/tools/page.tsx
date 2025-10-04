@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Brain, Sprout, Shield, Heart, Smile, Moon, User, Wind, HelpCircle } from 'lucide-react';
+import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
