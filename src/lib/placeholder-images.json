@@ -1,10 +1,124 @@
 {
   "placeholderImages": [
     {
-      "id": "user-avatar",
-      "description": "A placeholder for a user's avatar.",
-      "imageUrl": "https://images.unsplash.com/photo-1535643302794-19c3804b874b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTk1MDY2MzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "person portrait"
+      "id": "calm-lake",
+      "description": "A calm lake reflecting the sky.",
+      "imageUrl": "https://images.unsplash.com/photo-1567333052605-db33f114565e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjYWxtJTIwbGFrZXxlbnwwfHx8fDE3NTk2MTkzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "calm lake"
+    },
+    {
+      "id": "forest-path",
+      "description": "A path winding through a sunlit forest.",
+      "imageUrl": "https://images.unsplash.com/photo-1429743305873-d4065c15f93e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8MTc1OTU4MTk4Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "forest path"
+    },
+    {
+      "id": "mountain-peak",
+      "description": "A majestic mountain peak at sunrise.",
+      "imageUrl": "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMHBlYWt8ZW58MHx8fHwxNzU5NTUzMjg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mountain peak"
+    },
+    {
+      "id": "cozy-library",
+      "description": "A cozy library with a comfortable chair.",
+      "imageUrl": "https://images.unsplash.com/photo-1729516800796-99501b208ab4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb3p5JTIwbGlicmFyeXxlbnwwfHx8fDE3NTk1Nzk2MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cozy library"
+    },
+    {
+      "id": "zen-garden",
+      "description": "A minimalist zen garden with raked sand.",
+      "imageUrl": "https://images.unsplash.com/photo-1674893168376-c3d8efc23906?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx6ZW4lMjBnYXJkZW58ZW58MHx8fHwxNzU5NTA5MDI5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "zen garden"
+    },
+    {
+      "id": "person-meditating",
+      "description": "A person meditating peacefully outdoors.",
+      "imageUrl": "https://images.unsplash.com/photo-1618425977996-bebc5afe88f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBtZWRpdGF0aW5nfGVufDB8fHx8MTc1OTUzNzcwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person meditating"
+    },
+    {
+      "id": "supportive-friends",
+      "description": "A diverse group of friends laughing together.",
+      "imageUrl": "https://images.unsplash.com/photo-1709116451864-5f2b742bd83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZnJpZW5kcyUyMGxhdWdoaW5nfGVufDB8fHx8MTc1OTYwMjQ4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "friends laughing"
+    },
+    {
+      "id": "journaling-hands",
+      "description": "Hands writing in a journal with a cup of tea nearby.",
+      "imageUrl": "https://images.unsplash.com/photo-1642014311549-241528bdc733?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3cml0aW5nJTIwam91cm5hbHxlbnwwfHx8fDE3NTk1MjUyNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "writing journal"
+    },
+    {
+      "id": "sunrise-yoga",
+      "description": "A person doing yoga on a beach at sunrise.",
+      "imageUrl": "https://images.unsplash.com/photo-1646166624995-a8919665cbc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdW5yaXNlJTIweW9nYXxlbnwwfHx8fDE3NTk2MTkzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sunrise yoga"
+    },
+    {
+      "id": "starry-night",
+      "description": "A clear night sky full of stars.",
+      "imageUrl": "https://images.unsplash.com/photo-1628498188904-036f5e25e93e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdGFycnklMjBuaWdodHxlbnwwfHx8fDE3NTk1ODg2MzR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "starry night"
+    },
+    {
+      "id": "raindrops-on-leaf",
+      "description": "Close-up of raindrops on a green leaf.",
+      "imageUrl": "https://images.unsplash.com/photo-1620327536173-8356b07d5f96?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxyYWluZHJvcCUyMGxlYWZ8ZW58MHx8fHwxNzU5NjE5MzczfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "raindrop leaf"
+    },
+    {
+      "id": "person-hiking",
+      "description": "A person hiking and looking out over a valley.",
+      "imageUrl": "https://images.unsplash.com/photo-1505731266723-9adc6eb6ea96?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwZXJzb24lMjBoaWtpbmd8ZW58MHx8fHwxNzU5NTE3Njg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person hiking"
+    },
+    {
+      "id": "warm-blanket",
+      "description": "A person wrapped in a warm, knitted blanket.",
+      "imageUrl": "https://images.unsplash.com/photo-1700163413209-04c3b9bdf84a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3YXJtJTIwYmxhbmtldHxlbnwwfHx8fDE3NTk2MTkzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "warm blanket"
+    },
+    {
+      "id": "abstract-light",
+      "description": "Abstract and soft light patterns.",
+      "imageUrl": "https://images.unsplash.com/photo-1519750783826-e2420f4d687f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxhYnN0cmFjdCUyMGxpZ2h0fGVufDB8fHx8MTc1OTU0MzYxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract light"
+    },
+    {
+      "id": "hopeful-sprout",
+      "description": "A small green sprout growing from the ground.",
+      "imageUrl": "https://images.unsplash.com/photo-1742544686442-92838b212d15?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwbGFudCUyMHNwcm91dHxlbnwwfHx8fDE3NTk1MTk2MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "plant sprout"
+    },
+    {
+      "id": "art-supplies",
+      "description": "A collection of colorful art supplies.",
+      "imageUrl": "https://images.unsplash.com/photo-1499892477393-f675706cbe6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhcnQlMjBzdXBwbGllc3xlbnwwfHx8fDE3NTk1MDY0MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "art supplies"
+    },
+    {
+      "id": "listening-ear",
+      "description": "A close-up of someone listening with empathy.",
+      "imageUrl": "https://images.unsplash.com/photo-1596088869451-491e167efabb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxsaXN0ZW5pbmclMjBlYXJ8ZW58MHx8fHwxNzU5NjE5MzczfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "listening ear"
+    },
+    {
+      "id": "puzzle-pieces",
+      "description": "Two puzzle pieces fitting together.",
+      "imageUrl": "https://images.unsplash.com/photo-1637094408647-0d81d08f81b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwdXp6bGUlMjBwaWVjZXN8ZW58MHx8fHwxNzU5NjE5MzczfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "puzzle pieces"
+    },
+    {
+      "id": "stepping-stones",
+      "description": "Stepping stones across a calm stream.",
+      "imageUrl": "https://images.unsplash.com/photo-1597149560479-3c7d7b96d6bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzdGVwcGluZyUyMHN0b25lc3xlbnwwfHx8fDE3NTk2MTkzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "stepping stones"
+    },
+    {
+      "id": "open-door",
+      "description": "An open door leading to a bright, hopeful space.",
+      "imageUrl": "https://images.unsplash.com/photo-1535556572967-276cd0ad5cba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvcGVuJTIwZG9vcnxlbnwwfHx8fDE3NTk2MTkzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "open door"
     }
   ]
 }
