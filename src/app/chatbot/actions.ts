@@ -1,6 +1,7 @@
 'use server';
 
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
+import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
 import type { ChatMessage } from '@/lib/types';
 
 export async function getAiResponse(
@@ -29,5 +30,21 @@ export async function getAiResponse(
   } catch (error) {
     console.error('Error getting AI response:', error);
     return { success: false, error: 'Failed to get a response from the AI coach.' };
+  }
+}
+
+
+export async function getJournalAnalysis(
+  journalEntry: string
+): Promise<{ success: boolean; data?: AnalyzeJournalEntryOutput; error?: string }> {
+  try {
+    if (!journalEntry.trim()) {
+      return { success: false, error: 'Journal entry cannot be empty.' };
+    }
+    const result = await analyzeJournalEntry({ journalEntry });
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error getting AI analysis:', error);
+    return { success: false, error: 'Failed to get analysis from the AI.' };
   }
 }
