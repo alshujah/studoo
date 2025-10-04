@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { MoodCheckInForm } from './mood-check-in-form';
 

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,6 +23,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
 
 const coreEmotions = ["Joy", "Sadness", "Fear", "Anger", "Surprise", "Disgust", "Contentment"];
 
@@ -41,6 +44,7 @@ export function MoodCheckInForm() {
   const [user] = useAuthState(auth);
   const { toast } = useToast();
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<MoodFormValues>({
     resolver: zodResolver(formSchema),
@@ -62,6 +66,7 @@ export function MoodCheckInForm() {
         return;
     }
 
+    setIsSubmitting(true);
     try {
       const moodLogCollection = collection(firestore, 'users', user.uid, 'moodLogs');
       await addDoc(moodLogCollection, {
@@ -82,6 +87,8 @@ export function MoodCheckInForm() {
         title: "Error",
         description: "There was an error saving your mood log.",
       });
+    } finally {
+        setIsSubmitting(false);
     }
   }
 
@@ -200,8 +207,9 @@ export function MoodCheckInForm() {
               )}
             />
             
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Saving...' : 'Save Check-in'}
+            <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+                Save Check-in
             </Button>
           </form>
         </Form>
