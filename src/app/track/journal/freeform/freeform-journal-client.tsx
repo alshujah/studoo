@@ -4,7 +4,7 @@ import React, { useState, useTransition, useMemo } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Loader, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { getJournalAnalysis } from '@/app/chatbot/actions';
 import type { AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
