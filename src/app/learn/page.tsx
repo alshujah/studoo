@@ -34,6 +34,19 @@ const educationalModules = [
     { title: "Interactive Modules", description: "Hands-on learning experiences." },
     { title: "Quizzes/Knowledge Checks", description: "Test your understanding." },
     { title: "Case Studies", description: "Learn from real-life examples." },
+    { title: "Fight-or-Flight Explanation", description: "Understand your body's stress reaction." },
+    { title: "Coping Self-Efficacy Scale", description: "Evaluate your confidence in coping." },
+    { title: "Trauma Screening Tools (PCL-5)", description: "Screen for post-traumatic stress." },
+    { title: "Eating Disorder Screening", description: "Tools for early identification." },
+    { title: "ADHD Assessment Tools", description: "Screening for attention-deficit hyperactivity." },
+    { title: "Autism Spectrum Screening", description: "Tools for autism spectrum traits." },
+    { title: "Relationship Health Evaluation", description: "Assess the health of your relationships." },
+    { title: "Moderated Community Forums", description: "Connect with others in a safe space." },
+    { title: "Anonymous Peer Chat", description: "Talk with peers without revealing your identity." },
+    { title: "Support Groups", description: "Join groups based on condition or demographic." },
+    { title: "Buddy/Accountability System", description: "Partner up for mutual support." },
+    { title: "Story Sharing Platforms", description: "Share and read stories of recovery." },
+    { title: "Peer Mentorship Programs", description: "Get guidance from a trained peer." },
 ];
 
 export default function LearnPage() {

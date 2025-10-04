@@ -12,6 +12,10 @@ const crisisTools = [
     { title: "Self-Harm Alternatives", description: "Find alternative coping strategies." },
     { title: "Panic Attack Assistance", description: "Guided help during a panic attack." },
     { title: "SOS/Emergency Button", description: "Alert your emergency contacts." },
+    { title: "Warning Sign Identification", description: "Recognize your personal crisis warning signs." },
+    { title: "Suicide Risk Assessment", description: "Access resources for suicide risk management." },
+    { title: "Crisis Text Line Integration", description: "Connect with a crisis counselor via text." },
+    { title: "Therapist/Emergency Contact Alerts", description: "Notify your support system in a crisis." },
 ];
 
 export default function CrisisManagementPage() {

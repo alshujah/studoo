@@ -39,6 +39,16 @@ const trackingModules = [
     { title: "Relationship Interactions", description: "Log the quality of social interactions." },
     { title: "Burnout Symptom Tracking", description: "Monitor signs of burnout." },
     { title: "Self-Esteem Fluctuations", description: "Track your self-esteem over time." },
+    { title: "Weather Correlation", description: "Track mood changes with the weather." },
+    { title: "Medication Interaction Checker", description: "Check for interactions between medications." },
+    { title: "Symptom Severity Scoring", description: "Score the severity of your symptoms." },
+    { title: "Anger Thermometer", description: "Rate and track anger levels." },
+    { title: "Anxiety Thermometer", description: "Rate and track anxiety levels." },
+    { title: "Urge Surfing Tools", description: "Ride out cravings or urges." },
+    { title: "Thought Stopping Techniques", description: "Learn to stop unwanted thoughts." },
+    { title: "Worry Time Scheduling", description: "Set aside a specific time to worry." },
+    { title: "Values Card Sort", description: "Sort values to clarify what's important." },
+    { title: "Life Balance Wheel", description: "Assess and balance different life areas." },
 ];
 
 export default function TrackPage() {

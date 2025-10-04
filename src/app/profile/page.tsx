@@ -30,13 +30,19 @@ const profileModules = [
     { title: "Peer Support Groups", description: "Join groups based on shared experiences." },
     { title: "Emergency Contacts", description: "Quick access to your support network." },
     { title: "Privacy Settings", description: "Control your data and privacy." },
+    { title: "Data Deletion Options", description: "Request deletion of your personal data." },
+    { title: "Password Protection", description: "Secure your account with a password." },
+    { title: "Biometric Login", description: "Use fingerprint or face ID to log in." },
+    { title: "Two-Factor Authentication", description: "Add an extra layer of security." },
+    { title: "Data Export Options", description: "Export your data for your own records." },
+    { title: "Third-Party Sharing Controls", description: "Manage how your data is shared." },
 ];
 
 export default function ProfilePage() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Profile</h1>
+        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Profile & Settings</h1>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {profileModules.map((module) => (

@@ -14,6 +14,7 @@ const dbtTools = [
     { title: "TIPP Technique", description: "Temperature, Intense exercise, Paced breathing, Paired muscle relaxation." },
     { title: "Walking the Middle Path", description: "Find synthesis between opposites." },
     { title: "Pros and Cons", description: "Weigh the advantages and disadvantages." },
+    { title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
 ];
 
 export default function DBTPage() {

@@ -23,6 +23,8 @@ const journalModules = [
     { title: "Story-Based Journaling", description: "Write about your life as a story." },
     { title: "Unsent Letter", description: "Write a letter you don't intend to send." },
     { title: "Role-Playing Journal", description: "Explore situations from different perspectives." },
+    { title: "Automatic Thought Recording", description: "Quickly capture automatic thoughts." },
+    { title: "Post-Traumatic Growth Exercises", description: "Focus on growth after trauma." },
 ];
 
 export default function JournalPage() {
