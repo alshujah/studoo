@@ -24,7 +24,7 @@ const trackingModules = [
     { title: "Side Effect Documentation", description: "Note any medication side effects." },
     { title: "Screen Time Monitoring", description: "Track your time on digital devices." },
     { title: "Eating Habits Logging", description: "Monitor your nutritional intake." },
-    { title: "Menstrual Cycle Mood Correlation", description: "Track mood changes related to your cycle." },
+    { title: "Menstrual Cycle Mood Correlation", description: "Track mood changes with your cycle." },
     { title: "Self-Care Activities Checklist", description: "Ensure you're taking care of yourself." },
     { title: "Trigger Event Documentation", description: "Identify events that affect your mood." },
     { title: "Emotional Self-Awareness Scoring", description: "Track improvements in recognizing emotions." },
