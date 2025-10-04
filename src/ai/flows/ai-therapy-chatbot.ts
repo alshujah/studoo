@@ -14,7 +14,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { getRecentJournalEntries, getRecentMoodLogs } from '@/ai/tools/user-data';
 import { runInUserContext } from '@/ai/user-context';
-import { AIMessage, HumanMessage, SystemMessage, ToolMessage, type BaseMessage } from 'genkit';
+import { AIMessage, HumanMessage, SystemMessage, ToolMessage, type BaseMessage, Message, Part } from 'genkit';
 
 const AiTherapyChatbotInputSchema = z.object({
   message: z.string().describe('The user message to the chatbot.'),
@@ -74,63 +74,53 @@ const aiTherapyChatbotFlow = ai.defineFlow(
   },
   async (input) => {
     const tools = [getRecentMoodLogs, getRecentJournalEntries];
-    
-    // Construct the message history
-    const history: BaseMessage[] = [new SystemMessage(prompt)];
-    if (input.chatHistory) {
-        for (const msg of input.chatHistory) {
-            if (msg.role === 'user') {
-                history.push(new HumanMessage(msg.content));
-            } else if (msg.role === 'assistant') {
-                const aiMsg = new AIMessage(msg.content);
-                // This logic is simplified; a real implementation would need to reconstruct tool requests if they existed.
-                history.push(aiMsg);
-            }
-        }
-    }
-    history.push(new HumanMessage(input.message));
 
-    // Generate the initial response, which may be a tool call
-    const llmResponse = await ai.generate({
-        history,
-        tools,
+    // Convert the plain chat history into a structured format for Genkit
+    const history: Message[] = [new Message({role: 'system', content: [ {text: prompt} ]})];
+    if (input.chatHistory) {
+      for (const msg of input.chatHistory) {
+        let role: 'user' | 'assistant' | 'tool' = 'user';
+        if (msg.role === 'assistant') {
+          role = 'assistant';
+        } else if (msg.role === 'tool') {
+          role = 'tool';
+        }
+        
+        // This logic is simplified for demonstration. A robust implementation
+        // would need to handle complex message parts (e.g., tool requests).
+        history.push(new Message({ role: role, content: [{ text: msg.content }] }));
+      }
+    }
+    history.push(new Message({role: 'user', content: [{ text: input.message }]}));
+    
+    let llmResponse = await ai.generate({
+      history,
+      tools,
     });
 
-    const choice = llmResponse.choices[0];
+    while (llmResponse.isToolRequest()) {
+      const toolRequest = llmResponse.toolRequest();
+      let toolResult;
 
-    // If the model chose to use a tool
-    if (choice.finishReason === 'toolCode' && choice.message.toolRequest) {
-        const toolRequest = choice.message.toolRequest;
-        
-        // Add the AI's tool request to the history
-        history.push(choice.message);
+      if (toolRequest.name === 'getRecentMoodLogs') {
+          toolResult = await getRecentMoodLogs(toolRequest.input);
+      } else if (toolRequest.name === 'getRecentJournalEntries') {
+          toolResult = await getRecentJournalEntries(toolRequest.input);
+      } else {
+          throw new Error(`Unknown tool: ${toolRequest.name}`);
+      }
 
-        let toolResult;
-        if (toolRequest.name === 'getRecentMoodLogs') {
-            toolResult = await getRecentMoodLogs(toolRequest.input);
-        } else if (toolRequest.name === 'getRecentJournalEntries') {
-            toolResult = await getRecentJournalEntries(toolRequest.input);
-        } else {
-            throw new Error(`Unknown tool: ${toolRequest.name}`);
-        }
-
-        // Add the result from the tool call to the history
-        history.push(new ToolMessage(JSON.stringify(toolResult), toolRequest.name));
-        
-        // Call the model again with the new history containing the tool result
-        const finalResponse = await ai.generate({
-            history,
-            tools,
-        });
-
-        return {
-            response: finalResponse.text,
-        };
+      history.push(llmResponse.message);
+      history.push(new Message({role: 'tool', content: [ { data: toolResult, toolName: toolRequest.name } ]}));
+      
+      llmResponse = await ai.generate({
+        history,
+        tools,
+      });
     }
     
-    // If the model did not use a tool, return its direct response
     return {
-      response: choice.text || 'I am not sure how to respond to that. Can you rephrase?',
+      response: llmResponse.text,
     };
   }
 );
