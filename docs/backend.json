@@ -215,6 +215,29 @@
         "timestamp": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "timestamp"]
+    },
+    "socialSkillAssessment": {
+      "title": "Social Skill Assessment",
+      "description": "A user's score on the social skills assessment.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "scores": {
+          "type": "object",
+          "properties": {
+            "Listening": { "type": "number" },
+            "Small Talk": { "type": "number" },
+            "Empathy": { "type": "number" },
+            "Nonverbal": { "type": "number" },
+            "Assertiveness": { "type": "number" }
+          }
+        },
+        "answers": {
+            "type": "object"
+        }
+      },
+      "required": ["userId", "timestamp", "scores", "answers"]
     }
   },
   "auth": {
@@ -278,6 +301,10 @@
     "/users/{userId}/narrativeStories/{narrativeStoryId}": {
       "schema": { "$ref": "#/entities/narrativeStory" },
       "description": "Stores a user's re-authored stories from Narrative Therapy."
+    },
+    "/users/{userId}/socialSkillAssessments/{assessmentId}": {
+        "schema": { "$ref": "#/entities/socialSkillAssessment" },
+        "description": "Stores a user's social skill assessment results."
     }
   }
 }
