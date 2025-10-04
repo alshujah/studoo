@@ -20,6 +20,14 @@ const educationalModules = [
     { title: "Communication Skills", description: "Improve your interpersonal effectiveness." },
     { title: "Medication Information", description: "Details on common medications." },
     { title: "Coping Mechanisms Explained", description: "Learn how different strategies work." },
+    { title: "Help-Seeking Education", description: "Learn how and when to seek help." },
+    { title: "Self-Advocacy Skills", description: "Learn to advocate for your own needs." },
+    { title: "Evidence-Based Practice Explanations", description: "Understand what works and why." },
+    { title: "Research Article Summaries", description: "Digestible summaries of new research." },
+    { title: "Expert Interviews", description: "Hear from leading mental health experts." },
+    { title: "Relationship Management Tips", description: "Improve your relationships." },
+    { title: "Conflict Resolution Strategies", description: "Learn to navigate disagreements." },
+    { title: "Boundary-Setting Guidance", description: "Protect your energy and well-being." },
 ];
 
 export default function LearnPage() {

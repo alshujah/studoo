@@ -15,6 +15,10 @@ const journalModules = [
     { title: "Freeform Journal", description: "An open space for your thoughts and feelings." },
     { title: "Photo Journaling", description: "Use images to capture your moments." },
     { title: "Voice Journaling", description: "Speak your thoughts instead of writing." },
+    { title: "Self-Compassion Journal", description: "Focus on kindness and understanding towards yourself." },
+    { title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
+    { title: "Future Self Journaling", description: "Write to your future self to build hope." },
+    { title: "Expressive Writing", description: "Write about traumatic or stressful events." },
 ];
 
 export default function JournalPage() {

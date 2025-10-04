@@ -17,6 +17,13 @@ const profileModules = [
     { title: "Success Visualization", description: "Mentally rehearse achieving your goals." },
     { title: "Before & After Comparisons", description: "See how far you've come." },
     { title: "Avatar Customization", description: "Personalize your in-app identity." },
+    { title: "Points/Rewards System", description: "Earn points for completing activities." },
+    { title: "Level Progression", description: "Level up as you build skills." },
+    { title: "Challenges/Quests", description: "Tangible daily and weekly tasks." },
+    { title: "Motivational Quotes", description: "Daily inspiration to keep you going." },
+    { title: "Reward Scheduling", description: "Plan rewards for achieving your goals." },
+    { title: "Milestone Celebrations", description: "Acknowledge significant achievements." },
+    { title: "Wellness Score Calculation", description: "Get a score of your overall well-being." },
 ];
 
 export default function ProfilePage() {

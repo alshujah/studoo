@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Track | Zenith',
@@ -22,6 +23,11 @@ const trackingModules = [
     { title: "Side Effect Documentation", description: "Note any medication side effects." },
     { title: "Screen Time Monitoring", description: "Track your time on digital devices." },
     { title: "Eating Habits Logging", description: "Monitor your nutritional intake." },
+    { title: "Menstrual Cycle Mood Correlation", description: "Track mood changes related to your cycle." },
+    { title: "Self-Care Activities Checklist", description: "Ensure you're taking care of yourself." },
+    { title: "Trigger Event Documentation", description: "Identify events that affect your mood." },
+    { title: "Emotional Self-Awareness Scoring", description: "Track improvements in recognizing emotions." },
+    { title: "Multi-dimensional Mood Tracking", description: "Track energy, anxiety, depression, and stress." },
 ];
 
 export default function TrackPage() {
