@@ -56,14 +56,17 @@ const trackingModules = [
     { title: "Sobriety Tracking", description: "Track your journey in addiction recovery." },
     { title: "Chronic Pain Management", description: "Tools for managing chronic pain." },
     { title: "Bipolar Disorder Mood Stabilization", description: "Tools for mood stabilization." },
-    { title: "Schizophrenia Symptom Management", description: "Tools to help manage symptoms." }
+    { title: "Schizophrenia Symptom Management", description: "Tools to help manage symptoms." },
+    { title: "Moon Phase Tracking", description: "For those interested in moon phases." },
+    { title: "Biometric Integration", description: "Sync with heart rate and step counters." },
+    { title: "Wearable Device Sync", description: "Connect your favorite wearable." }
 ];
 
 export default function TrackPage() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Track</h1>
+        <h1 className="font-headline text-2xl font-semibold md D:text-3xl">Track</h1>
       </div>
        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {trackingModules.map((module) => (

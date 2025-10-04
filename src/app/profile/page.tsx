@@ -55,7 +55,25 @@ const profileModules = [
     { title: "Simple, Intuitive Navigation", description: "Easy to find what you need." },
     { title: "Clean, Minimalist Design", description: "A calming and focused interface." },
     { title: "Accessibility Features", description: "Support for screen readers and more." },
-    { title: "Dark Mode Option", description: "A dark theme for your comfort." }
+    { title: "Dark Mode Option", description: "A dark theme for your comfort." },
+    { title: "Customizable Color Schemes", description: "Make the app your own." },
+    { title: "Multi-Language Support", description: "Use the app in your preferred language." },
+    { title: "Voice Input/Output", description: "Interact with the app using your voice." },
+    { title: "Offline Functionality", description: "Access key features without an internet connection." },
+    { title: "Low Data Mode", description: "Reduce data usage." },
+    { title: "Quick Access Home Button", description: "Navigate with ease." },
+    { title: "Search Functionality", description: "Quickly find what you're looking for." },
+    { title: "Favorites/Bookmarks", description: "Save your favorite tools and articles." },
+    { title: "Onboarding Tutorial", description: "Learn how to use the app." },
+    { title: "Help/Support Section", description: "Get help when you need it." },
+    { title: "FAQ Database", description: "Find answers to common questions." },
+    { title: "Personalized Homepage", description: "Your own customized dashboard." },
+    { title: "Quick Actions/Shortcuts", description: "Access your most-used features quickly." },
+    { title: "Widget Support", description: "Add app widgets to your home screen." },
+    { title: "Gesture Controls", description: "Use gestures to navigate the app." },
+    { title: "Loading Speed Optimization", description: "A fast and responsive experience." },
+    { title: "Battery Efficient Design", description: "Use the app without draining your battery." },
+    { title: "Cross-Device Synchronization", description: "Your data, synced across all your devices." }
 ];
 
 export default function ProfilePage() {

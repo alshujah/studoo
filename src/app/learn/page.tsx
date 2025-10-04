@@ -55,7 +55,8 @@ const educationalModules = [
     { title: "Geriatric Mental Health Tools", description: "Resources for older adults." },
     { title: "LGBTQ+ Specific Resources", description: "Culturally competent resources." },
     { title: "Cultural Adaptation Options", description: "Content adapted for different cultures." },
-    { title: "Gender-Specific Content", description: "Content tailored to different gender identities." }
+    { title: "Gender-Specific Content", description: "Content tailored to different gender identities." },
+    { title: "Age-Appropriate Interfaces", description: "Child-friendly educational content" }
 ];
 
 export default function LearnPage() {

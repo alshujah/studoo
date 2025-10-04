@@ -18,6 +18,7 @@ const crisisTools = [
     { title: "Therapist/Emergency Contact Alerts", description: "Notify your support system in a crisis." },
     { title: "Flashback Coping Strategies", description: "Tools to manage flashbacks." },
     { title: "Trigger Management Plans", description: "Develop plans to manage triggers." },
+    { title: "Emergency Coping Statements", description: "Reminders of coping strategies." }
 ];
 
 export default function CrisisManagementPage() {
