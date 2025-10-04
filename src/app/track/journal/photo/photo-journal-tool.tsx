@@ -66,7 +66,7 @@ export function PhotoJournalTool() {
       <div className="flex flex-col gap-4">
         <div className="w-full aspect-square rounded-md bg-muted flex items-center justify-center border relative overflow-hidden">
           {imagePreview ? (
-             <Image src={imagePreview} alt="Journal entry preview" layout="fill" objectFit="cover" />
+             <Image src={imagePreview} alt="Journal entry preview" fill objectFit="cover" />
           ) : (
             <div className="flex flex-col items-center gap-2 text-muted-foreground">
               <ImageIcon size={48} />
