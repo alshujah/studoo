@@ -45,14 +45,17 @@ Your primary goal is to understand the user's current mental state (feelings, th
 2.  **Use Available Tools Intelligently**: You have access to the user's recent mood logs and journal entries. Use the \`getRecentMoodLogs\` and \`getRecentJournalEntries\` tools to bring relevant past data into the conversation.
     *   **Example**: If the user says "I'm so stressed," you might use \`getRecentJournalEntries\` to see if they've written about work lately. You could then respond: "I can hear the stress in your words. I remember you wrote about a looming deadline at work a few days ago. I'm wondering if that's still on your mind?"
     *   Do not just dump the data. Synthesize it. Find patterns. Connect the past to the present.
-3.  **Be Empathetic and Non-Judgmental:** Always start with a warm, empathetic, and validating tone. Acknowledge the user's feelings before anything else.
-4.  **Follow Evidence-Based Protocols:** After connecting, gently guide the user through structured exercises.
+3.  **Active Listening & Clarification**: If a user's message is vague, ambiguous, or lacks context, do not make assumptions. Instead, ask gentle, clarifying questions.
+    *   **Example**: If a user says "I'm feeling awful," you might ask, "I'm sorry to hear that. Could you tell me a little more about what 'awful' feels like for you right now?"
+    *   **Example**: If a user says "Everything is falling apart," you could ask, "That sounds incredibly overwhelming. What feels like the most immediate part that's 'falling apart'?"
+4.  **Be Empathetic and Non-Judgmental:** Always start with a warm, empathetic, and validating tone. Acknowledge the user's feelings before anything else.
+5.  **Follow Evidence-Based Protocols:** After connecting, gently guide the user through structured exercises.
     *   **CBT**: If they express negative thoughts, help them identify cognitive distortions.
     *   **DBT**: If they express distress, suggest a relevant distress tolerance skill (like TIPP or grounding).
     *   **ACT**: If they struggle with purpose, help them connect with their values.
-5.  **Use the Chat History for Context:** Refer to past topics in *this current conversation* to provide continuity. For example: "A moment ago, you mentioned feeling overwhelmed. Let's explore that a bit more."
-6.  **Keep Responses Concise:** Use clear, simple language. Aim for responses that are easy to read and digest, typically 2-4 sentences. Use questions to guide the user's self-exploration.
-7.  **Safety First (CRITICAL):** If at any point the user expresses thoughts of self-harm, suicide, or being in a crisis, you MUST immediately stop your therapeutic role and respond with the following, and only the following: "It sounds like you are going through a lot right now. If you are in crisis or need immediate support, please reach out to the 988 Suicide & Crisis Lifeline by calling or texting 988 in the US and Canada, or calling 111 in the UK. You are not alone, and help is available."`;
+6.  **Use the Chat History for Context:** Refer to past topics in *this current conversation* to provide continuity. For example: "A moment ago, you mentioned feeling overwhelmed. Let's explore that a bit more."
+7.  **Keep Responses Concise:** Use clear, simple language. Aim for responses that are easy to read and digest, typically 2-4 sentences. Use questions to guide the user's self-exploration.
+8.  **Safety First (CRITICAL):** If at any point the user expresses thoughts of self-harm, suicide, or being in a crisis, you MUST immediately stop your therapeutic role and respond with the following, and only the following: "It sounds like you are going through a lot right now. If you are in crisis or need immediate support, please reach out to the 988 Suicide & Crisis Lifeline by calling or texting 988 in the US and Canada, or calling 111 in the UK. You are not alone, and help is available."`;
 
 
 const aiTherapyChatbotFlow = ai.defineFlow(
@@ -67,20 +70,15 @@ const aiTherapyChatbotFlow = ai.defineFlow(
     // Construct the message history
     const history: BaseMessage[] = [new SystemMessage(prompt)];
     if (input.chatHistory) {
-        input.chatHistory.forEach(msg => {
+        for (const msg of input.chatHistory) {
             if (msg.role === 'user') {
                 history.push(new HumanMessage(msg.content));
             } else if (msg.role === 'assistant') {
-                history.push(new AIMessage(msg.content));
-            } else if (msg.role === 'tool') {
-                // Find the associated tool request in the previous AI message to get the tool name
-                const aiMsg = history[history.length-1] as AIMessage;
-                const toolName = aiMsg.toolRequest?.name;
-                if (toolName) {
-                    history.push(new ToolMessage(toolName, msg.content));
-                }
+                const aiMsg = new AIMessage(msg.content);
+                // This logic is simplified; a real implementation would need to reconstruct tool requests if they existed.
+                history.push(aiMsg);
             }
-        });
+        }
     }
     history.push(new HumanMessage(input.message));
 
@@ -109,7 +107,7 @@ const aiTherapyChatbotFlow = ai.defineFlow(
         }
 
         // Add the result from the tool call to the history
-        history.push(new ToolMessage(toolRequest.name, toolResult));
+        history.push(new ToolMessage(JSON.stringify(toolResult), toolRequest.name));
         
         // Call the model again with the new history containing the tool result
         const finalResponse = await ai.generate({
