@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { getAiResponse } from './actions';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
-import { useUser } from 'react-firebase-hooks/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 
@@ -32,7 +32,7 @@ export function ChatInterface({ className, chatIdProp }: ChatInterfaceProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const auth = useAuth();
-  const [user] = useUser(auth);
+  const [user] = useAuthState(auth);
   const firestore = useFirestore();
 
 

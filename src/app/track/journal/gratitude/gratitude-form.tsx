@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/firebase';
-import { useUser } from 'react-firebase-hooks/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useFirestore } from '@/firebase/provider';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
@@ -32,7 +32,7 @@ type GratitudeFormValues = z.infer<typeof formSchema>;
 
 export function GratitudeForm() {
   const auth = useAuth();
-  const [user] = useUser(auth);
+  const [user] = useAuthState(auth);
   const firestore = useFirestore();
   const { toast } = useToast();
   const router = useRouter();

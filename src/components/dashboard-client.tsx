@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useAuth } from '@/firebase';
-import { useUser } from 'react-firebase-hooks/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, query, orderBy, limit, where, Timestamp } from 'firebase/firestore';
 import { useFirestore } from '@/firebase/provider';
@@ -35,7 +35,7 @@ export function DashboardClient() {
   const [journalAnalysis, setJournalAnalysis] = useState<AnalyzeJournalEntryOutput | null>(null);
   const { toast } = useToast();
   const auth = useAuth();
-  const [user] = useUser(auth);
+  const [user] = useAuthState(auth);
   const firestore = useFirestore();
 
   const moodLogQuery = useMemo(() => {
