@@ -15,10 +15,14 @@ import {
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
-import { Loader, BarChart, CheckCircle2 } from 'lucide-react';
+import { Loader, BarChart } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { socialSkillsAssessment, type SocialSkillAssessmentItem } from '@/lib/social-skills-assessment-data';
+import { socialSkillsAssessment } from '@/lib/social-skills-assessment-data';
 import { Progress } from '@/components/ui/progress';
+import { useAuth, useFirestore } from '@/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 
 const createFormSchema = () => {
     const schemaObject: { [key: string]: any } = {};
@@ -42,12 +46,17 @@ export function SocialSkillsAssessmentForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [results, setResults] = useState<DomainScores | null>(null);
+  const auth = useAuth();
+  const [user] = useAuthState(auth);
+  const firestore = useFirestore();
+  const router = useRouter();
+
 
   const form = useForm<AssessmentFormValues>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(data: AssessmentFormValues) {
+  async function onSubmit(data: AssessmentFormValues) {
     setIsSubmitting(true);
     
     const domainScores: DomainScores = {
@@ -60,7 +69,7 @@ export function SocialSkillsAssessmentForm() {
 
     socialSkillsAssessment.forEach((item, index) => {
         const value = parseInt(data[`q${index}` as keyof AssessmentFormValues]);
-        const maxItemScore = item.scale[0].value; // Assumes highest value is first
+        const maxItemScore = item.scale.reduce((max, op) => op.value > max ? op.value : max, 0);
         
         domainScores[item.domain].maxScore += maxItemScore;
 
@@ -71,14 +80,28 @@ export function SocialSkillsAssessmentForm() {
         }
     });
 
-    // NOTE: In a real app, we would save this to Firestore.
-    // For now, we simulate a delay and show results.
-    setTimeout(() => {
-        setResults(domainScores);
-        setIsSubmitting(false);
-        toast({ title: 'Assessment Complete', description: 'Your results are shown below.' });
-        window.scrollTo(0, document.body.scrollHeight);
-    }, 1000);
+    const finalScores = Object.fromEntries(
+        Object.entries(domainScores).map(([domain, {score, maxScore}]) => [domain, score])
+    );
+
+    if (user && firestore) {
+        try {
+            await addDoc(collection(firestore, 'users', user.uid, 'socialSkillAssessments'), {
+                userId: user.uid,
+                timestamp: serverTimestamp(),
+                scores: finalScores,
+                answers: data,
+            });
+            toast({ title: 'Assessment Complete', description: 'Your results are saved and shown below.' });
+        } catch (e) {
+            console.error("Error saving assessment:", e);
+            toast({ variant: 'destructive', title: 'Save Failed', description: 'Could not save your assessment results.' });
+        }
+    }
+
+    setResults(domainScores);
+    setIsSubmitting(false);
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   if (results) {
