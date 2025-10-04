@@ -15,19 +15,25 @@ const IdentifyMoodTriggersInputSchema = z.object({
   moodLogs: z
     .string()
     .describe(
-      'A string containing the user\'s mood logs, including date, time, mood, and context (location, activity, people).' 
+      'A JSON string of mood logs, including situation, emotion, and intensity.'
     ),
 });
-export type IdentifyMoodTriggersInput = z.infer<typeof IdentifyMoodTriggersInputSchema>;
+export type IdentifyMoodTriggersInput = z.infer<
+  typeof IdentifyMoodTriggersInputSchema
+>;
+
+const TriggerSchema = z.object({
+    trigger: z.string().describe("The identified trigger (e.g., 'Lack of Sleep', 'Conflict at Work')."),
+    relatedEmotions: z.array(z.string()).describe("A list of emotions commonly associated with this trigger (e.g., ['Sadness', 'Anxiety'])."),
+    pattern: z.string().describe("A brief explanation of the pattern observed (e.g., 'You tend to feel more anxious on days following poor sleep.')."),
+});
 
 const IdentifyMoodTriggersOutputSchema = z.object({
-  identifiedTriggers: z
-    .string()
-    .describe(
-      'A summary of potential triggers identified in the mood logs, including specific contexts or patterns associated with negative moods.'
-    ),
+  triggers: z.array(TriggerSchema).describe('A list of potential mood triggers identified from the logs.'),
 });
-export type IdentifyMoodTriggersOutput = z.infer<typeof IdentifyMoodTriggersOutputSchema>;
+export type IdentifyMoodTriggersOutput = z.infer<
+  typeof IdentifyMoodTriggersOutputSchema
+>;
 
 export async function identifyMoodTriggers(
   input: IdentifyMoodTriggersInput
@@ -39,15 +45,12 @@ const prompt = ai.definePrompt({
   name: 'identifyMoodTriggersPrompt',
   input: {schema: IdentifyMoodTriggersInputSchema},
   output: {schema: IdentifyMoodTriggersOutputSchema},
-  prompt: `You are an AI assistant specialized in analyzing mood logs to identify potential triggers for negative emotions.
+  prompt: `You are an expert mental health data analyst. Analyze the following mood logs to identify recurring patterns and potential triggers for negative emotions.
 
-  Given the following mood logs, analyze the data and identify recurring patterns, contexts, or events that seem to be associated with negative mood states. Provide a concise summary of these potential triggers.
+Mood Logs:
+{{{moodLogs}}}
 
-  Mood Logs:
-  {{moodLogs}}
-
-  Identify potential triggers:
-  `, // Ensure a newline character at the end of the prompt
+Based on this data, identify the top 2-3 triggers. For each trigger, describe the pattern and the emotions it's linked to. Present your findings in a structured format.`,
 });
 
 const identifyMoodTriggersFlow = ai.defineFlow(
