@@ -15,11 +15,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { collection, query, orderBy, where, Timestamp, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, orderBy, where, Timestamp, addDoc, serverTimestamp, limit } from 'firebase/firestore';
 import { useFirestore, useMemoFirebase } from '@/firebase/provider';
-import type { MoodLog } from '@/lib/types';
+import type { MoodLog, JournalEntry } from '@/lib/types';
 import { subDays, format } from 'date-fns';
 import { useMoodTriggers } from '@/hooks/use-mood-triggers';
+import { ScrollArea } from './ui/scroll-area';
 
 const moodIcons = [
   { mood: 'Happy', icon: '😊' },
@@ -57,8 +58,19 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
         orderBy('timestamp', 'desc')
     );
   }, [user, firestore]);
+  
+  const journalQuery = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return query(
+      collection(firestore, 'users', user.uid, 'journalEntries'),
+      orderBy('timestamp', 'desc'),
+      limit(10)
+    );
+  }, [user, firestore]);
+
 
   const [moodLogsSnapshot, loadingMoodLogs] = useCollection(moodLogQuery);
+  const [journalEntriesSnapshot, loadingJournalEntries] = useCollection(journalQuery);
 
   const moodChartData = useMemo(() => {
     const last7Days = Array.from({ length: 7 }).map((_, i) => {
@@ -361,7 +373,51 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
           </Button>
         </CardFooter>
       </Card>
-
+      
+      <Card className="col-span-1 md:col-span-2">
+        <CardHeader>
+            <CardTitle className="font-headline">Recent Journal Entries</CardTitle>
+            <CardDescription>Review and reflect on your past entries.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            {loadingJournalEntries && <Loader className="mx-auto animate-spin" />}
+            {!loadingJournalEntries && journalEntriesSnapshot?.empty && (
+              <p className="text-sm text-muted-foreground">You have no journal entries yet.</p>
+            )}
+            <ScrollArea className="h-72">
+                <div className="space-y-4">
+                    {journalEntriesSnapshot?.docs.map(doc => {
+                        const entry = { id: doc.id, ...doc.data() } as JournalEntry;
+                        return (
+                            <button
+                                key={entry.id}
+                                className="block w-full text-left p-3 rounded-md border hover:bg-muted/50"
+                                onClick={() => {
+                                    setJournalEntry(entry.content);
+                                    setJournalAnalysis(entry.analysis ? {
+                                        analysis: entry.analysis,
+                                        keyThemes: entry.keyThemes || [],
+                                        suggestedTool: entry.suggestedToolName ? {
+                                            name: entry.suggestedToolName,
+                                            href: entry.suggestedToolHref || '#',
+                                            reason: '',
+                                        } : undefined,
+                                    } : null);
+                                }}
+                            >
+                                <p className="text-sm font-medium truncate">{entry.content}</p>
+                                <p className="text-xs text-muted-foreground">
+                                    {entry.timestamp && format(entry.timestamp.toDate(), 'MMM d, yyyy - h:mm a')}
+                                </p>
+                            </button>
+                        );
+                    })}
+                </div>
+            </ScrollArea>
+        </CardContent>
+      </Card>
     </div>
   );
 }
+
+    
