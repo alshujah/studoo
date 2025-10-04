@@ -43,15 +43,21 @@ export function VoiceJournalTool() {
 
   const startRecording = async () => {
     if (!permission || !stream) {
+      // Re-request permission if it wasn't granted or stream is not set
       await getMicrophonePermission();
-      // If permission is granted, the effect will re-run and we can start next time.
-      // For now, we return, as the stream might not be ready immediately.
+      // Need to check for the stream again after await
       if (stream) {
-        // Fall through to start if stream got set synchronously, though unlikely.
+          // Fall through to start recording logic
       } else {
+          toast({ title: 'Microphone not ready', description: 'Please grant permission and try again.' });
+          return;
+      }
+    }
+    
+    // This check is needed because `getMicrophonePermission` is async
+    if (!stream) {
         toast({ title: 'Microphone not ready', description: 'Please grant permission and try again.' });
         return;
-      }
     }
 
     setRecordingStatus('recording');
@@ -100,14 +106,6 @@ export function VoiceJournalTool() {
     });
   };
   
-  React.useEffect(() => {
-    if(permission && stream && recordingStatus === 'inactive') {
-        // If permission was just granted and we're not recording, try starting.
-        // This is a bit complex, so we'll just enable the button for now.
-    }
-  }, [permission, stream, recordingStatus]);
-
-
   return (
     <div className="flex flex-col items-center gap-6 p-4 border rounded-lg bg-muted/20">
       <div className="flex items-center justify-center gap-4">
