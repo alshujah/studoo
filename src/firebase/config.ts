@@ -6,6 +6,7 @@
 export const firebaseConfig = {
   apiKey: "AIzaSyAmL1gFHLThLJa6gyga6LmfBVhb6FiRHuU",
   authDomain: "trauma-phase-one-toolkit.firebaseapp.com",
+  databaseURL: "https://trauma-phase-one-toolkit-default-rtdb.firebaseio.com",
   projectId: "trauma-phase-one-toolkit",
   storageBucket: "trauma-phase-one-toolkit.appspot.com",
   messagingSenderId: "1009867477649",
