@@ -175,6 +175,69 @@
             }
         },
         "required": ["userId", "score", "answers", "timestamp"]
+    },
+    "iptSession": {
+      "title": "IPT Session",
+      "description": "A log of an Interpersonal Therapy exercise.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    },
+    "schema": {
+      "title": "Schema",
+      "description": "A user's identified schema.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    },
+    "sfbtGoal": {
+      "title": "SFBT Goal",
+      "description": "A user's goal in Solution-Focused Brief Therapy.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    },
+    "narrativeStory": {
+      "title": "Narrative Story",
+      "description": "A user's re-authored story in Narrative Therapy.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "timestamp"]
+    },
+    "socialSkillAssessment": {
+      "title": "Social Skill Assessment",
+      "description": "A user's score on the social skills assessment.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "scores": {
+          "type": "object",
+          "properties": {
+            "Listening": { "type": "number" },
+            "Small Talk": { "type": "number" },
+            "Empathy": { "type": "number" },
+            "Nonverbal": { "type": "number" },
+            "Assertiveness": { "type": "number" }
+          }
+        },
+        "answers": {
+            "type": "object"
+        }
+      },
+      "required": ["userId", "timestamp", "scores", "answers"]
     }
   },
   "auth": {
@@ -222,6 +285,26 @@
             "$ref": "#/entities/phq9Score"
         },
         "description": "Stores a user's PHQ-9 assessment scores."
+    },
+    "/users/{userId}/iptSessions/{iptSessionId}": {
+      "schema": { "$ref": "#/entities/iptSession" },
+      "description": "Stores a user's Interpersonal Therapy sessions."
+    },
+    "/users/{userId}/schemas/{schemaId}": {
+      "schema": { "$ref": "#/entities/schema" },
+      "description": "Stores a user's identified schemas."
+    },
+    "/users/{userId}/sfbtGoals/{sfbtGoalId}": {
+      "schema": { "$ref": "#/entities/sfbtGoal" },
+      "description": "Stores a user's Solution-Focused Brief Therapy goals."
+    },
+    "/users/{userId}/narrativeStories/{narrativeStoryId}": {
+      "schema": { "$ref": "#/entities/narrativeStory" },
+      "description": "Stores a user's re-authored stories from Narrative Therapy."
+    },
+    "/users/{userId}/socialSkillAssessments/{assessmentId}": {
+        "schema": { "$ref": "#/entities/socialSkillAssessment" },
+        "description": "Stores a user's social skill assessment results."
     }
   }
 }
