@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind, Palette, PersonStanding, Drama } from 'lucide-react';
+import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind, Palette, PersonStanding, Drama, ShieldAlert } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -11,6 +11,7 @@ const toolCategories = [
     { href: "/tools/cbt", title: "CBT", description: "Cognitive Behavioral Therapy tools.", icon: Brain },
     { href: "/tools/dbt", title: "DBT", description: "Dialectical Behavior Therapy skills.", icon: Shield },
     { href: "/tools/act", title: "ACT", description: "Acceptance & Commitment Therapy.", icon: Heart },
+    { href: "/tools/ptsd", title: "PTSD Support", description: "Specialized tools for trauma.", icon: ShieldAlert },
     { href: "/tools/mindfulness", title: "Mindfulness", description: "Guided meditations and exercises.", icon: Sprout },
     { href: "/tools/positive-psychology", title: "Positive Psychology", description: "Cultivate happiness and resilience.", icon: Smile },
     { href: "/tools/sleep", title: "Sleep Management", description: "Improve your sleep hygiene.", icon: Moon },
