@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind, Palette, PersonStanding, Drama, ShieldAlert } from 'lucide-react';
+import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind, Palette, PersonStanding, Drama, ShieldAlert, Waves } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -9,17 +9,17 @@ export const metadata: Metadata = {
 
 const toolCategories = [
     { href: "/tools/cbt", title: "CBT", description: "Cognitive Behavioral Therapy tools.", icon: Brain },
-    { href: "/tools/dbt", title: "DBT", description: "Dialectical Behavior Therapy skills.", icon: Shield },
+    { href: "/tools/dbt", title: "DBT", description: "Dialectical Behavior Therapy skills.", icon: Waves },
     { href: "/tools/act", title: "ACT", description: "Acceptance & Commitment Therapy.", icon: Heart },
     { href: "/tools/ptsd", title: "PTSD Support", description: "Specialized tools for trauma.", icon: ShieldAlert },
     { href: "/tools/mindfulness", title: "Mindfulness", description: "Guided meditations and exercises.", icon: Sprout },
     { href: "/tools/positive-psychology", title: "Positive Psychology", description: "Cultivate happiness and resilience.", icon: Smile },
-    { href: "/tools/sleep", title: "Sleep Management", description: "Improve your sleep hygiene.", icon: Moon },
-    { href: "/tools/crisis-management", title: "Crisis Management", description: "Immediate support for crisis situations.", icon: HelpCircle },
-    { href: "/tools/relaxation", title: "Relaxation Techniques", description: "Calm your mind and body.", icon: Wind },
     { href: "/tools/somatic-therapy", title: "Somatic Therapy", description: "Body-based trauma release.", icon: PersonStanding },
+    { href: "/tools/relaxation", title: "Relaxation", description: "Calm your mind and body.", icon: Wind },
     { href: "/tools/art-therapy", title: "Expressive Arts", description: "Emotional expression through creativity.", icon: Palette },
     { href: "/tools/psychodynamic", title: "Psychodynamic", description: "Explore unconscious patterns.", icon: Drama },
+    { href: "/tools/sleep", title: "Sleep Management", description: "Improve your sleep hygiene.", icon: Moon },
+    { href: "/tools/crisis-management", title: "Crisis Management", description: "Immediate support for crisis situations.", icon: Shield },
 ];
 
 export default function ToolsPage() {
