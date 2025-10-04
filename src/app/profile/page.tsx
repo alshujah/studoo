@@ -1,96 +1,155 @@
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Profile | Rejoyn',
-};
+'use client';
 
-const profileModules = [
-    { title: "Goal Setting Tools", description: "Define and track your wellness goals." },
-    { title: "Vision Board Creation", description: "Visualize your ideal future." },
-    { title: "Habit Building Support", description: "Form positive, lasting habits." },
-    { title: "Achievement Badges", description: "Celebrate your progress and milestones." },
-    { title: "Streak Tracking", description: "Maintain momentum with daily streaks." },
-    { title: "Personal Growth Metrics", description: "Track your journey over time." },
-    { title: "Coping Skills Library", description: "Your personalized coping toolbox." },
-    { title: "Progress Reports", description: "Exportable summaries for your therapist." },
-    { title: "Success Visualization", description: "Mentally rehearse achieving your goals." },
-    { title: "Before & After Comparisons", description: "See how far you've come." },
-    { title: "Avatar Customization", description: "Personalize your in-app identity." },
-    { title: "Points/Rewards System", description: "Earn points for completing activities." },
-    { title: "Level Progression", description: "Level up as you build skills." },
-    { title: "Challenges/Quests", description: "Tangible daily and weekly tasks." },
-    { title: "Motivational Quotes", description: "Daily inspiration to keep you going." },
-    { title: "Reward Scheduling", description: "Plan rewards for achieving your goals." },
-    { title: "Milestone Celebrations", description: "Acknowledge significant achievements." },
-    { title: "Wellness Score Calculation", description: "Get a score of your overall well-being." },
-    { title: "Push Notifications", description: "Customizable reminders and alerts." },
-    { title: "Personalized Themes", description: "Customize the look and feel of the app." },
-    { title: "Community Forum", description: "Connect with others in a safe space." },
-    { title: "Peer Support Groups", description: "Join groups based on shared experiences." },
-    { title: "Emergency Contacts", description: "Quick access to your support network." },
-    { title: "Privacy Settings", description: "Control your data and privacy." },
-    { title: "Data Deletion Options", description: "Request deletion of your personal data." },
-    { title: "Password Protection", description: "Secure your account with a password." },
-    { title: "Biometric Login", description: "Use fingerprint or face ID to log in." },
-    { title: "Two-Factor Authentication", description: "Add an extra layer of security." },
-    { title: "Data Export Options", description: "Export your data for your own records." },
-    { title: "Third-Party Sharing Controls", description: "Manage how your data is shared." },
-    { title: "Loved One/Supporter Portal", description: "Share progress with trusted contacts." },
-    { title: "Leaderboards", description: "Optional leaderboards for motivation." },
-    { title: "Virtual Rewards/Unlockables", description: "Unlock new content and features." },
-    { title: "Experience Points (XP)", description: "Earn XP for using the app." },
-    { title: "Daily/Weekly Missions", description: "Complete missions for rewards." },
-    { title: "Collectibles", description: "Collect items as you progress." },
-    { title: "Mini-Games", description: "Therapeutic or relaxation-focused games." },
-    { title: "Gentle Nudges", description: "Autonomy-preserving reminders." },
-    { title: "Location-Based Reminders", description: "Reminders based on your location." },
-    { title: "Mood Check-in Prompts", description: "Prompts to check in with your mood." },
-    { title: "Cloud Backup", description: "Keep your data safe and synced." },
-    { title: "Data Portability", description: "Take your data with you." },
-    { title: "Account Recovery Options", description: "Recover your account if you lose access." },
-    { title: "Multi-User Support", description: "Support for family accounts." },
-    { title: "Data Retention Policies", description: "Clear policies on how your data is stored." },
-    { title: "Audit Logs", description: "Track access to your data." },
-    { title: "Simple, Intuitive Navigation", description: "Easy to find what you need." },
-    { title: "Clean, Minimalist Design", description: "A calming and focused interface." },
-    { title: "Accessibility Features", description: "Support for screen readers and more." },
-    { title: "Dark Mode Option", description: "A dark theme for your comfort." },
-    { title: "Customizable Color Schemes", description: "Make the app your own." },
-    { title: "Multi-Language Support", description: "Use the app in your preferred language." },
-    { title: "Voice Input/Output", description: "Interact with the app using your voice." },
-    { title: "Offline Functionality", description: "Access key features without an internet connection." },
-    { title: "Low Data Mode", description: "Reduce data usage." },
-    { title: "Quick Access Home Button", description: "Navigate with ease." },
-    { title: "Search Functionality", description: "Quickly find what you're looking for." },
-    { title: "Favorites/Bookmarks", description: "Save your favorite tools and articles." },
-    { title: "Onboarding Tutorial", description: "Learn how to use the app." },
-    { title: "Help/Support Section", description: "Get help when you need it." },
-    { title: "FAQ Database", description: "Find answers to common questions." },
-    { title: "Personalized Homepage", description: "Your own customized dashboard." },
-    { title: "Quick Actions/Shortcuts", description: "Access your most-used features quickly." },
-    { title: "Widget Support", description: "Add app widgets to your home screen." },
-    { title: "Gesture Controls", description: "Use gestures to navigate the app." },
-    { title: "Loading Speed Optimization", description: "A fast and responsive experience." },
-    { title: "Battery Efficient Design", description: "Use the app without draining your battery." },
-    { title: "Cross-Device Synchronization", description: "Your data, synced across all your devices." }
-];
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAuth } from '@/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Skeleton } from '@/components/ui/skeleton';
+import { LogOut } from 'lucide-react';
 
 export default function ProfilePage() {
+  const auth = useAuth();
+  const [user, loading] = useAuthState(auth);
+
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Profile & Settings</h1>
+    <main className="flex flex-1 flex-col">
+      <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
+        <h1 className="font-headline text-xl font-semibold">
+          Profile & Settings
+        </h1>
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {profileModules.map((module) => (
-            <Card key={module.title}>
-                <CardHeader>
-                    <CardTitle>{module.title}</CardTitle>
-                    <CardDescription>{module.description}</CardDescription>
-                </CardHeader>
-            </Card>
-        ))}
+      <div className="flex-1 space-y-6 p-4 md:p-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center gap-4">
+            {loading ? (
+              <Skeleton className="h-16 w-16 rounded-full" />
+            ) : (
+              <Avatar className="h-16 w-16">
+                {user?.photoURL && (
+                  <AvatarImage src={user.photoURL} alt="User avatar" />
+                )}
+                <AvatarFallback className="text-xl">
+                  {user?.displayName?.charAt(0) || 'U'}
+                </AvatarFallback>
+              </Avatar>
+            )}
+            <div className="grid gap-1">
+              <CardTitle className="font-headline text-2xl">
+                {loading ? (
+                  <Skeleton className="h-7 w-40" />
+                ) : (
+                  user?.displayName || 'Welcome'
+                )}
+              </CardTitle>
+              <CardDescription>
+                {loading ? (
+                  <Skeleton className="mt-1 h-4 w-52" />
+                ) : (
+                  user?.email || 'Your personal space to grow'
+                )}
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Button
+              variant="outline"
+              onClick={() => auth.signOut()}
+              disabled={loading}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle>My Goals</CardTitle>
+              <CardDescription>
+                Define and track what you want to achieve.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" disabled>
+                Set My Goals
+              </Button>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Habit Tracker</CardTitle>
+              <CardDescription>
+                Build and maintain positive daily habits.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" disabled>
+                Manage Habits
+              </Button>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>My Coping Skills</CardTitle>
+              <CardDescription>
+                Access your personalized toolbox of coping strategies.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" disabled>
+                View My Skills
+              </Button>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Progress Reports</CardTitle>
+              <CardDescription>
+                Export summaries for yourself or a therapist.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" disabled>
+                Export Data
+              </Button>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Account Security</CardTitle>
+              <CardDescription>
+                Manage your login and security settings.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" disabled>
+                Update Security
+              </Button>
+            </CardContent>
+          </Card>
+           <Card>
+            <CardHeader>
+              <CardTitle>Privacy</CardTitle>
+              <CardDescription>
+                Control how your data is used and stored.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" disabled>
+                Manage Privacy
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </main>
   );
