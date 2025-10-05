@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -13,13 +14,13 @@ const crisisTools = [
     { href: "/tools/crisis-management/self-harm-alternatives", title: "Self-Harm Alternatives", description: "Find alternative coping strategies." },
     { href: "/tools/crisis-management/panic-attack-assistance", title: "Panic Attack Assistance", description: "Guided help during a panic attack." },
     { href: "/tools/crisis-management/crisis-hotlines", title: "SOS/Emergency Button", description: "Alert your emergency contacts." },
-    { href: "#", title: "Warning Sign Identification", description: "Recognize your personal crisis warning signs." },
-    { href: "#", title: "Suicide Risk Assessment", description: "Access resources for suicide risk management." },
-    { href: "#", title: "Crisis Text Line Integration", description: "Connect with a crisis counselor via text." },
-    { href: "#", title: "Therapist/Emergency Contact Alerts", description: "Notify your support system in a crisis." },
-    { href: "#", title: "Flashback Coping Strategies", description: "Tools to manage flashbacks." },
-    { href: "#", title: "Trigger Management Plans", description: "Develop plans to manage triggers." },
-    { href: "#", title: "Emergency Coping Statements", description: "Reminders of coping strategies." }
+    { href: "/tools/crisis-management/safety-plan", title: "Warning Sign Identification", description: "Recognize your personal crisis warning signs." },
+    { href: "/tools/crisis-management/crisis-hotlines", title: "Suicide Risk Assessment", description: "Access resources for suicide risk management." },
+    { href: "/tools/crisis-management/crisis-hotlines", title: "Crisis Text Line Integration", description: "Connect with a crisis counselor via text." },
+    { href: "/tools/crisis-management/safety-plan", title: "Therapist/Emergency Contact Alerts", description: "Notify your support system in a crisis." },
+    { href: "/tools/ptsd/grounding", title: "Flashback Coping Strategies", description: "Tools to manage flashbacks." },
+    { href: "/tools/ptsd/triggers", title: "Trigger Management Plans", description: "Develop plans to manage triggers." },
+    { href: "/tools/crisis-management/safety-plan", title: "Emergency Coping Statements", description: "Reminders of coping strategies." }
 ];
 
 export default function CrisisManagementPage() {
