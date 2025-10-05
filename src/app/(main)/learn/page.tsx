@@ -1,8 +1,10 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import { BookOpen, Brain, ShieldCheck, Users, Leaf, BarChart, Group } from 'lucide-react';
 import React from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Learn | Rejoyn',
@@ -26,7 +28,7 @@ const categories = [
         title: "Therapeutic Approaches",
         icon: BookOpen,
         modules: [
-            { title: "Treatment Options Overview", description: "Learn about different therapeutic approaches." },
+            { title: "Treatment Options Overview", description: "Learn about different therapeutic approaches.", href: "/learn/treatment-options" },
             { title: "Therapy Preparation Guides", description: "Get the most out of your therapy." },
             { title: "Evidence-Based Practice Explanations", description: "Understand what works and why." },
             { title: "Expert Interviews", description: "Hear from leading mental health experts." },
@@ -105,14 +107,26 @@ export default function LearnPage() {
                     <h2 className="font-headline text-2xl">{category.title}</h2>
                 </div>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {category.modules.map((module) => (
-                        <Card key={module.title}>
-                            <CardHeader>
-                                <CardTitle>{module.title}</CardTitle>
-                                <CardDescription>{module.description}</CardDescription>
-                            </CardHeader>
+                    {category.modules.map((module) => {
+                      const card = (
+                        <Card className="h-full">
+                          <CardHeader>
+                            <CardTitle>{module.title}</CardTitle>
+                            <CardDescription>{module.description}</CardDescription>
+                          </CardHeader>
                         </Card>
-                    ))}
+                      );
+
+                      if ((module as any).href) {
+                        return (
+                          <Link href={(module as any).href} key={module.title} className="block hover:bg-muted/50 rounded-lg">
+                            {card}
+                          </Link>
+                        );
+                      }
+
+                      return <div key={module.title}>{card}</div>;
+                    })}
                 </div>
             </div>
         ))}

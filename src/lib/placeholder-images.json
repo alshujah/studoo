@@ -119,6 +119,12 @@
       "description": "An open door leading to a bright, hopeful space.",
       "imageUrl": "https://images.unsplash.com/photo-1535556572967-276cd0ad5cba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvcGVuJTIwZG9vcnxlbnwwfHx8fDE3NTk2MTkzNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "open door"
+    },
+    {
+      "id": "therapy-session",
+      "description": "A calm and professional therapy session.",
+      "imageUrl": "https://images.unsplash.com/photo-1549490121-39e1a49f5383?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0aGVyYXB5JTIwc2Vzc2lvbnxlbnwwfHx8fDE3NTk2MjI0ODB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "therapy session"
     }
   ]
 }
