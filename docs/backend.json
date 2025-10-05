@@ -406,6 +406,20 @@
         "sideEffects": { "type": "string" }
       },
       "required": ["userId", "timestamp", "medication", "dosage", "taken"]
+    },
+    "substanceUseLog": {
+      "title": "Substance Use Log",
+      "description": "A record of a user's substance use.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "substance": { "type": "string", "description": "e.g., Alcohol, Caffeine, Nicotine" },
+        "amount": { "type": "string", "description": "e.g., 1 beer, 2 cups, 1 cigarette" },
+        "urgeIntensity": { "type": "number", "description": "A rating from 0 to 100 for urge intensity." },
+        "notes": { "type": "string" }
+      },
+      "required": ["userId", "timestamp", "substance", "amount"]
     }
   },
   "auth": {
@@ -513,6 +527,10 @@
     "/users/{userId}/medicationLogs/{medicationLogId}": {
       "schema": { "$ref": "#/entities/medicationLog" },
       "description": "Stores a user's medication logs."
+    },
+    "/users/{userId}/substanceUseLogs/{logId}": {
+      "schema": { "$ref": "#/entities/substanceUseLog" },
+      "description": "Stores a user's substance use logs."
     }
   }
 }

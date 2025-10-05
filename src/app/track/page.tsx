@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
-import { Activity, BedDouble, Pill, Siren } from 'lucide-react';
+import { Activity, BedDouble, FlaskConical, Pill, Siren } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Track | Rejoyn',
@@ -19,7 +19,7 @@ const trackingModules = [
     { href: "/track/activity-log", title: "Activity Logging", description: "Track daily activities and their impact.", icon: Activity },
     { href: "/track/medication-log", title: "Medication Adherence", description: "Track your medication intake.", icon: Pill },
     { href: "/track/activity-log", title: "Social Interaction Tracking", description: "Log your social engagements." },
-    { title: "Substance Use Tracking", description: "Monitor alcohol, caffeine, etc." },
+    { href: "/track/substance-use", title: "Substance Use Tracking", description: "Monitor alcohol, caffeine, etc.", icon: FlaskConical },
     { href: "/track/journal/worry-log", title: "Worry/Rumination Logging", description: "Externalize and manage worries." },
     { href: "/track/journal/freeform", title: "Success/Achievement Log", description: "Record your accomplishments." },
     { href: "/track/activity-log", title: "Energy Level Monitoring", description: "Track your energy levels throughout the day." },

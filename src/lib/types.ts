@@ -139,3 +139,13 @@ export interface MedicationLog {
   taken: boolean;
   sideEffects: string;
 }
+
+export interface SubstanceUseLog {
+    id: string;
+    userId: string;
+    timestamp: Timestamp;
+    substance: string;
+    amount: string;
+    urgeIntensity: number;
+    notes?: string;
+}
