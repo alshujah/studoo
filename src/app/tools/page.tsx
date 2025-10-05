@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Brain, Sprout, Shield, Heart, Smile, Moon, HelpCircle, Wind, Palette, PersonStanding, Drama, ShieldAlert, Waves, Users, Puzzle, Target, BookText, Paintbrush } from 'lucide-react';
 import type { Metadata } from 'next';

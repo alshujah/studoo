@@ -96,9 +96,9 @@ export function DanceTherapyTool() {
                 <CardContent className="prose prose-sm max-w-none text-card-foreground">
                     <p>Find a comfortable stance. Take a few deep breaths to center yourself.</p>
                     <ol>
-                        <li><strong>Connect:</strong> Bring to mind a recent feeling. It could be joy, frustration, or anything else. Don&apos;t judge it, just acknowledge it.</li>
+                        <li><strong>Connect:</strong> Bring to mind a recent feeling. It could be joy, frustration, or anything else. Don\'t judge it, just acknowledge it.</li>
                         <li><strong>Locate:</strong> Where do you feel this emotion in your body? Is it a tightness in your chest? A warmth in your belly? A buzzing in your hands?</li>
-                        <li><strong>Movement:</strong> Let that part of your body lead a small movement. If it&apos;s tightness in your chest, maybe your shoulders curl inward. If it&apos;s warmth, maybe you gently sway.</li>
+                        <li><strong>Movement:</strong> Let that part of your body lead a small movement. If it\'s tightness in your chest, maybe your shoulders curl inward. If it\'s warmth, maybe you gently sway.</li>
                         <li><strong>Amplify:</strong> Slowly, allow that small movement to grow. Let it expand through your arms, your legs, your spine. What does this emotion look like as a dance?</li>
                         <li><strong>Explore:</strong> Move with this feeling for a few minutes. There is no right or wrong way. The goal is expression, not performance.</li>
                         <li><strong>Release:</strong> When you feel ready, slowly bring your movements to a close. Shake out your limbs, take another deep breath, and notice how you feel.</li>
