@@ -22,7 +22,7 @@ export default function SomaticTherapyPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {somaticTools.map((tool) => (
-            <Link href={tool.href || '#'} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+            <Link href={tool.href} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
               <Card className="h-full">
                   <CardHeader>
                       <CardTitle>{tool.title}</CardTitle>

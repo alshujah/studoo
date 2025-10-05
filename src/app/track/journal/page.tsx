@@ -36,7 +36,7 @@ export default function JournalPage() {
       </div>
        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {journalModules.map((module) => (
-            <Link href={module.href || "#"} key={module.title} className="block hover:bg-muted/50 rounded-lg">
+            <Link href={module.href} key={module.title} className="block hover:bg-muted/50 rounded-lg">
                 <Card className="h-full">
                     <CardHeader>
                         <CardTitle>{module.title}</CardTitle>

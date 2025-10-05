@@ -28,7 +28,7 @@ const trackingModules = [
     { href: "/track/activity-log", title: "Eating Habits Logging", description: "Monitor your nutritional intake." },
     { href: "/track/activity-log", title: "Exercise Log", description: "Track your physical activity." },
     { href: "/track/activity-log", title: "Hydration Tracking", description: "Monitor your daily water intake." },
-    { href: "/track/activity-log", title: "Productivity Log", description: "Monitor your focus and productivity." },
+    { href: "/track/activity-log", title: "Productivity Log", description: "Log your daily productivity." },
     { href: "/track/phq-9", title: "Symptom Severity Scoring", description: "Score the severity of your symptoms." },
     { href: "/track/mood", title: "Anger Thermometer", description: "Rate and track anger levels." },
     { href: "/track/mood", title: "Anxiety Thermometer", description: "Rate and track anxiety levels." },
@@ -42,7 +42,6 @@ const trackingModules = [
     { href: "/track/mood", title: "Multi-dimensional Mood Tracking", description: "Track various facets of your mood." },
     { href: "/track/activity-log", title: "Habit Tracking", description: "Monitor and build positive habits." },
     { href: "/tools/mindfulness", title: "Mindfulness Minutes", description: "Track time spent in mindfulness." },
-    { href: "/track/activity-log", title: "Productivity Log", description: "Log your daily productivity." },
     { href: "/track/activity-log", title: "Relationship Interactions", description: "Log interactions and their impact." },
     { href: "/track/activity-log", title: "Burnout Symptom Tracking", description: "Monitor for signs of burnout." },
     { href: "/track/journal/freeform", title: "Self-Esteem Fluctuations", description: "Track changes in your self-esteem." },
@@ -64,7 +63,7 @@ export default function TrackPage() {
       </div>
        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {trackingModules.map((module) => (
-            <Link href={module.href || "#"} key={module.title} className="block hover:bg-muted/50 rounded-lg">
+            <Link href={module.href} key={module.title} className="block hover:bg-muted/50 rounded-lg">
               <Card className="h-full">
                   <CardHeader>
                       <CardTitle>{module.title}</CardTitle>
