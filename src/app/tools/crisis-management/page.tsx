@@ -7,12 +7,12 @@ export const metadata: Metadata = {
 };
 
 const crisisTools = [
-    { href: "#", title: "Crisis Support Hotline Links", description: "Direct connections to crisis services." },
-    { href: "#", title: "Emergency Contact Quick Access", description: "Quickly contact your support system." },
+    { href: "/tools/crisis-management/crisis-hotlines", title: "Crisis Support Hotline Links", description: "Direct connections to crisis services." },
+    { href: "/tools/crisis-management/safety-plan", title: "Emergency Contact Quick Access", description: "Quickly contact your support system." },
     { href: "/tools/crisis-management/safety-plan", title: "Safety Planning Tools", description: "Create personalized crisis plans." },
-    { href: "#", title: "Self-Harm Alternatives", description: "Find alternative coping strategies." },
-    { href: "#", title: "Panic Attack Assistance", description: "Guided help during a panic attack." },
-    { href: "#", title: "SOS/Emergency Button", description: "Alert your emergency contacts." },
+    { href: "/tools/crisis-management/self-harm-alternatives", title: "Self-Harm Alternatives", description: "Find alternative coping strategies." },
+    { href: "/tools/crisis-management/panic-attack-assistance", title: "Panic Attack Assistance", description: "Guided help during a panic attack." },
+    { href: "/tools/crisis-management/crisis-hotlines", title: "SOS/Emergency Button", description: "Alert your emergency contacts." },
     { href: "#", title: "Warning Sign Identification", description: "Recognize your personal crisis warning signs." },
     { href: "#", title: "Suicide Risk Assessment", description: "Access resources for suicide risk management." },
     { href: "#", title: "Crisis Text Line Integration", description: "Connect with a crisis counselor via text." },
