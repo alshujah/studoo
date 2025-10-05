@@ -1,4 +1,5 @@
 
+
 {
   "entities": {
     "userProfile": {
@@ -347,6 +348,19 @@
         "timestamp": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "domains", "timestamp"]
+    },
+     "behavioralActivationActivity": {
+      "title": "Behavioral Activation Activity",
+      "description": "A scheduled activity for Behavioral Activation.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "scheduledDate": { "type": "string", "format": "date-time" },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "scheduledDate", "completed", "createdAt"]
     }
   },
   "auth": {
@@ -440,6 +454,10 @@
     "/users/{userId}/lifeBalanceScores/{scoreId}": {
         "schema": { "$ref": "#/entities/lifeBalanceScore" },
         "description": "Stores a user's Life Balance Wheel scores."
+    },
+    "/users/{userId}/behavioralActivation/{activityId}": {
+      "schema": { "$ref": "#/entities/behavioralActivationActivity" },
+      "description": "Stores a user's scheduled activities for Behavioral Activation."
     }
   }
 }

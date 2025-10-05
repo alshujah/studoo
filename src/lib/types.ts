@@ -144,4 +144,12 @@ export interface LifeBalanceScore {
     domains: { name: string; satisfaction: number }[];
 }
 
+export interface BehavioralActivationActivity {
+    id: string;
+    userId: string;
+    title: string;
+    scheduledDate: Timestamp;
+    completed: boolean;
+    createdAt: Timestamp;
+}
     
