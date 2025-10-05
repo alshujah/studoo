@@ -51,11 +51,11 @@ const categories = [
         title: "Social Psychology",
         icon: Group,
         modules: [
-            { title: "Social Perception & Biases", description: "How we see others and common errors in judgment." },
-            { title: "The Psychology of Persuasion", description: "Understand the techniques of influence." },
-            { title: "Group Behavior & Dynamics", description: "How we behave in the presence of others." },
-            { title: "Attribution Theory", description: "Explaining our own and others' behavior." },
-            { title: "Cognitive Dissonance", description: "Understanding mental discomfort from conflicting beliefs." },
+            { title: "Social Perception & Biases", description: "How we see others and common errors in judgment.", href: "/tools/ipt" },
+            { title: "The Psychology of Persuasion", description: "Understand the techniques of influence.", href: "/tools/ipt" },
+            { title: "Group Behavior & Dynamics", description: "How we behave in the presence of others.", href: "/tools/ipt" },
+            { title: "Attribution Theory", description: "Explaining our own and others' behavior.", href: "/tools/ipt" },
+            { title: "Cognitive Dissonance", description: "Understanding mental discomfort from conflicting beliefs.", href: "/tools/ipt" },
         ]
     },
     {
