@@ -1,5 +1,4 @@
 
-
 import type { Timestamp } from 'firebase/firestore';
 
 export type ChatMessage = {
@@ -202,4 +201,11 @@ export interface WemwbsScore {
     score: number;
     answers: Record<string, string>;
     timestamp: Timestamp;
+}
+
+export interface LifeBalanceScore {
+    id: string;
+    userId: string;
+    timestamp: Timestamp;
+    domains: { name: string; satisfaction: number }[];
 }

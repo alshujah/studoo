@@ -39,10 +39,10 @@ const categories = [
         icon: BarChart,
         modules: [
             { title: "Communication Skills", description: "Improve your interpersonal effectiveness.", href: "/tools/ipt" },
-            { title: "Coping Mechanisms Explained", description: "Learn how different strategies work.", href: "/tools/dbt" },
+            { title: "Coping Mechanisms Explained", description: "Learn how different strategies work.", href: "/tools" },
             { title: "Self-Advocacy Skills", description: "Learn to advocate for your own needs.", href: "/tools/dbt/interpersonal-effectiveness" },
             { title: "Relationship Management Tips", description: "Improve your relationships.", href: "/tools/ipt" },
-            { title: "Conflict Resolution Strategies", description: "Learn to navigate disagreements.", href: "/tools/dbt/walking-the-middle-path" },
+            { title: "Conflict Resolution Strategies", description: "Learn to navigate disagreements." },
             { title: "Boundary-Setting Guidance", description: "Protect your energy and well-being.", href: "/tools/dbt/interpersonal-effectiveness" },
             { title: "Social Skills Training", description: "Practice and improve social interactions.", href: "/tools/ipt/social-skills-assessment" },
         ]
@@ -51,11 +51,11 @@ const categories = [
         title: "Social Psychology",
         icon: Group,
         modules: [
-            { title: "Social Perception & Biases", description: "How we see others and common errors in judgment.", href: "/tools/ipt" },
-            { title: "The Psychology of Persuasion", description: "Understand the techniques of influence.", href: "/tools/ipt" },
-            { title: "Group Behavior & Dynamics", description: "How we behave in the presence of others.", href: "/tools/ipt" },
-            { title: "Attribution Theory", description: "Explaining our own and others' behavior.", href: "/tools/ipt" },
-            { title: "Cognitive Dissonance", description: "Understanding mental discomfort from conflicting beliefs.", href: "/tools/ipt" },
+            { title: "Social Perception & Biases", description: "How we see others and common errors in judgment." },
+            { title: "The Psychology of Persuasion", description: "Understand the techniques of influence." },
+            { title: "Group Behavior & Dynamics", description: "How we behave in the presence of others." },
+            { title: "Attribution Theory", description: "Explaining our own and others' behavior." },
+            { title: "Cognitive Dissonance", description: "Understanding mental discomfort from conflicting beliefs." },
         ]
     },
     {
@@ -87,7 +87,7 @@ const categories = [
         icon: ShieldCheck,
         modules: [
             { title: "Coping Self-Efficacy Scale", description: "Evaluate your confidence in coping." },
-            { title: "Trauma Screening Tools (PCL-5)", description: "Screen for post-traumatic stress.", href: "/tools/ptsd" },
+            { title: "Trauma Screening Tools (PCL-5)", description: "Screen for post-traumatic stress." },
             { title: "Eating Disorder Screening", description: "Tools for early identification." },
             { title: "ADHD Assessment Tools", description: "Screening for attention-deficit hyperactivity." },
             { title: "Autism Spectrum Screening", description: "Tools for autism spectrum traits." },

@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 const ptsdTools = [
     { title: "Trauma Timeline Creator", description: "Visual mapping of traumatic events.", icon: Map },
     { title: "Trigger Identification System", description: "Comprehensive trigger logging and pattern analysis.", icon: ListChecks },
-    { href: "/tools/ptsd/grounding", title: "Flashback Grounding Toolkit", description: "5-4-3-2-1 technique and other grounding exercises.", icon: Anchor },
+    { href: "/tools/relaxation", title: "Flashback Grounding Toolkit", description: "5-4-3-2-1 technique and other grounding exercises.", icon: Anchor },
     { title: "Nightmares Rescripting Tool", description: "Imagery rehearsal therapy for trauma nightmares.", icon: Film },
     { title: "Hypervigilance Reduction Training", description: "Exercises to reduce constant alertness.", icon: ShieldAlert },
-    { href: "/tools/ptsd/grounding", title: "Dissociation Management Tools", description: "Reality testing and anchoring techniques.", icon: Anchor },
+    { href: "/tools/relaxation", title: "Dissociation Management Tools", description: "Reality testing and anchoring techniques.", icon: Anchor },
     { title: "Complex PTSD Workbook", description: "Resources for understanding and healing from complex trauma.", icon: Network },
     { title: "Military/Combat PTSD Support", description: "Specific information and resources for veterans.", icon: Swords },
     { title: "Sexual Trauma Recovery Program", description: "Guidance and support for survivors of sexual trauma.", icon: ShieldBan },

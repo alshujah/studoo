@@ -9,30 +9,39 @@ export const metadata: Metadata = {
 };
 
 const actTools = [
-    { href: "/tools/act/values-clarification", title: "Values Clarification Exercises", description: "Identify what truly matters to you." },
-    { href: "/tools/act/committed-action", title: "Committed Action Planning", description: "Take steps towards your values." },
-    { href: "/tools/act/decentering", title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
-    { href: "/tools/dbt/radical-acceptance", title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
-    { href: "/tools/cbt/attention-training", title: "Attention Training", description: "Focus redirection techniques." },
-    { href: "/tools/act/psychological-flexibility", title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
-    { href: "/tools/act/metaphors", title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
-    { href: "/tools/act/self-as-context", title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
+    { href: "/tools/act/values-clarification", title: "Values Clarification", description: "Identify what truly matters to you." },
+    { title: "Committed Action Planning", description: "Take steps towards your values." },
+    { title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
+    { title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
+    { title: "Attention Training", description: "Focus redirection techniques." },
+    { title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
+    { title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
+    { title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
 ];
 
 export default function ACTPage() {
   return (
     <PageLayout title="Acceptance & Commitment Therapy (ACT)">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {actTools.map((tool) => (
-            <Link href={tool.href || '#'} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+        {actTools.map((tool) => {
+            const card = (
                 <Card className="h-full">
                     <CardHeader>
                         <CardTitle>{tool.title}</CardTitle>
                         <CardDescription>{tool.description}</CardDescription>
                     </CardHeader>
                 </Card>
-            </Link>
-        ))}
+            );
+
+            if (tool.href) {
+                return (
+                    <Link href={tool.href} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+                        {card}
+                    </Link>
+                );
+            }
+            return <div key={tool.title}>{card}</div>
+        })}
       </div>
     </PageLayout>
   );

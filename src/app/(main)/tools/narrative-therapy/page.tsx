@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 const narrativeTools = [
-    { href: "#", title: "Externalizing Conversations", description: "Separate yourself from the problem." },
-    { href: "#", title: "Re-authoring", description: "Rewrite your story to focus on your strengths and resilience." },
-    { href: "#", title: "Unique Outcomes", description: "Find exceptions to the problem's influence." },
-    { href: "#", title: "Statement of Position Map", description: "Map out the effects of the problem on your life." },
+    { title: "Externalizing Conversations", description: "Separate yourself from the problem." },
+    { title: "Re-authoring", description: "Rewrite your story to focus on your strengths and resilience." },
+    { title: "Unique Outcomes", description: "Find exceptions to the problem's influence." },
+    { title: "Statement of Position Map", description: "Map out the effects of the problem on your life." },
 ];
 
 export default function NarrativeTherapyPage() {
@@ -20,14 +20,14 @@ export default function NarrativeTherapyPage() {
     <PageLayout title="Narrative Therapy">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {narrativeTools.map((tool) => (
-            <Link href={tool.href || '#'} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+            <div key={tool.title}>
                 <Card className="h-full">
                     <CardHeader>
                         <CardTitle>{tool.title}</CardTitle>
                         <CardDescription>{tool.description}</CardDescription>
                     </CardHeader>
                 </Card>
-            </Link>
+            </div>
         ))}
       </div>
     </PageLayout>

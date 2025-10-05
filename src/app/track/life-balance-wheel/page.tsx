@@ -1,30 +1,66 @@
 
 'use client';
 
-import type { Metadata } from 'next';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Target } from 'lucide-react';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
+import { PageLayout } from '@/components/layout/page-layout';
+import { Slider } from '@/components/ui/slider';
+import { Button } from '@/components/ui/button';
+import { useAuth, useFirestore } from '@/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
+import { Loader } from 'lucide-react';
 
-const lifeDomains = [
-    { name: "Career / Work", satisfaction: 7 },
+const initialDomains = [
+    { name: "Career / Work", satisfaction: 5 },
     { name: "Finances", satisfaction: 5 },
-    { name: "Health", satisfaction: 8 },
-    { name: "Family & Friends", satisfaction: 9 },
-    { name: "Romance", satisfaction: 6 },
-    { name: "Personal Growth", satisfaction: 8 },
+    { name: "Health", satisfaction: 5 },
+    { name: "Family & Friends", satisfaction: 5 },
+    { name: "Romance", satisfaction: 5 },
+    { name: "Personal Growth", satisfaction: 5 },
     { name: "Fun & Recreation", satisfaction: 5 },
-    { name: "Environment", satisfaction: 7 },
+    { name: "Environment", satisfaction: 5 },
 ];
 
 export default function LifeBalanceWheelPage() {
+  const [domains, setDomains] = useState(initialDomains);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const auth = useAuth();
+  const [user] = useAuthState(auth);
+  const firestore = useFirestore();
+  const { toast } = useToast();
+
+  const handleSliderChange = (domainName: string, value: number) => {
+    setDomains(domains.map(d => d.name === domainName ? { ...d, satisfaction: value } : d));
+  };
+  
+  const handleSave = async () => {
+      if (!user) {
+          toast({ variant: 'destructive', title: 'Not signed in', description: 'You must be logged in to save.'});
+          return;
+      }
+      setIsSubmitting(true);
+      try {
+          await addDoc(collection(firestore, 'users', user.uid, 'lifeBalanceScores'), {
+              userId: user.uid,
+              domains,
+              timestamp: serverTimestamp()
+          });
+          toast({ title: 'Saved!', description: 'Your life balance snapshot has been saved.'});
+      } catch (error) {
+          console.error(error);
+          toast({ variant: 'destructive', title: 'Error', description: 'Could not save your data.'});
+      } finally {
+          setIsSubmitting(false);
+      }
+  }
+
   return (
-    <main className="flex flex-1 flex-col">
-      <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
-        <h1 className="font-headline text-xl font-semibold">Life Balance Wheel</h1>
-      </div>
-      <div className="flex-1 p-4 md:p-6">
+    <PageLayout title="Life Balance Wheel">
         <Card>
           <CardHeader>
             <CardTitle className="font-headline">Assess Your Life Balance</CardTitle>
@@ -32,50 +68,49 @@ export default function LifeBalanceWheelPage() {
               The Life Balance Wheel is a coaching tool that helps you visualize your level of satisfaction in different areas of your life. It provides a snapshot to help you identify which areas might need more attention.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-8">
             <Alert>
               <Target className="h-4 w-4" />
               <AlertTitle>A Tool for Reflection</AlertTitle>
               <AlertDescription>
-                This exercise is for self-reflection. There are no right or wrong answers. The goal is to increase your awareness of how you're distributing your energy and attention.
+                Rate your current level of satisfaction in each area on a scale of 0 (not at all satisfied) to 10 (fully satisfied). The goal is to increase your awareness of how you're distributing your energy and attention.
               </AlertDescription>
             </Alert>
             
             <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="w-full aspect-square">
                      <ResponsiveContainer width="100%" height="100%">
-                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={lifeDomains}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={domains}>
                           <PolarGrid />
                           <PolarAngleAxis dataKey="name" />
                           <PolarRadiusAxis angle={30} domain={[0, 10]} />
                           <Radar name="Satisfaction" dataKey="satisfaction" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.6} />
+                          <Legend />
                         </RadarChart>
                       </ResponsiveContainer>
                 </div>
 
-                <Card className="bg-muted/30">
-                    <CardHeader>
-                        <CardTitle className="text-lg">How to Use the Wheel</CardTitle>
-                    </CardHeader>
-                    <CardContent className="prose prose-sm max-w-none text-foreground">
-                        <ol>
-                            <li><strong>Consider Each Domain:</strong> Look at the 8 life domains shown in the chart.</li>
-                            <li><strong>Rate Your Satisfaction:</strong> In a private journal, rate your current level of satisfaction in each area on a scale of 1 (not at all satisfied) to 10 (fully satisfied).</li>
-                            <li><strong>Reflect:</strong>
-                                <ul>
-                                    <li>Is your wheel bumpy or smooth? A bumpy wheel might indicate an imbalance.</li>
-                                    <li>Which areas are you most satisfied with? What's working well there?</li>
-                                    <li>Which areas are you least satisfied with?</li>
-                                    <li>What would a "+1" improvement look like in one of your lower-rated areas? What is one small step you could take?</li>
-                                </ul>
-                            </li>
-                        </ol>
-                    </CardContent>
-                </Card>
+                <div className="space-y-6">
+                    {domains.map(domain => (
+                        <div key={domain.name}>
+                            <label className="font-medium">{domain.name}: {domain.satisfaction}</label>
+                            <Slider 
+                                value={[domain.satisfaction]}
+                                onValueChange={(value) => handleSliderChange(domain.name, value[0])}
+                                max={10}
+                                step={1}
+                                className="mt-2"
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
+            <Button onClick={handleSave} disabled={isSubmitting}>
+                {isSubmitting ? <Loader className="mr-2 animate-spin" /> : null}
+                Save Snapshot
+            </Button>
           </CardContent>
         </Card>
-      </div>
-    </main>
+    </PageLayout>
   );
 }

@@ -1,5 +1,4 @@
 
-
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -17,7 +16,7 @@ const cbtTools = [
     { href: "/tools/thought-record", title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
     { title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
     { title: "Attention Training", description: "Practice focus redirection techniques." },
-    { href: "/tools/act/decentering", title: "Decentering Techniques", description: "Create distance from your thoughts." },
+    { title: "Decentering Techniques", description: "Create distance from your thoughts." },
 ];
 
 export default function CBTPage() {
