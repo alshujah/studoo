@@ -14,13 +14,13 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
 import { AIMessage, HumanMessage, SystemMessage, ToolMessage, Message } from 'genkit';
-import { firebaseConfig } from '@/firebase/config';
-import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore, collection, query, where, orderBy, limit, getDocs, Timestamp } from 'firebase/firestore';
+import { getApps, initializeApp, cert } from 'firebase-admin/app';
+import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { subDays } from 'date-fns';
 
+// Initialize Firebase Admin SDK if not already initialized
 if (!getApps().length) {
-    initializeApp(firebaseConfig);
+  initializeApp();
 }
 const db = getFirestore();
 
@@ -41,13 +41,11 @@ const getRecentMoodLogs = ai.defineTool(
         }
         
         const sevenDaysAgo = subDays(new Date(), 7);
-        const logsQuery = query(
-            collection(db, 'users', userId, 'moodLogs'),
-            where('timestamp', '>=', sevenDaysAgo),
-            orderBy('timestamp', 'desc')
-        );
+        const logsQuery = db.collection(`users/${userId}/moodLogs`)
+            .where('timestamp', '>=', sevenDaysAgo)
+            .orderBy('timestamp', 'desc');
 
-        const snapshot = await getDocs(logsQuery);
+        const snapshot = await logsQuery.get();
         if (snapshot.empty) {
             return JSON.stringify([]);
         }
@@ -78,14 +76,12 @@ const getRecentJournalEntries = ai.defineTool(
         }
 
         const sevenDaysAgo = subDays(new Date(), 7);
-        const entriesQuery = query(
-            collection(db, 'users', userId, 'journalEntries'),
-            where('timestamp', '>=', sevenDaysAgo),
-            orderBy('timestamp', 'desc'),
-            limit(5)
-        );
+        const entriesQuery = db.collection(`users/${userId}/journalEntries`)
+            .where('timestamp', '>=', sevenDaysAgo)
+            .orderBy('timestamp', 'desc')
+            .limit(5);
 
-        const snapshot = await getDocs(entriesQuery);
+        const snapshot = await entriesQuery.get();
         if (snapshot.empty) {
             return JSON.stringify([]);
         }
@@ -119,13 +115,11 @@ const getRecentAnxietyScores = ai.defineTool(
         }
         
         const thirtyDaysAgo = subDays(new Date(), 30);
-        const scoresQuery = query(
-            collection(db, 'users', userId, 'gad7Scores'),
-            where('timestamp', '>=', thirtyDaysAgo),
-            orderBy('timestamp', 'desc')
-        );
+        const scoresQuery = db.collection(`users/${userId}/gad7Scores`)
+            .where('timestamp', '>=', thirtyDaysAgo)
+            .orderBy('timestamp', 'desc');
 
-        const snapshot = await getDocs(scoresQuery);
+        const snapshot = await scoresQuery.get();
         if (snapshot.empty) return JSON.stringify([]);
 
         const scores = snapshot.docs.map(doc => {
@@ -154,13 +148,11 @@ const getRecentDepressionScores = ai.defineTool(
         }
         
         const thirtyDaysAgo = subDays(new Date(), 30);
-        const scoresQuery = query(
-            collection(db, 'users', userId, 'phq9Scores'),
-            where('timestamp', '>=', thirtyDaysAgo),
-            orderBy('timestamp', 'desc')
-        );
-
-        const snapshot = await getDocs(scoresQuery);
+        const scoresQuery = db.collection(`users/${userId}/phq9Scores`)
+            .where('timestamp', '>=', thirtyDaysAgo)
+            .orderBy('timestamp', 'desc');
+            
+        const snapshot = await scoresQuery.get();
         if (snapshot.empty) return JSON.stringify([]);
 
         const scores = snapshot.docs.map(doc => {
@@ -253,3 +245,4 @@ const aiTherapyChatbotFlow = ai.defineFlow(
   }
 );
 
+    
