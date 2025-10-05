@@ -9,18 +9,13 @@ export const metadata: Metadata = {
 
 const crisisTools = [
     { href: "/tools/crisis-management/crisis-hotlines", title: "Crisis Support Hotline Links", description: "Direct connections to crisis services." },
-    { href: "/tools/crisis-management/safety-plan", title: "Emergency Contact Quick Access", description: "Quickly contact your support system." },
     { href: "/tools/crisis-management/safety-plan", title: "Safety Planning Tools", description: "Create personalized crisis plans." },
     { href: "/tools/crisis-management/self-harm-alternatives", title: "Self-Harm Alternatives", description: "Find alternative coping strategies." },
     { href: "/tools/crisis-management/panic-attack-assistance", title: "Panic Attack Assistance", description: "Guided help during a panic attack." },
-    { href: "/tools/crisis-management/crisis-hotlines", title: "SOS/Emergency Button", description: "Alert your emergency contacts." },
+    { href: "/tools/dbt/tipp-technique", title: "SOS/Emergency Button", description: "Quick access to crisis skills like TIPP." },
     { href: "/tools/crisis-management/safety-plan", title: "Warning Sign Identification", description: "Recognize your personal crisis warning signs." },
-    { href: "/tools/crisis-management/crisis-hotlines", title: "Suicide Risk Assessment", description: "Access resources for suicide risk management." },
-    { href: "/tools/crisis-management/crisis-hotlines", title: "Crisis Text Line Integration", description: "Connect with a crisis counselor via text." },
-    { href: "/tools/crisis-management/safety-plan", title: "Therapist/Emergency Contact Alerts", description: "Notify your support system in a crisis." },
     { href: "/tools/ptsd/grounding", title: "Flashback Coping Strategies", description: "Tools to manage flashbacks." },
     { href: "/tools/ptsd/triggers", title: "Trigger Management Plans", description: "Develop plans to manage triggers." },
-    { href: "/tools/crisis-management/safety-plan", title: "Emergency Coping Statements", description: "Reminders of coping strategies." }
 ];
 
 export default function CrisisManagementPage() {

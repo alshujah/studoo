@@ -2,14 +2,16 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle2, Lock } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: '6-Week Social Cognition Training | Rejoyn',
 };
 
 const programSchedule = [
-    { week: 1, title: "Identifying Basic Emotions", focus: "Accuracy and speed in recognizing joy, sadness, anger, fear, surprise, and disgust.", exercise: "Emotional Faces Memory Task (Level 1)", unlocked: true },
-    { week: 2, title: "Emotional Intensity", focus: "Distinguishing between subtle, moderate, and intense expressions of the same emotion.", exercise: "EFMT (Level 2)", unlocked: true },
+    { week: 1, title: "Identifying Basic Emotions", focus: "Accuracy and speed in recognizing joy, sadness, anger, fear, surprise, and disgust.", exercise: "Emotional Faces Memory Task (Level 1)", unlocked: true, href: "/tools/ipt/social-skills-assessment" },
+    { week: 2, title: "Emotional Intensity", focus: "Distinguishing between subtle, moderate, and intense expressions of the same emotion.", exercise: "EFMT (Level 2)", unlocked: true, href: "/tools/ipt/social-skills-assessment" },
     { week: 3, title: "Microexpressions", focus: "Detecting fleeting emotional expressions that last less than a second.", exercise: "EFMT (Level 3)", unlocked: false },
     { week: 4, title: "Complex & Mixed Emotions", focus: "Recognizing blended emotions (e.g., bittersweet joy, anxious excitement).", exercise: "EFMT (Level 4)", unlocked: false },
     { week: 5, title: "Contextual Understanding", focus: "Using situational context to better interpret ambiguous emotional cues.", exercise: "Scenario-Based EFMT", unlocked: false },
@@ -43,6 +45,11 @@ export default function SocialCognitionProgramPage() {
                         </CardHeader>
                         <CardContent>
                            <p className="text-sm font-medium">Core Exercise: <span className="text-muted-foreground">{item.exercise}</span></p>
+                           {item.href && item.unlocked && (
+                                <Button asChild variant="link" className="p-0 mt-2">
+                                    <Link href={item.href}>Practice this skill</Link>
+                                </Button>
+                            )}
                         </CardContent>
                     </Card>
                 ))}

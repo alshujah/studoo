@@ -14,6 +14,7 @@ import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LogOut } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ProfilePage() {
   const auth = useAuth();
@@ -79,8 +80,8 @@ export default function ProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" disabled>
-                Set My Goals
+              <Button asChild variant="outline">
+                <Link href="/tools/act/values-clarification">Set My Goals</Link>
               </Button>
             </CardContent>
           </Card>
@@ -92,8 +93,8 @@ export default function ProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" disabled>
-                Manage Habits
+              <Button asChild variant="outline">
+                <Link href="/track/activity-log">Manage Habits</Link>
               </Button>
             </CardContent>
           </Card>
@@ -105,8 +106,8 @@ export default function ProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" disabled>
-                View My Skills
+              <Button asChild variant="outline">
+                <Link href="/tools">View My Skills</Link>
               </Button>
             </CardContent>
           </Card>
