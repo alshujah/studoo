@@ -10,13 +10,13 @@ export const metadata: Metadata = {
 
 const positivePsychologyTools = [
     { href: "/tools/positive-psychology/strengths-finder", title: "Strengths Identification", description: "Discover your character strengths." },
-    { href: "/tools/positive-psychology/acts-of-kindness", title: "Acts of Kindness", description: "Track and plan acts of kindness." },
-    { href: "/tools/positive-psychology/savoring", title: "Savoring Exercises", description: "Mindfully appreciate positive experiences." },
-    { href: "/tools/positive-psychology/meaning-and-purpose", title: "Meaning and Purpose", description: "Explore your personal sense of purpose." },
+    { href: "#", title: "Acts of Kindness", description: "Track and plan acts of kindness." },
+    { href: "#", title: "Savoring Exercises", description: "Mindfully appreciate positive experiences." },
+    { href: "#", title: "Meaning and Purpose", description: "Explore your personal sense of purpose." },
     { href: "/track/journal/gratitude", title: "Gratitude Journaling", description: "Daily positive reflections." },
-    { href: "/tools/positive-psychology/self-esteem", title: "Self-Esteem Building", description: "Exercises to build healthy self-esteem." },
-    { href: "/tools/positive-psychology/optimism-training", title: "Optimism Training", description: "Cultivate a more positive outlook." },
-    { href: "/tools/positive-psychology/life-satisfaction", title: "Life Satisfaction Assessments", description: "Evaluate your overall well-being." },
+    { href: "#", title: "Self-Esteem Building", description: "Exercises to build healthy self-esteem." },
+    { href: "#", title: "Optimism Training", description: "Cultivate a more positive outlook." },
+    { href: "#", title: "Life Satisfaction Assessments", description: "Evaluate your overall well-being." },
 ];
 
 export default function PositivePsychologyPage() {

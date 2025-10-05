@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 const somaticTools = [
-    { href: "/tools/emdr", title: "EMDR (Eye Movement Desensitization)", description: "Digital bilateral stimulation for trauma." },
-    { href: "/tools/somatic-therapy/somatic-experiencing", title: "Somatic Experiencing Exercises", description: "Body-based trauma release techniques." },
-    { href: "/tools/dance-therapy", title: "Dance/Movement Therapy", description: "Guided movement exercises with motion tracking." },
-    { href: "/tools/somatic-therapy/nature-therapy", title: "Nature Therapy (Ecotherapy)", description: "Virtual nature experiences and outdoor activity planning." },
+    { href: "#", title: "EMDR (Eye Movement Desensitization)", description: "Digital bilateral stimulation for trauma." },
+    { href: "#", title: "Somatic Experiencing Exercises", description: "Body-based trauma release techniques." },
+    { href: "#", title: "Dance/Movement Therapy", description: "Guided movement exercises with motion tracking." },
+    { href: "#", title: "Nature Therapy (Ecotherapy)", description: "Virtual nature experiences and outdoor activity planning." },
 ];
 
 export default function SomaticTherapyPage() {

@@ -10,11 +10,11 @@ export const metadata: Metadata = {
 };
 
 const psychodynamicTools = [
-    { href: "/tools/psychodynamic/ifs", title: "IFS (Internal Family Systems)", description: "Work with your inner 'parts' with self-compassion.", icon: CircleUser },
-    { href: "/tools/psychodynamic/cft", title: "Compassion-Focused Therapy", description: "Cultivate your compassionate self to combat shame.", icon: HeartHandshake },
-    { href: "/tools/psychodynamic/gestalt", title: "Gestalt Therapy Techniques", description: "Focus on the 'here and now' with awareness exercises.", icon: Armchair },
-    { href: "/tools/psychodynamic/defense-mechanisms", title: "Defense Mechanisms", description: "Understand unconscious coping strategies.", icon: UsersRound },
-    { href: "/tools/psychodynamic/attachment-theory", title: "Attachment-Based Therapy", description: "Explore how early bonds shape your current relationships.", icon: Anchor },
+    { href: "#", title: "IFS (Internal Family Systems)", description: "Work with your inner 'parts' with self-compassion.", icon: CircleUser },
+    { href: "#", title: "Compassion-Focused Therapy", description: "Cultivate your compassionate self to combat shame.", icon: HeartHandshake },
+    { href: "#", title: "Gestalt Therapy Techniques", description: "Focus on the 'here and now' with awareness exercises.", icon: Armchair },
+    { href: "#", title: "Defense Mechanisms", description: "Understand unconscious coping strategies.", icon: UsersRound },
+    { href: "#", title: "Attachment-Based Therapy", description: "Explore how early bonds shape your current relationships.", icon: Anchor },
 ];
 
 export default function PsychodynamicPage() {

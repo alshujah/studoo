@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 const schemaTherapyTools = [
-    { href: "/tools/schema-therapy/identification", title: "Schema Identification", description: "Discover your core self-defeating patterns." },
-    { href: "/tools/schema-therapy/diary", title: "Schema Diary", description: "Track when your schemas are activated." },
-    { href: "/tools/schema-therapy/imagery-rescripting", title: "Imagery Rescripting", description: "Heal past wounds by rewriting memories." },
-    { href: "/tools/schema-therapy/modes", title: "Mode Work", description: "Understand and manage your different emotional states." },
+    { href: "#", title: "Schema Identification", description: "Discover your core self-defeating patterns." },
+    { href: "#", title: "Schema Diary", description: "Track when your schemas are activated." },
+    { href: "#", title: "Imagery Rescripting", description: "Heal past wounds by rewriting memories." },
+    { href: "#", title: "Mode Work", description: "Understand and manage your different emotional states." },
 ];
 
 export default function SchemaTherapyPage() {

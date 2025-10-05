@@ -9,13 +9,13 @@ export const metadata: Metadata = {
 };
 
 const artTherapyTools = [
-    { href: "/tools/art-therapy/canvas", title: "Art Therapy Canvas", description: "Digital art creation for emotional expression." },
-    { href: "/tools/art-therapy/creative-wellness", title: "Creative Wellness", description: "Use sound, words, and color for healing." },
-    { href: "/tools/dance-therapy", title: "Dance/Movement Therapy", description: "Express emotions through body movement." },
-    { href: "/tools/art-therapy/play-therapy", title: "Play Therapy Elements", description: "Rediscover spontaneity and joy through play." },
-    { href: "/tools/art-therapy/pet-therapy", title: "Pet Therapy", description: "Explore the healing power of animal companionship." },
-    { href: "/tools/art-therapy/laughter-therapy", title: "Laughter Therapy Sessions", description: "Boost mood through guided laughter." },
-    { href: "/tools/art-therapy/aromatherapy", title: "Aromatherapy Guide", description: "Use scent to influence your mood." },
+    { href: "#", title: "Art Therapy Canvas", description: "Digital art creation for emotional expression." },
+    { href: "#", title: "Creative Wellness", description: "Use sound, words, and color for healing." },
+    { href: "#", title: "Dance/Movement Therapy", description: "Express emotions through body movement." },
+    { href: "#", title: "Play Therapy Elements", description: "Rediscover spontaneity and joy through play." },
+    { href: "#", title: "Pet Therapy", description: "Explore the healing power of animal companionship." },
+    { href: "#", title: "Laughter Therapy Sessions", description: "Boost mood through guided laughter." },
+    { href: "#", title: "Aromatherapy Guide", description: "Use scent to influence your mood." },
 ];
 
 export default function ArtTherapyPage() {

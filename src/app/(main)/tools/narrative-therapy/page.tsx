@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 const narrativeTools = [
-    { href: "/tools/narrative-therapy/externalizing", title: "Externalizing Conversations", description: "Separate yourself from the problem." },
-    { href: "/tools/narrative-therapy/re-authoring", title: "Re-authoring", description: "Rewrite your story to focus on your strengths and resilience." },
-    { href: "/tools/narrative-therapy/unique-outcomes", title: "Unique Outcomes", description: "Find exceptions to the problem's influence." },
-    { href: "/tools/narrative-therapy/position-map", title: "Statement of Position Map", description: "Map out the effects of the problem on your life." },
+    { href: "#", title: "Externalizing Conversations", description: "Separate yourself from the problem." },
+    { href: "#", title: "Re-authoring", description: "Rewrite your story to focus on your strengths and resilience." },
+    { href: "#", title: "Unique Outcomes", description: "Find exceptions to the problem's influence." },
+    { href: "#", title: "Statement of Position Map", description: "Map out the effects of the problem on your life." },
 ];
 
 export default function NarrativeTherapyPage() {

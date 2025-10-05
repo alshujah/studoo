@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 const sleepTools = [
     { href: "/track/sleep-quality", title: "Sleep Diary", description: "Track sleep patterns and quality." },
-    { href: "/tools/sleep/sleep-hygiene", title: "Sleep Hygiene Education", description: "Learn habits for better sleep." },
-    { href: "/tools/sleep/bedtime-routine", title: "Bedtime Routine Builder", description: "Create a relaxing pre-sleep routine." },
-    { href: "/tools/relaxation/sound-therapy", title: "Sleep Sounds/White Noise", description: "Drift off to calming sounds." },
-    { href: "/tools/sleep/cbt-i", title: "CBT for Insomnia (CBT-I)", description: "Specialized CBT for sleep issues." },
+    { href: "#", title: "Sleep Hygiene Education", description: "Learn habits for better sleep." },
+    { href: "#", title: "Bedtime Routine Builder", description: "Create a relaxing pre-sleep routine." },
+    { href: "#", title: "Sleep Sounds/White Noise", description: "Drift off to calming sounds." },
+    { href: "#", title: "CBT for Insomnia (CBT-I)", description: "Specialized CBT for sleep issues." },
     { href: "/track/journal/dream", title: "Dream Journaling", description: "Record and explore your dreams." },
 ];
 
