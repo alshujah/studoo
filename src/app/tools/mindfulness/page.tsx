@@ -1,21 +1,23 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Mindfulness Tools | Rejoyn',
 };
 
 const mindfulnessTools = [
-    { title: "Guided Meditation", description: "Sessions for various lengths and styles." },
-    { title: "Body Scan Exercises", description: "Bring awareness to your physical self." },
-    { title: "Mindful Breathing", description: "Anchor yourself in the present moment." },
-    { title: "Walking Meditation", description: "Practice mindfulness in motion." },
-    { title: "Loving-Kindness Meditation", description: "Cultivate compassion for self and others." },
-    { title: "Progressive Muscle Relaxation", description: "Release physical tension." },
-    { title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
-    { title: "Visualization Exercises", description: "Create calming mental imagery." },
-    { title: "Mindfulness Bells/Reminders", description: "Periodic sounds to bring you to the present." },
-    { title: "Present-Moment Awareness", description: "Exercises to focus on the here and now." },
+    { href: "#", title: "Guided Meditation", description: "Sessions for various lengths and styles." },
+    { href: "#", title: "Body Scan Exercises", description: "Bring awareness to your physical self." },
+    { href: "#", title: "Mindful Breathing", description: "Anchor yourself in the present moment." },
+    { href: "#", title: "Walking Meditation", description: "Practice mindfulness in motion." },
+    { href: "#", title: "Loving-Kindness Meditation", description: "Cultivate compassion for self and others." },
+    { href: "#", title: "Progressive Muscle Relaxation", description: "Release physical tension." },
+    { href: "/tools/ptsd/grounding", title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
+    { href: "#", title: "Visualization Exercises", description: "Create calming mental imagery." },
+    { href: "#", title: "Mindfulness Bells/Reminders", description: "Periodic sounds to bring you to the present." },
+    { href: "#", title: "Present-Moment Awareness", description: "Exercises to focus on the here and now." },
 ];
 
 export default function MindfulnessPage() {
@@ -26,12 +28,14 @@ export default function MindfulnessPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {mindfulnessTools.map((tool) => (
-            <Card key={tool.title}>
-                <CardHeader>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>{tool.description}</CardDescription>
-                </CardHeader>
-            </Card>
+            <Link href={tool.href || "#"} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+                <Card className="h-full">
+                    <CardHeader>
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                    </CardHeader>
+                </Card>
+            </Link>
         ))}
       </div>
     </main>
