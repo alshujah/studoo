@@ -87,7 +87,7 @@ const categories = [
         icon: ShieldCheck,
         modules: [
             { title: "Coping Self-Efficacy Scale", description: "Evaluate your confidence in coping." },
-            { title: "Trauma Screening Tools (PCL-5)", description: "Screen for post-traumatic stress." },
+            { title: "Trauma Screening Tools (PCL-5)", description: "Screen for post-traumatic stress.", href: "/tools/ptsd" },
             { title: "Eating Disorder Screening", description: "Tools for early identification." },
             { title: "ADHD Assessment Tools", description: "Screening for attention-deficit hyperactivity." },
             { title: "Autism Spectrum Screening", description: "Tools for autism spectrum traits." },
