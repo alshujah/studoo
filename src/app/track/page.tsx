@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
+import { Activity, BedDouble, Pill, Siren } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Track | Rejoyn',
@@ -12,14 +13,14 @@ const trackingModules = [
     { href: "/track/gad-7", title: "Anxiety Symptom Checklist (GAD-7)", description: "Monitor anxiety symptoms." },
     { href: "/track/phq-9", title: "Depression Symptom Monitoring (PHQ-9)", description: "Track symptoms using a standard scale." },
     { href: "/track/journal", title: "Journaling", description: "A space for your thoughts." },
-    { title: "Panic Attack Logging", description: "Record details of panic attacks." },
-    { title: "Sleep Quality Tracking", description: "Monitor your sleep patterns." },
-    { title: "Activity Logging", description: "Track daily activities and their impact." },
-    { title: "Medication Adherence", description: "Track your medication intake." },
+    { href: "/track/panic-log", title: "Panic Attack Logging", description: "Record details of panic attacks.", icon: Siren },
+    { href: "/track/sleep-quality", title: "Sleep Quality Tracking", description: "Monitor your sleep patterns.", icon: BedDouble },
+    { href: "/track/activity-log", title: "Activity Logging", description: "Track daily activities and their impact.", icon: Activity },
+    { href: "/track/medication-log", title: "Medication Adherence", description: "Track your medication intake.", icon: Pill },
     { title: "Social Interaction Tracking", description: "Log your social engagements." },
     { title: "Substance Use Tracking", description: "Monitor alcohol, caffeine, etc." },
-    { title: "Worry/Rumination Logging", description: "Externalize and manage worries." },
-    { title: "Success/Achievement Logging", description: "Record your accomplishments." },
+    { href: "/track/journal/worry-log", title: "Worry/Rumination Logging", description: "Externalize and manage worries." },
+    { title: "Success/Achievement Log", description: "Record your accomplishments." },
     { title: "Energy Level Monitoring", description: "Track your energy levels throughout the day." },
     { title: "Physical Symptom Recording", description: "Log headaches, tension, pain, etc." },
     { title: "Side Effect Documentation", description: "Note any medication side effects." },

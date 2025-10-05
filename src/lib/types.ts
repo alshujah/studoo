@@ -14,6 +14,7 @@ export interface JournalEntry {
   analysis?: string;
   keyThemes?: string[];
   suggestedToolName?: string;
+
   suggestedToolHref?: string;
 }
 
@@ -90,4 +91,46 @@ export interface ExposureHierarchy {
         step: string;
         suds: number;
     }[];
+}
+
+export interface PanicLog {
+  id: string;
+  userId: string;
+  timestamp: Timestamp;
+  symptoms: string[];
+  peakIntensity: number;
+  durationInMinutes: number;
+  trigger: string;
+  notes: string;
+}
+
+export interface SleepLog {
+  id: string;
+  userId: string;
+  date: Timestamp;
+  timeSlept: number; // in hours
+  quality: 'Poor' | 'Fair' | 'Good' | 'Excellent';
+  awakenings: number;
+  notes: string;
+}
+
+export interface ActivityLog {
+  id: string;
+  userId: string;
+  timestamp: Timestamp;
+  activity: string;
+  durationInMinutes: number;
+  moodBefore: string;
+  moodAfter: string;
+  notes: string;
+}
+
+export interface MedicationLog {
+  id: string;
+  userId: string;
+  timestamp: Timestamp;
+  medication: string;
+  dosage: string;
+  taken: boolean;
+  sideEffects: string;
 }

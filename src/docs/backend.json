@@ -344,6 +344,64 @@
         }
       },
       "required": ["userId", "fear", "createdAt", "steps"]
+    },
+    "panicLog": {
+      "title": "Panic Log",
+      "description": "A record of a panic attack.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "symptoms": { "type": "array", "items": { "type": "string" } },
+        "peakIntensity": { "type": "number" },
+        "durationInMinutes": { "type": "number" },
+        "trigger": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["userId", "timestamp", "symptoms", "peakIntensity", "durationInMinutes"]
+    },
+    "sleepLog": {
+      "title": "Sleep Log",
+      "description": "A record of a user's sleep quality.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "timeSlept": { "type": "number" },
+        "quality": { "type": "string", "enum": ["Poor", "Fair", "Good", "Excellent"] },
+        "awakenings": { "type": "number" },
+        "notes": { "type": "string" }
+      },
+      "required": ["userId", "date", "timeSlept", "quality"]
+    },
+    "activityLog": {
+      "title": "Activity Log",
+      "description": "A record of a user's daily activities.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "activity": { "type": "string" },
+        "durationInMinutes": { "type": "number" },
+        "moodBefore": { "type": "string" },
+        "moodAfter": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["userId", "timestamp", "activity", "durationInMinutes", "moodBefore", "moodAfter"]
+    },
+    "medicationLog": {
+      "title": "Medication Log",
+      "description": "A record of a user's medication intake.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "medication": { "type": "string" },
+        "dosage": { "type": "string" },
+        "taken": { "type": "boolean" },
+        "sideEffects": { "type": "string" }
+      },
+      "required": ["userId", "timestamp", "medication", "dosage", "taken"]
     }
   },
   "auth": {
@@ -435,6 +493,22 @@
     "/users/{userId}/exposureHierarchies/{hierarchyId}": {
       "schema": { "$ref": "#/entities/exposureHierarchy" },
       "description": "Stores a user's exposure therapy fear ladders."
+    },
+    "/users/{userId}/panicLogs/{panicLogId}": {
+      "schema": { "$ref": "#/entities/panicLog" },
+      "description": "Stores a user's panic attack logs."
+    },
+    "/users/{userId}/sleepLogs/{sleepLogId}": {
+      "schema": { "$ref": "#/entities/sleepLog" },
+      "description": "Stores a user's sleep logs."
+    },
+    "/users/{userId}/activityLogs/{activityLogId}": {
+      "schema": { "$ref": "#/entities/activityLog" },
+      "description": "Stores a user's activity logs."
+    },
+    "/users/{userId}/medicationLogs/{medicationLogId}": {
+      "schema": { "$ref": "#/entities/medicationLog" },
+      "description": "Stores a user's medication logs."
     }
   }
 }
