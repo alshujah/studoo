@@ -11,7 +11,7 @@ const dbtTools = [
     { href: "/tools/dbt/distress-tolerance", title: "Distress Tolerance Skills", description: "Survive crisis situations." },
     { href: "/tools/dbt/emotion-regulation", title: "Emotion Regulation Strategies", description: "Manage and change intense emotions." },
     { href: "#", title: "Interpersonal Effectiveness", description: "Maintain relationships and self-respect." },
-    { href: "#", title: "Radical Acceptance Exercises", description: "Accept reality as it is." },
+    { href: "/tools/dbt/radical-acceptance", title: "Radical Acceptance Exercises", description: "Accept reality as it is." },
     { href: "/tools/dbt/stop-skill", title: "STOP Skill", description: "Stop, Take a step back, Observe, Proceed." },
     { href: "/tools/dbt/tipp-technique", title: "TIPP Technique", description: "Temperature, Intense exercise, Paced breathing, Paired muscle relaxation." },
     { href: "#", title: "Walking the Middle Path", description: "Find synthesis between opposites." },
