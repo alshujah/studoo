@@ -170,5 +170,3 @@ export function SleepLogForm() {
     </Form>
   );
 }
-
-    
