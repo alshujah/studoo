@@ -266,6 +266,21 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "title", "scheduledDate", "completed", "createdAt"]
+    },
+    "behavioralExperiment": {
+      "title": "Behavioral Experiment",
+      "description": "A record of a CBT behavioral experiment.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "belief": { "type": "string" },
+        "prediction": { "type": "string" },
+        "experiment": { "type": "string" },
+        "outcome": { "type": "string" },
+        "whatILearned": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "belief", "prediction", "experiment", "createdAt"]
     }
   },
   "auth": {
@@ -341,6 +356,10 @@
     "/users/{userId}/behavioralActivation/{activityId}": {
       "schema": { "$ref": "#/entities/behavioralActivationActivity" },
       "description": "Stores a user's scheduled activities for Behavioral Activation."
+    },
+    "/users/{userId}/behavioralExperiments/{experimentId}": {
+        "schema": { "$ref": "#/entities/behavioralExperiment" },
+        "description": "Stores a user's CBT behavioral experiments."
     }
   }
 }

@@ -45,3 +45,14 @@ export interface BehavioralActivationActivity {
     completed: boolean;
     createdAt: Timestamp;
 }
+
+export interface BehavioralExperiment {
+    id: string;
+    userId: string;
+    belief: string;
+    prediction: string;
+    experiment: string;
+    outcome: string;
+    whatILearned: string;
+    createdAt: Timestamp;
+}
