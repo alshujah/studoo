@@ -196,15 +196,16 @@
       },
       "required": ["userId", "timestamp"]
     },
-    "sfbtGoal": {
-      "title": "SFBT Goal",
-      "description": "A user's goal in Solution-Focused Brief Therapy.",
+    "sfbtMiracleQuestion": {
+      "title": "SFBT Miracle Question",
+      "description": "A user's response to the SFBT Miracle Question.",
       "type": "object",
       "properties": {
         "userId": { "type": "string" },
+        "answer": { "type": "string"},
         "timestamp": { "type": "string", "format": "date-time" }
       },
-      "required": ["userId", "timestamp"]
+      "required": ["userId", "answer", "timestamp"]
     },
     "narrativeStory": {
       "title": "Narrative Story",
@@ -238,6 +239,20 @@
         }
       },
       "required": ["userId", "timestamp", "scores", "answers"]
+    },
+    "worryLog": {
+      "title": "Worry Log",
+      "description": "A log of a user's worry, a scheduled time to address it, and its outcome.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "worry": { "type": "string" },
+        "scheduledTime": { "type": "string", "format": "date-time" },
+        "outcome": { "type": "string" },
+        "didComeTrue": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "worry", "scheduledTime", "createdAt"]
     }
   },
   "auth": {
@@ -294,9 +309,9 @@
       "schema": { "$ref": "#/entities/schema" },
       "description": "Stores a user's identified schemas."
     },
-    "/users/{userId}/sfbtGoals/{sfbtGoalId}": {
-      "schema": { "$ref": "#/entities/sfbtGoal" },
-      "description": "Stores a user's Solution-Focused Brief Therapy goals."
+    "/users/{userId}/sfbtMiracleQuestions/{sfbtMiracleQuestionId}": {
+      "schema": { "$ref": "#/entities/sfbtMiracleQuestion" },
+      "description": "Stores a user's Solution-Focused Brief Therapy miracle question responses."
     },
     "/users/{userId}/narrativeStories/{narrativeStoryId}": {
       "schema": { "$ref": "#/entities/narrativeStory" },
@@ -305,6 +320,10 @@
     "/users/{userId}/socialSkillAssessments/{assessmentId}": {
         "schema": { "$ref": "#/entities/socialSkillAssessment" },
         "description": "Stores a user's social skill assessment results."
+    },
+    "/users/{userId}/worryLogs/{worryLogId}": {
+      "schema": { "$ref": "#/entities/worryLog" },
+      "description": "Stores a user's worry log entries."
     }
   }
 }

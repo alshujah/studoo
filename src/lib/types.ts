@@ -26,3 +26,13 @@ export interface MoodLog {
     physicalSensations: string;
     timestamp: Timestamp | string; // Allow string for serialization
 }
+
+export interface WorryLog {
+    id: string;
+    userId: string;
+    worry: string;
+    scheduledTime: Timestamp;
+    outcome?: string;
+    didComeTrue?: boolean;
+    createdAt: Timestamp;
+}
