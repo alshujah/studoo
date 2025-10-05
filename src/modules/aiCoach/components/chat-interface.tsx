@@ -167,12 +167,23 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     if (isStreaming && content === '') {
         return <Loader className="animate-spin size-4" />;
     }
-
-    const cursor = isStreaming ? '<span class="animate-pulse">|</span>' : '';
-    // This is a simple way to handle markdown-like lists. For full markdown, a library would be better.
-    const formattedContent = content.replace(/(\n\s*-\s)/g, '<br/>&bull; ').replace(/\n/g, '<br/>');
-
-    return <div className="prose prose-sm max-w-none text-foreground" dangerouslySetInnerHTML={{ __html: formattedContent + cursor }} />;
+    
+    // Basic markdown for unordered lists
+    const lines = content.split('\n');
+    const contentWithLists = lines.map((line, i) => {
+        const trimmedLine = line.trim();
+        if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+            return <li key={i} className="ml-4">{trimmedLine.substring(2)}</li>;
+        }
+        return <p key={i} className="inline">{line}{i < lines.length - 1 ? <br/> : ''}</p>;
+    });
+    
+    return (
+        <div className="prose prose-sm max-w-none text-current">
+            {contentWithLists}
+            {isStreaming && <span className="inline-block w-2 h-4 bg-current animate-pulse ml-1" />}
+        </div>
+    );
   };
 
 
