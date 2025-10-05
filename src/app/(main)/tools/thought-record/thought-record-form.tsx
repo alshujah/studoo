@@ -21,6 +21,8 @@ import type { AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-though
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   situation: z.string().min(10, { message: "Please describe the situation in a bit more detail." }),
@@ -73,22 +75,28 @@ export function ThoughtRecordForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'thoughtRecords'), {
+    const thoughtRecordData = {
         ...data,
         userId: user.uid,
         alternativeThought: analysisResult?.alternativeThought || '',
         analysis: analysisResult?.analysis || '',
         timestamp: serverTimestamp(),
-      });
+    };
+    const thoughtRecordCollection = collection(firestore, 'users', user.uid, 'thoughtRecords');
+
+    addDoc(thoughtRecordCollection, thoughtRecordData).then(() => {
       toast({ title: 'Thought Record Saved', description: 'Your entry has been saved.' });
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving thought record:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your thought record.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: thoughtRecordCollection.path,
+            operation: 'create',
+            requestResourceData: thoughtRecordData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
+        setIsSubmitting(false);
+    });
   }
 
   return (
@@ -139,7 +147,7 @@ export function ThoughtRecordForm() {
                             checked={field.value?.includes(item.name)}
                             onCheckedChange={(checked) => {
                               return checked
-                                ? field.onChange([...field.value, item.name])
+                                ? field.onChange([...(field.value || []), item.name])
                                 : field.onChange(field.value?.filter((value) => value !== item.name));
                             }}
                           />
