@@ -8,11 +8,11 @@ import type { ChatMessage } from '@/lib/types';
 export async function getAiResponse(
   messages: ChatMessage[],
   userId: string
-): Promise<{ success: boolean; data?: ChatMessage; error?: string }> {
+): Promise<ReadableStream<string>> {
   try {
     const userMessage = messages[messages.length - 1];
     if (userMessage.role !== 'user') {
-      return { success: false, error: 'Invalid message sequence.' };
+      throw new Error('Invalid message sequence.');
     }
     
     const chatHistory = messages.slice(0, -1).map(msg => ({
@@ -20,18 +20,24 @@ export async function getAiResponse(
         content: msg.content
     }));
 
-    const result = await aiTherapyChatbot({
+    const stream = await aiTherapyChatbot({
       message: userMessage.content,
       chatHistory: chatHistory,
       userId: userId
     });
     
-    const assistantMessage: ChatMessage = { role: 'assistant' as const, content: result.response };
-
-    return { success: true, data: assistantMessage };
+    return stream;
 
   } catch (error) {
     console.error('Error getting AI response:', error);
-    return { success: false, error: 'Failed to get a response from the AI coach.' };
+    const errorStream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(JSON.stringify({ error: 'Failed to get a response from the AI coach.' }));
+        controller.close();
+      }
+    });
+    return errorStream;
   }
 }
+
+    

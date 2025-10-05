@@ -181,12 +181,12 @@ const AiTherapyChatbotInputSchema = z.object({
 export type AiTherapyChatbotInput = z.infer<typeof AiTherapyChatbotInputSchema>;
 
 const AiTherapyChatbotOutputSchema = z.object({
-  response: z.string().describe('The chatbot response to the user message.'),
+  responseStream: z.any().describe('A stream of chatbot response chunks.'),
 });
 export type AiTherapyChatbotOutput = z.infer<typeof AiTherapyChatbotOutputSchema>;
 
 
-export async function aiTherapyChatbot(input: AiTherapyChatbotInput): Promise<AiTherapyChatbotOutput> {
+export async function aiTherapyChatbot(input: AiTherapyChatbotInput): Promise<ReadableStream<string>> {
   return runInUserContext(input.userId, () => aiTherapyChatbotFlow(input));
 }
 
@@ -218,7 +218,7 @@ const aiTherapyChatbotFlow = ai.defineFlow(
   {
     name: 'aiTherapyChatbotFlow',
     inputSchema: AiTherapyChatbotInputSchema,
-    outputSchema: AiTherapyChatbotOutputSchema,
+    outputSchema: z.string(),
     tools: [getRecentMoodLogs, getRecentJournalEntries, getRecentAnxietyScores, getRecentDepressionScores],
     system: systemPrompt,
   },
@@ -235,13 +235,25 @@ const aiTherapyChatbotFlow = ai.defineFlow(
       }
     }
 
-    const llmResponse = await ai.generate({
+    const { stream } = await ai.generate({
       history,
       prompt: input.message,
+      stream: true
     });
     
-    return {
-      response: llmResponse.text,
-    };
+    let fullText = '';
+    const outputStream = new ReadableStream({
+      async start(controller) {
+        for await (const chunk of stream) {
+            fullText += chunk.text;
+            controller.enqueue(chunk.text);
+        }
+        controller.close();
+      }
+    });
+
+    return outputStream;
   }
 );
+
+    

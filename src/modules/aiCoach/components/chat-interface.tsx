@@ -51,12 +51,9 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                  if (data.messages && data.messages.length > 0) {
                     setMessages(data.messages);
                 } else {
-                    // This handles a new chat document that might be created but not yet populated
                     setMessages(initialMessages);
                 }
             } else {
-                // Document doesn't exist, which might happen if a new chat is being created.
-                // We'll show initial messages until the doc is created and the listener fires.
                 setMessages(initialMessages);
             }
         }, async (error) => {
@@ -69,7 +66,6 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         });
         return () => unsubscribe();
     } else {
-        // No chat ID, so reset to initial state.
         setMessages(initialMessages);
     }
   }, [chatDocRef]);
@@ -112,32 +108,44 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         });
         errorEmitter.emit('permission-error', permissionError);
       });
-      
-      const result = await getAiResponse(newMessages, user.uid);
 
-      if (result.success && result.data) {
-        const finalMessages = [...newMessages, result.data];
+      // Add a placeholder for the streaming response
+      setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+
+      try {
+        const stream = await getAiResponse(newMessages, user.uid);
+        let streamedResponse = '';
+        const reader = stream.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          streamedResponse += chunk;
+
+          setMessages(prev => {
+            const updatedMessages = [...prev];
+            updatedMessages[updatedMessages.length - 1] = { role: 'assistant', content: streamedResponse };
+            return updatedMessages;
+          });
+        }
+
+        const finalMessages = [...newMessages, { role: 'assistant', content: streamedResponse }];
         const finalUpdate = {
             messages: finalMessages,
             updatedAt: serverTimestamp(),
         };
-
-        setMessages(finalMessages);
         
-        setDoc(chatDocRef, finalUpdate, { merge: true }).catch(err => {
-            const permissionError = new FirestorePermissionError({
-                path: chatDocRef.path,
-                operation: 'update',
-                requestResourceData: finalUpdate,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
+        await setDoc(chatDocRef, finalUpdate, { merge: true });
 
-      } else {
+      } catch (error: any) {
+        console.error('Error with streaming response:', error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: result.error || "An unknown error occurred.",
+          description: error.message || "An unknown error occurred.",
         });
         // Restore previous messages on error
         setMessages(messages);
@@ -154,6 +162,17 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
           </div>
       )
   }
+
+  const renderMessageContent = (content: string) => {
+    const isStreaming = isPending && messages[messages.length - 1].content === content;
+    if (isStreaming && content === '') {
+        return <Loader className="animate-spin size-4" />;
+    }
+    // Render the content with a blinking cursor if it's the last message and we are streaming
+    const cursor = isStreaming ? '<span class="animate-pulse">|</span>' : '';
+    return <p className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: content + cursor }} />;
+  };
+
 
   return (
     <div className={cn("flex h-[calc(100vh-3.5rem)] flex-col md:h-full", className)}>
@@ -177,10 +196,11 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                   'max-w-md rounded-lg p-3 text-sm',
                   message.role === 'user'
                     ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                    : 'bg-muted',
+                  isPending && index === messages.length - 1 && 'flex items-center'
                 )}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                 {renderMessageContent(message.content)}
               </div>
                {message.role === 'user' && (
                 <Avatar className="h-8 w-8 border">
@@ -189,16 +209,6 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
               )}
             </div>
           ))}
-           {isPending && (
-            <div className="flex items-start gap-4 mb-6 justify-start">
-              <Avatar className="h-8 w-8 border">
-                <AvatarFallback><Bot size={16}/></AvatarFallback>
-              </Avatar>
-              <div className="max-w-md rounded-lg p-3 bg-muted flex items-center">
-                <Loader className="animate-spin size-4" />
-              </div>
-            </div>
-          )}
         </div>
       </ScrollArea>
       <div className="border-t p-4 md:px-6 md:py-4">
@@ -220,3 +230,5 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     </div>
   );
 }
+
+    
