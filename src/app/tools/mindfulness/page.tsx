@@ -12,10 +12,10 @@ const mindfulnessTools = [
     { href: "/tools/mindfulness/body-scan", title: "Body Scan Exercises", description: "Bring awareness to your physical self." },
     { href: "/tools/mindfulness/mindful-breathing", title: "Mindful Breathing", description: "Anchor yourself in the present moment." },
     { href: "/tools/mindfulness/walking-meditation", title: "Walking Meditation", description: "Practice mindfulness in motion." },
-    { href: "#", title: "Loving-Kindness Meditation", description: "Cultivate compassion for self and others." },
-    { href: "#", title: "Progressive Muscle Relaxation", description: "Release physical tension." },
+    { href: "/tools/mindfulness/loving-kindness", title: "Loving-Kindness Meditation", description: "Cultivate compassion for self and others." },
+    { href: "/tools/mindfulness/progressive-muscle-relaxation", title: "Progressive Muscle Relaxation", description: "Release physical tension." },
     { href: "/tools/ptsd/grounding", title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
-    { href: "#", title: "Visualization Exercises", description: "Create calming mental imagery." },
+    { href: "/tools/relaxation/safe-place", title: "Visualization Exercises", description: "Create calming mental imagery." },
     { href: "#", title: "Mindfulness Bells/Reminders", description: "Periodic sounds to bring you to the present." },
     { href: "#", title: "Present-Moment Awareness", description: "Exercises to focus on the here and now." },
 ];
