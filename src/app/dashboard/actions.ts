@@ -1,7 +1,8 @@
+
 'use server';
 
-import { identifyMoodTriggers, type IdentifyMoodTriggersOutput, type IdentifyMoodTriggersInput } from "@/ai/flows/identify-mood-triggers";
-import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
+import { identifyMoodTriggers, type IdentifyMoodTriggersOutput, type IdentifyMoodTriggersInput } from "@/services/flows/identify-mood-triggers";
+import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 
 
 export async function getMoodTriggers(
