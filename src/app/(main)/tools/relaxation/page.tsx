@@ -21,16 +21,26 @@ export default function RelaxationPage() {
   return (
     <PageLayout title="Relaxation Techniques">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {relaxationTools.map((tool) => (
-          <Link href={tool.href || "#"} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
-            <Card className='h-full'>
-                <CardHeader>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>{tool.description}</CardDescription>
-                </CardHeader>
-            </Card>
-          </Link>
-        ))}
+        {relaxationTools.map((tool) => {
+            const card = (
+                <Card className='h-full'>
+                    <CardHeader>
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                    </CardHeader>
+                </Card>
+            );
+
+            if ((tool as any).href) {
+                return (
+                    <Link href={(tool as any).href} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+                        {card}
+                    </Link>
+                )
+            }
+
+            return <div key={tool.title}>{card}</div>
+        })}
       </div>
     </PageLayout>
   );
