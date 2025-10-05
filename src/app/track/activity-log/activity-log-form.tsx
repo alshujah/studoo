@@ -17,6 +17,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const moodOptions = ['Happy', 'Sad', 'Anxious', 'Angry', 'Calm', 'Content', 'Stressed', 'Tired', 'Energetic'];
 
@@ -30,7 +32,7 @@ const formSchema = z.object({
   screenTimeHours: z.coerce.number().optional(),
   eatingHabits: z.string().optional(),
   notes: z.string().optional(),
-}).refine(data => Object.values(data).some(v => v !== undefined && v !== ''), {
+}).refine(data => Object.values(data).some(v => v !== undefined && v !== '' && (Array.isArray(v) ? v.length > 0 : true)), {
     message: 'Please fill out at least one field.'
 });
 
@@ -55,20 +57,25 @@ export function DailyLogForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'activityLogs'), {
+    const logData = {
         ...data,
         userId: user.uid,
         timestamp: serverTimestamp(),
-      });
+    };
+    const logCollection = collection(firestore, 'users', user.uid, 'activityLogs');
+    addDoc(logCollection, logData).then(() => {
       toast({ title: 'Daily Log Saved', description: 'Your entry has been saved.' });
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving daily log:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your daily log.' });
-    } finally {
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: logCollection.path,
+            operation: 'create',
+            requestResourceData: logData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
       setIsSubmitting(false);
-    }
+    });
   }
 
   return (
@@ -95,7 +102,7 @@ export function DailyLogForm() {
             <FormItem>
               <FormLabel>Activity Duration (in minutes)</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="e.g., 30" {...field} />
+                <Input type="number" placeholder="e.g., 30" {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : e.target.value)} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -179,7 +186,7 @@ export function DailyLogForm() {
             <FormItem>
               <FormLabel>Screen Time (in hours)</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="e.g., 4" {...field} />
+                <Input type="number" placeholder="e.g., 4" {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : e.target.value)} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -224,3 +231,5 @@ export function DailyLogForm() {
     </Form>
   );
 }
+
+    

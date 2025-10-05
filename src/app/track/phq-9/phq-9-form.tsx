@@ -22,6 +22,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Loader } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const questions = [
   "Little interest or pleasure in doing things",
@@ -86,23 +88,27 @@ export function Phq9Form() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      const phq9Collection = collection(firestore, 'users', user.uid, 'phq9Scores');
-      await addDoc(phq9Collection, {
+    const scoreData = {
         userId: user.uid,
         score: totalScore,
         answers: data,
         timestamp: serverTimestamp(),
-      });
+    };
+    const phq9Collection = collection(firestore, 'users', user.uid, 'phq9Scores');
+    addDoc(phq9Collection, scoreData).then(() => {
       toast({ title: 'Assessment Saved', description: 'Your PHQ-9 assessment has been saved.' });
       form.reset();
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving PHQ-9 score:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'There was an error saving your assessment.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: phq9Collection.path,
+            operation: 'create',
+            requestResourceData: scoreData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
+        setIsSubmitting(false);
+    });
   }
 
   return (
@@ -157,3 +163,5 @@ export function Phq9Form() {
     </Form>
   );
 }
+
+    

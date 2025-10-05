@@ -68,14 +68,15 @@ export default function TodoPage() {
         userId: user.uid,
     };
 
-    addDoc(collection(firestore, 'users', user.uid, 'todos'), taskData)
+    const tasksCollection = collection(firestore, 'users', user.uid, 'todos');
+    addDoc(tasksCollection, taskData)
       .then(() => {
         setTaskText('');
         toast({ title: 'Task added!' });
       })
       .catch(async (serverError) => {
         const permissionError = new FirestorePermissionError({
-          path: `users/${user.uid}/todos/new`,
+          path: tasksCollection.path,
           operation: 'create',
           requestResourceData: taskData,
         });
@@ -153,7 +154,6 @@ export default function TodoPage() {
                         ) : (
                             <PlusIcon />
                         )}
-                        <span className="sr-only">Add Task</span>
                     </Button>
                 </form>
 
@@ -170,7 +170,7 @@ export default function TodoPage() {
                 ) : (
                     <ul className="space-y-3">
                        {tasks.map((task) => (
-                           <li key={task.id} className={cn("flex items-center gap-4 p-3 bg-card rounded-lg shadow-sm transition-all border", task.completed && "bg-muted/50")}>
+                           <li key={task.id} className={cn("flex items-center gap-4 p-3 rounded-lg shadow-sm transition-all border", task.completed ? "bg-muted/50" : "bg-card")}>
                                 <Checkbox
                                     id={`task-${task.id}`}
                                     checked={task.completed}
@@ -185,8 +185,7 @@ export default function TodoPage() {
                                     size="icon"
                                     aria-label="Delete task"
                                 >
-                                    <Trash2 className="text-muted-foreground transition-colors hover:text-destructive"/>
-                                    <span className="sr-only">Delete task</span>
+                                    <Trash2 className="text-muted-foreground transition-colors hover:text-destructive h-4 w-4"/>
                                 </Button>
                             </li>
                        ))}
@@ -197,3 +196,5 @@ export default function TodoPage() {
     </PageLayout>
   );
 }
+
+    

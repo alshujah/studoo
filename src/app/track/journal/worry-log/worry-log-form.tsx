@@ -30,6 +30,8 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   worry: z.string().min(5, { message: "Please describe your worry in a bit more detail." }),
@@ -67,36 +69,45 @@ export function WorryLogForm() {
   async function onSubmit(data: WorryFormValues) {
     if (!user) return;
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'worryLogs'), {
+    const logData = {
         userId: user.uid,
         worry: data.worry,
         scheduledTime: Timestamp.fromDate(data.scheduledTime),
         createdAt: serverTimestamp(),
-      });
+    };
+    const logCollection = collection(firestore, 'users', user.uid, 'worryLogs');
+
+    addDoc(logCollection, logData).then(() => {
       toast({ title: 'Worry Logged', description: 'Your worry has been scheduled. Try to let it go until then.' });
       form.reset();
-    } catch (error) {
-      console.error(error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your worry.' });
-    } finally {
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: logCollection.path,
+            operation: 'create',
+            requestResourceData: logData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
       setIsSubmitting(false);
-    }
+    });
   }
 
   async function handleOutcomeUpdate(worryId: string, didComeTrue: boolean, outcome: string) {
     if (!user) return;
-    try {
-        await updateDoc(doc(firestore, 'users', user.uid, 'worryLogs', worryId), {
-            didComeTrue,
-            outcome,
-        });
+    const docRef = doc(firestore, 'users', user.uid, 'worryLogs', worryId);
+    const updateData = { didComeTrue, outcome };
+
+    updateDoc(docRef, updateData).then(() => {
         toast({ title: 'Outcome Saved', description: 'Your reflection has been saved.' });
         setEditingWorry(null);
-    } catch (error) {
-        console.error(error);
-        toast({ variant: 'destructive', title: 'Error', description: 'Could not save the outcome.' });
-    }
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: docRef.path,
+            operation: 'update',
+            requestResourceData: updateData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    });
 }
 
   return (
@@ -251,3 +262,5 @@ function WorryOutcomeEditor({ worry, onSave, onCancel }: { worry: WorryLog, onSa
         </div>
     )
 }
+
+    

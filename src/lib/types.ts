@@ -50,60 +50,6 @@ export interface WorryLog {
     createdAt: Timestamp;
 }
 
-export interface BehavioralActivationActivity {
-    id: string;
-    userId: string;
-    title: string;
-    scheduledDate: Timestamp;
-    completed: boolean;
-    createdAt: Timestamp;
-}
-
-export interface BehavioralExperiment {
-    id: string;
-    userId: string;
-    belief: string;
-    prediction: string;
-    experiment: string;
-    outcome: string;
-    whatILearned: string;
-    createdAt: Timestamp;
-}
-
-export interface ProblemSolvingSession {
-    id: string;
-    userId: string;
-    problem: string;
-    solutions: { solution: string; pros: string; cons: string }[];
-    chosenSolution: string;
-    actionPlan: string;
-    outcome: string;
-    createdAt: Timestamp;
-}
-
-export interface BehavioralChainAnalysis {
-    id: string;
-    userId: string;
-    problemBehavior: string;
-    promptingEvent: string;
-    vulnerabilityFactors: string;
-    chainOfEvents: string;
-    consequences: string;
-    solutions: string;
-    createdAt: Timestamp;
-}
-
-export interface ExposureHierarchy {
-    id: string;
-    userId: string;
-    fear: string;
-    createdAt: Timestamp;
-    steps: {
-        step: string;
-        suds: number;
-    }[];
-}
-
 export interface PanicLog {
   id: string;
   userId: string;
@@ -111,8 +57,8 @@ export interface PanicLog {
   symptoms: string[];
   peakIntensity: number;
   durationInMinutes: number;
-  trigger: string;
-  notes: string;
+  trigger?: string;
+  notes?: string;
 }
 
 export interface SleepLog {
@@ -122,7 +68,8 @@ export interface SleepLog {
   timeSlept: number; // in hours
   quality: 'Poor' | 'Fair' | 'Good' | 'Excellent';
   awakenings: number;
-  notes: string;
+  notes?: string;
+  createdAt: Timestamp;
 }
 
 export interface ActivityLog {
@@ -147,7 +94,7 @@ export interface MedicationLog {
   medication: string;
   dosage: string;
   taken: boolean;
-  sideEffects: string;
+  sideEffects?: string;
 }
 
 export interface SubstanceUseLog {
@@ -158,20 +105,6 @@ export interface SubstanceUseLog {
     amount: string;
     urgeIntensity: number;
     notes?: string;
-}
-
-export interface SfbtMiracleQuestion {
-    id: string;
-    userId: string;
-    answer: string;
-    timestamp: Timestamp;
-}
-
-export interface MbsrProgress {
-    id: string;
-    userId: string;
-    currentWeek: number;
-    updatedAt: Timestamp;
 }
 
 export interface SocialSkillAssessment {
@@ -210,3 +143,5 @@ export interface LifeBalanceScore {
     timestamp: Timestamp;
     domains: { name: string; satisfaction: number }[];
 }
+
+    

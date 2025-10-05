@@ -20,6 +20,8 @@ import { addDoc, collection, serverTimestamp, Timestamp } from 'firebase/firesto
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   date: z.date({ required_error: 'Please select the date of your sleep.' }),
@@ -45,6 +47,7 @@ export function SleepLogForm() {
       date: new Date(),
       timeSlept: 8,
       awakenings: 0,
+      notes: '',
     },
   });
 
@@ -54,21 +57,27 @@ export function SleepLogForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'sleepLogs'), {
+    const sleepLogData = {
         ...data,
         date: data.date.toISOString().split('T')[0], // Format as YYYY-MM-DD string
         userId: user.uid,
         createdAt: serverTimestamp(),
-      });
+    };
+    const sleepLogCollection = collection(firestore, 'users', user.uid, 'sleepLogs');
+    
+    addDoc(sleepLogCollection, sleepLogData).then(() => {
       toast({ title: 'Sleep Logged', description: 'Your sleep entry has been saved.' });
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving sleep log:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your sleep log.' });
-    } finally {
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: sleepLogCollection.path,
+            operation: 'create',
+            requestResourceData: sleepLogData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
       setIsSubmitting(false);
-    }
+    });
   }
 
   return (
@@ -170,3 +179,5 @@ export function SleepLogForm() {
     </Form>
   );
 }
+
+    

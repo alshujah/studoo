@@ -17,6 +17,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const symptoms = [
   "Pounding heart or accelerated heart rate",
@@ -60,6 +62,8 @@ export function PanicLogForm() {
       symptoms: [],
       peakIntensity: 50,
       durationInMinutes: 10,
+      trigger: '',
+      notes: '',
     },
   });
 
@@ -69,20 +73,26 @@ export function PanicLogForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'panicLogs'), {
+    const logData = {
         ...data,
         userId: user.uid,
         timestamp: serverTimestamp(),
-      });
+    };
+    const logCollection = collection(firestore, 'users', user.uid, 'panicLogs');
+
+    addDoc(logCollection, logData).then(() => {
       toast({ title: 'Panic Attack Logged', description: 'Your log has been saved.' });
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving panic log:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your log.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: logCollection.path,
+            operation: 'create',
+            requestResourceData: logData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
+        setIsSubmitting(false);
+    });
   }
 
   return (
@@ -108,7 +118,7 @@ export function PanicLogForm() {
                               checked={field.value?.includes(item)}
                               onCheckedChange={(checked) => {
                                 return checked
-                                  ? field.onChange([...field.value, item])
+                                  ? field.onChange([...(field.value || []), item])
                                   : field.onChange(field.value?.filter((value) => value !== item));
                               }}
                             />
@@ -132,7 +142,7 @@ export function PanicLogForm() {
             <FormItem>
               <FormLabel>Peak Intensity ({value}%)</FormLabel>
               <FormControl>
-                <Slider defaultValue={[value]} onValueChange={(vals) => onChange(vals[0])} max={100} step={1} />
+                <Slider defaultValue={[value ?? 50]} onValueChange={(vals) => onChange(vals[0])} max={100} step={1} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -189,3 +199,5 @@ export function PanicLogForm() {
     </Form>
   );
 }
+
+    

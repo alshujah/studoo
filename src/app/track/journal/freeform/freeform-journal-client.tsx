@@ -19,6 +19,8 @@ import { collection, query, orderBy, limit, addDoc, serverTimestamp } from 'fire
 import type { JournalEntry } from '@/lib/types';
 import { format } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 export function FreeformJournalClient() {
   const [isAnalysisPending, startAnalysisTransition] = useTransition();
@@ -68,34 +70,39 @@ export function FreeformJournalClient() {
     }
     
     setIsSaving(true);
-    try {
-        await addDoc(collection(firestore, 'users', user.uid, 'journalEntries'), {
-            userId: user.uid,
-            content: journalEntry,
-            timestamp: serverTimestamp(),
-            ...(journalAnalysis && { 
-                analysis: journalAnalysis.analysis,
-                keyThemes: journalAnalysis.keyThemes,
-                suggestedToolName: journalAnalysis.suggestedTool?.name,
-                suggestedToolHref: journalAnalysis.suggestedTool?.href,
-             })
+    const journalData = {
+        userId: user.uid,
+        content: journalEntry,
+        timestamp: serverTimestamp(),
+        ...(journalAnalysis && { 
+            analysis: journalAnalysis.analysis,
+            keyThemes: journalAnalysis.keyThemes,
+            suggestedToolName: journalAnalysis.suggestedTool?.name,
+            suggestedToolHref: journalAnalysis.suggestedTool?.href,
+         })
+    };
+    const journalCollection = collection(firestore, 'users', user.uid, 'journalEntries');
+
+    addDoc(journalCollection, journalData)
+        .then(() => {
+            toast({
+                title: "Journal Entry Saved",
+                description: "Your entry has been successfully saved.",
+            });
+            setJournalEntry('');
+            setJournalAnalysis(null);
+        })
+        .catch(err => {
+            const permissionError = new FirestorePermissionError({
+                path: journalCollection.path,
+                operation: 'create',
+                requestResourceData: journalData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        })
+        .finally(() => {
+            setIsSaving(false);
         });
-        toast({
-            title: "Journal Entry Saved",
-            description: "Your entry has been successfully saved.",
-        });
-        setJournalEntry('');
-        setJournalAnalysis(null);
-    } catch (error) {
-        console.error("Error saving journal entry: ", error);
-        toast({
-            variant: "destructive",
-            title: "Save Failed",
-            description: "Could not save your journal entry.",
-        });
-    } finally {
-        setIsSaving(false);
-    }
   };
 
   const isPending = isAnalysisPending || isSaving;
@@ -225,3 +232,5 @@ export function FreeformJournalClient() {
     </div>
   );
 }
+
+    

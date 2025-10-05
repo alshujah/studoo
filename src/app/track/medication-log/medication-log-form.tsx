@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   medication: z.string().min(1, 'Please enter the medication name.'),
@@ -38,6 +40,7 @@ export function MedicationLogForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       taken: true,
+      sideEffects: '',
     },
   });
 
@@ -47,20 +50,26 @@ export function MedicationLogForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'medicationLogs'), {
+    const logData = {
         ...data,
         userId: user.uid,
         timestamp: serverTimestamp(),
-      });
+    };
+    const logCollection = collection(firestore, 'users', user.uid, 'medicationLogs');
+    
+    addDoc(logCollection, logData).then(() => {
       toast({ title: 'Medication Logged', description: 'Your medication entry has been saved.' });
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving medication log:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your medication log.' });
-    } finally {
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: logCollection.path,
+            operation: 'create',
+            requestResourceData: logData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
       setIsSubmitting(false);
-    }
+    });
   }
 
   return (
@@ -131,3 +140,5 @@ export function MedicationLogForm() {
     </Form>
   );
 }
+
+    

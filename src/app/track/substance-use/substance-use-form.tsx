@@ -16,6 +16,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   substance: z.string().min(1, 'Please enter the substance.'),
@@ -38,6 +40,7 @@ export function SubstanceUseForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       urgeIntensity: 50,
+      notes: '',
     },
   });
 
@@ -47,20 +50,26 @@ export function SubstanceUseForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'substanceUseLogs'), {
+    const logData = {
         ...data,
         userId: user.uid,
         timestamp: serverTimestamp(),
-      });
+    };
+    const logCollection = collection(firestore, 'users', user.uid, 'substanceUseLogs');
+
+    addDoc(logCollection, logData).then(() => {
       toast({ title: 'Log Saved', description: 'Your substance use entry has been saved.' });
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving log:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your log.' });
-    } finally {
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: logCollection.path,
+            operation: 'create',
+            requestResourceData: logData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
       setIsSubmitting(false);
-    }
+    });
   }
 
   return (
@@ -130,3 +139,5 @@ export function SubstanceUseForm() {
     </Form>
   );
 }
+
+    

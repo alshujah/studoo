@@ -22,6 +22,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   entry1: z.string().min(1, 'Please fill out this entry.'),
@@ -58,29 +60,30 @@ export function GratitudeForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      const gratitudeCollection = collection(firestore, 'users', user.uid, 'gratitudeEntries');
-      await addDoc(gratitudeCollection, {
+    const gratitudeData = {
         userId: user.uid,
         entries: [data.entry1, data.entry2, data.entry3],
         timestamp: serverTimestamp(),
-      });
-      toast({
-        title: 'Entry Saved',
-        description: 'Your gratitude journal entry has been saved.',
-      });
-      form.reset();
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving gratitude entry:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'There was an error saving your entry.',
-      });
-    } finally {
+    };
+    const gratitudeCollection = collection(firestore, 'users', user.uid, 'gratitudeEntries');
+
+    addDoc(gratitudeCollection, gratitudeData).then(() => {
+        toast({
+            title: 'Entry Saved',
+            description: 'Your gratitude journal entry has been saved.',
+        });
+        form.reset();
+        router.push('/dashboard');
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: gratitudeCollection.path,
+            operation: 'create',
+            requestResourceData: gratitudeData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
         setIsSubmitting(false);
-    }
+    });
   }
 
   return (
@@ -133,3 +136,5 @@ export function GratitudeForm() {
     </Form>
   );
 }
+
+    

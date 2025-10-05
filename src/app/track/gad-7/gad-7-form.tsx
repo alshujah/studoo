@@ -22,6 +22,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Loader } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const questions = [
   "Feeling nervous, anxious, or on edge",
@@ -83,23 +85,27 @@ export function Gad7Form() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      const gad7Collection = collection(firestore, 'users', user.uid, 'gad7Scores');
-      await addDoc(gad7Collection, {
+    const scoreData = {
         userId: user.uid,
         score: totalScore,
         answers: data,
         timestamp: serverTimestamp(),
-      });
-      toast({ title: 'Assessment Saved', description: 'Your GAD-7 assessment has been saved.' });
-      form.reset();
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Error saving GAD-7 score:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'There was an error saving your assessment.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    };
+    const gad7Collection = collection(firestore, 'users', user.uid, 'gad7Scores');
+    addDoc(gad7Collection, scoreData).then(() => {
+        toast({ title: 'Assessment Saved', description: 'Your GAD-7 assessment has been saved.' });
+        form.reset();
+        router.push('/dashboard');
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: gad7Collection.path,
+            operation: 'create',
+            requestResourceData: scoreData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
+        setIsSubmitting(false);
+    });
   }
 
   return (
@@ -154,3 +160,5 @@ export function Gad7Form() {
     </Form>
   );
 }
+
+    

@@ -23,6 +23,8 @@ import { useRouter } from 'next/navigation';
 import { Loader } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { wemwbsQuestions, wemwbsScale } from '@/lib/data/wemwbs-data';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const createFormSchema = () => {
     const schemaObject: { [key: string]: any } = {};
@@ -69,24 +71,27 @@ export function WemwbsForm() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      const wemwbsCollection = collection(firestore, 'users', user.uid, 'wemwbsScores');
-      await addDoc(wemwbsCollection, {
+    const scoreData = {
         userId: user.uid,
         score: totalScore,
         answers: data,
         timestamp: serverTimestamp(),
-      });
-      toast({ title: 'Assessment Saved', description: 'Your WEMWBS assessment has been saved.' });
-      setIsSubmitted(true);
-      window.scrollTo({top: 0, behavior: 'smooth'});
-
-    } catch (error) {
-      console.error('Error saving WEMWBS score:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'There was an error saving your assessment.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    };
+    const wemwbsCollection = collection(firestore, 'users', user.uid, 'wemwbsScores');
+    addDoc(wemwbsCollection, scoreData).then(() => {
+        toast({ title: 'Assessment Saved', description: 'Your WEMWBS assessment has been saved.' });
+        setIsSubmitted(true);
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: wemwbsCollection.path,
+            operation: 'create',
+            requestResourceData: scoreData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
+        setIsSubmitting(false);
+    });
   }
   
   if (isSubmitted) {

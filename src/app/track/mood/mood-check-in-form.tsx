@@ -25,6 +25,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const coreEmotions = ["Joy", "Sadness", "Fear", "Anger", "Surprise", "Disgust", "Contentment"];
 
@@ -67,29 +69,30 @@ export function MoodCheckInForm() {
     }
 
     setIsSubmitting(true);
-    try {
-      const moodLogCollection = collection(firestore, 'users', user.uid, 'moodLogs');
-      await addDoc(moodLogCollection, {
+    const moodLogData = {
         ...data,
         userId: user.uid,
         timestamp: serverTimestamp(),
-      });
-      toast({
-        title: "Check-in Saved",
-        description: "Your mood log has been successfully saved.",
-      });
-      form.reset();
-      router.push('/dashboard');
-    } catch (error) {
-      console.error("Error saving mood log:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "There was an error saving your mood log.",
-      });
-    } finally {
+    };
+    const moodLogCollection = collection(firestore, 'users', user.uid, 'moodLogs');
+    
+    addDoc(moodLogCollection, moodLogData).then(() => {
+        toast({
+            title: "Check-in Saved",
+            description: "Your mood log has been successfully saved.",
+        });
+        form.reset();
+        router.push('/dashboard');
+    }).catch(err => {
+        const permissionError = new FirestorePermissionError({
+            path: moodLogCollection.path,
+            operation: 'create',
+            requestResourceData: moodLogData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+    }).finally(() => {
         setIsSubmitting(false);
-    }
+    });
   }
 
   return (
@@ -161,7 +164,7 @@ export function MoodCheckInForm() {
                       min={0}
                       max={100}
                       step={1}
-                      defaultValue={[value]}
+                      defaultValue={[value ?? 50]}
                       onValueChange={(vals) => onChange(vals[0])}
                     />
                   </FormControl>
@@ -217,3 +220,5 @@ export function MoodCheckInForm() {
     </Card>
   );
 }
+
+    

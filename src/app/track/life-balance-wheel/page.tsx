@@ -14,6 +14,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { Loader } from 'lucide-react';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const initialDomains = [
     { name: "Career / Work", satisfaction: 5 },
@@ -44,19 +46,28 @@ export default function LifeBalanceWheelPage() {
           return;
       }
       setIsSubmitting(true);
-      try {
-          await addDoc(collection(firestore, 'users', user.uid, 'lifeBalanceScores'), {
-              userId: user.uid,
-              domains,
-              timestamp: serverTimestamp()
-          });
-          toast({ title: 'Saved!', description: 'Your life balance snapshot has been saved.'});
-      } catch (error) {
-          console.error(error);
-          toast({ variant: 'destructive', title: 'Error', description: 'Could not save your data.'});
-      } finally {
-          setIsSubmitting(false);
-      }
+      const scoreData = {
+          userId: user.uid,
+          domains,
+          timestamp: serverTimestamp()
+      };
+      const scoresCollection = collection(firestore, 'users', user.uid, 'lifeBalanceScores');
+      
+      addDoc(scoresCollection, scoreData)
+        .then(() => {
+            toast({ title: 'Saved!', description: 'Your life balance snapshot has been saved.'});
+        })
+        .catch(err => {
+            const permissionError = new FirestorePermissionError({
+                path: scoresCollection.path,
+                operation: 'create',
+                requestResourceData: scoreData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        })
+        .finally(() => {
+            setIsSubmitting(false);
+        });
   }
 
   return (
@@ -114,3 +125,5 @@ export default function LifeBalanceWheelPage() {
     </PageLayout>
   );
 }
+
+    
