@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -8,9 +9,9 @@ export const metadata: Metadata = {
 
 const somaticTools = [
     { href: "/tools/emdr", title: "EMDR (Eye Movement Desensitization)", description: "Digital bilateral stimulation for trauma." },
-    { href: "#", title: "Somatic Experiencing Exercises", description: "Body-based trauma release techniques." },
+    { href: "/tools/somatic-therapy/somatic-experiencing", title: "Somatic Experiencing Exercises", description: "Body-based trauma release techniques." },
     { href: "/tools/dance-therapy", title: "Dance/Movement Therapy", description: "Guided movement exercises with motion tracking." },
-    { href: "#", title: "Nature Therapy (Ecotherapy)", description: "Virtual nature experiences and outdoor activity planning." },
+    { href: "/tools/somatic-therapy/nature-therapy", title: "Nature Therapy (Ecotherapy)", description: "Virtual nature experiences and outdoor activity planning." },
 ];
 
 export default function SomaticTherapyPage() {
@@ -21,7 +22,7 @@ export default function SomaticTherapyPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {somaticTools.map((tool) => (
-            <Link href={tool.href || "#"} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+            <Link href={tool.href || '#'} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
               <Card className="h-full">
                   <CardHeader>
                       <CardTitle>{tool.title}</CardTitle>
