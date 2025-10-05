@@ -3,6 +3,7 @@
 
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
+import { triageUserIssue, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
 import type { ChatMessage } from '@/lib/types';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
@@ -57,5 +58,20 @@ export async function getJournalAnalysis(
  {
     console.error('Error getting journal analysis:', error);
     return { success: false, error: 'Failed to get analysis from the AI coach.' };
+  }
+}
+
+export async function triageIssue(
+  input: TriageUserIssueInput
+): Promise<{ success: boolean; data?: TriageUserIssueOutput; error?: string }> {
+  try {
+    if (!input.issue.trim()) {
+      return { success: false, error: 'Issue description cannot be empty.' };
+    }
+    const result = await triageUserIssue(input);
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error getting triage recommendation:', error);
+    return { success: false, error: 'Failed to get a recommendation.' };
   }
 }

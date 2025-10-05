@@ -9,3 +9,4 @@ import '@/ai/tools/user-data';
 import '@/ai/flows/analyze-thought-record.ts';
 import '@/ai/flows/identify-mood-triggers.ts';
 import '@/ai/flows/generate-meditation-flow.ts';
+import '@/ai/flows/triage-user-issue.ts';

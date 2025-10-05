@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { MoodChart } from './mood-chart';
-import { getJournalAnalysis } from '@/app/chatbot/actions';
-import type { AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
+import { triageIssue } from '@/app/chatbot/actions';
+import type { TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
@@ -35,9 +35,9 @@ interface DashboardAuthenticatedProps {
 }
 
 export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
-  const [isJournalPending, startJournalTransition] = useTransition();
-  const [journalEntry, setJournalEntry] = useState('');
-  const [journalAnalysis, setJournalAnalysis] = useState<AnalyzeJournalEntryOutput | null>(null);
+  const [isTriagePending, startTriageTransition] = useTransition();
+  const [issue, setIssue] = useState('');
+  const [triageResult, setTriageResult] = useState<TriageUserIssueOutput | null>(null);
   const { toast } = useToast();
   const firestore = useFirestore();
 
@@ -118,52 +118,26 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
 
   }, [moodLogsSnapshot]);
 
-  const handleJournalSubmit = () => {
-    if (!journalEntry.trim() || !user) {
+  const handleTriageSubmit = () => {
+    if (!issue.trim() || !user) {
         toast({
             variant: "destructive",
             title: "Error",
-            description: "Journal entry cannot be empty."
+            description: "Please describe what's on your mind."
         })
         return;
     }
-    setJournalAnalysis(null);
-    startJournalTransition(async () => {
-      const analysisResult = await getJournalAnalysis(journalEntry);
-      
-      try {
-        await addDoc(collection(firestore, 'users', user.uid, 'journalEntries'), {
-            userId: user.uid,
-            content: journalEntry,
-            timestamp: serverTimestamp(),
-            ...(analysisResult.success && analysisResult.data && { 
-                analysis: analysisResult.data.analysis,
-                keyThemes: analysisResult.data.keyThemes,
-                suggestedToolName: analysisResult.data.suggestedTool?.name,
-                suggestedToolHref: analysisResult.data.suggestedTool?.href,
-             })
+    setTriageResult(null);
+    startTriageTransition(async () => {
+      const result = await triageIssue({ issue });
+      if (result.success && result.data) {
+        setTriageResult(result.data);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Analysis Failed",
+          description: result.error || "Could not get a recommendation.",
         });
-
-        if (analysisResult.success && analysisResult.data) {
-            setJournalAnalysis(analysisResult.data);
-             toast({
-                title: "Entry Saved & Analyzed",
-                description: "Your journal entry has been saved and analyzed.",
-            });
-        } else {
-            toast({
-                title: "Entry Saved",
-                description: "Your journal entry has been saved, but AI analysis failed.",
-            });
-        }
-        // Do not clear input here, user might want to see the analysis for the text they wrote
-      } catch (saveError) {
-          console.error("Error saving journal entry:", saveError)
-          toast({
-              variant: "destructive",
-              title: "Save Failed",
-              description: "Could not save your journal entry.",
-          });
       }
     });
   };
@@ -202,7 +176,51 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
         </CardContent>
       </Card>
       
-      <Card className="col-span-1 md:col-span-2 xl:col-span-1">
+      <Card className="col-span-1 md:col-span-2 xl:col-span-2">
+        <CardHeader>
+          <CardTitle className="font-headline">What's on your mind?</CardTitle>
+          <CardDescription>Tell me what's bothering you, and I'll suggest a tool that might help.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+            <Textarea 
+              placeholder="e.g., 'I keep thinking I'm going to fail my big presentation.' or 'I'm feeling really anxious and can't calm down.'"
+              className="min-h-24"
+              value={issue}
+              onChange={(e) => setIssue(e.target.value)}
+              disabled={isTriagePending}
+            />
+            {isTriagePending && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader className="size-4 animate-spin" />
+                <span>Finding the right tool...</span>
+              </div>
+            )}
+            {triageResult && (
+              <div className="space-y-4 rounded-md border bg-muted/20 p-4">
+                 <Alert>
+                     <Sparkles className="size-5" />
+                    <AlertTitle className="font-headline">AI Recommendation</AlertTitle>
+                    <AlertDescription>
+                       {triageResult.reason}
+                    </AlertDescription>
+                </Alert>
+                <Button asChild size="sm">
+                  <Link href={triageResult.toolHref}>
+                    Go to {triageResult.toolName}
+                    <ArrowRight className="ml-2 size-4" />
+                  </Link>
+                </Button>
+              </div>
+            )}
+        </CardContent>
+        <CardFooter className="justify-between">
+            <Button onClick={handleTriageSubmit} disabled={!issue.trim() || isTriagePending}>
+              {isTriagePending ? 'Analyzing...' : 'Get Suggestion'}
+            </Button>
+        </CardFooter>
+      </Card>
+
+      <Card className="col-span-1 md:col-span-2 xl:col-span-2">
         <CardHeader>
           <CardTitle className="font-headline">Insights</CardTitle>
           <CardDescription>Discover patterns in your well-being.</CardDescription>
@@ -255,94 +273,6 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
             </Button>
         </CardFooter>
       </Card>
-
-      <Card className="col-span-1 md:col-span-2 xl:col-span-1 flex flex-col h-[500px]">
-        <CardHeader>
-          <CardTitle className="font-headline">AI Coach</CardTitle>
-          <CardDescription>Talk through your thoughts with your AI companion.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex-grow flex items-center justify-center p-0">
-            <div className="text-center text-muted-foreground">
-                <MessageSquare className="mx-auto size-12" />
-                <p className="mt-4">Full chat experience available.</p>
-                <Button asChild variant="link">
-                    <Link href="/chatbot">Go to AI Coach <ArrowRight className="ml-2 size-4" /></Link>
-                </Button>
-            </div>
-        </CardContent>
-      </Card>
-      
-      <Card className="col-span-1 md:col-span-2">
-        <CardHeader>
-          <CardTitle className="font-headline">Daily Journal</CardTitle>
-          <CardDescription>A space for your thoughts, reflections, and feelings.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-            <Textarea 
-              placeholder="What's on your mind today?" 
-              className="min-h-32"
-              value={journalEntry}
-              onChange={(e) => setJournalEntry(e.target.value)}
-              disabled={isJournalPending}
-            />
-            {isJournalPending && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader className="size-4 animate-spin" />
-                <span>Saving & Analyzing...</span>
-              </div>
-            )}
-            {journalAnalysis && (
-              <div className="space-y-4 rounded-md border bg-muted/20 p-4">
-                 <Alert>
-                     <Sparkles className="size-5" />
-                    <AlertTitle className="font-headline">AI Insights</AlertTitle>
-                    <AlertDescription>
-                        Here are some reflections on your journal entry.
-                    </AlertDescription>
-                </Alert>
-                <p className="text-sm text-foreground/80">{journalAnalysis.analysis}</p>
-                <div className="flex flex-wrap gap-2">
-                  {journalAnalysis.keyThemes.map(theme => (
-                    <Badge key={theme} variant="secondary">{theme}</Badge>
-                  ))}
-                </div>
-                {journalAnalysis.suggestedTool && (
-                  <Card>
-                    <CardHeader className="p-4">
-                      <CardTitle className="text-base">You might find this helpful:</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0">
-                        <p className="text-sm text-muted-foreground mb-2">{journalAnalysis.suggestedTool.reason}</p>
-                        <Button asChild size="sm" variant="outline">
-                          <Link href={journalAnalysis.suggestedTool.href}>
-                            Go to {journalAnalysis.suggestedTool.name}
-                            <ArrowRight className="ml-2 size-4" />
-                          </Link>
-                        </Button>
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-            )}
-        </CardContent>
-        <CardFooter className="justify-between">
-            <Button onClick={handleJournalSubmit} disabled={!journalEntry.trim() || isJournalPending}>
-              {isJournalPending ? (
-                <>
-                  <Loader className="mr-2 size-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Save & Analyze"
-              )}
-            </Button>
-             <Button asChild variant="ghost">
-              <Link href="/track/journal/freeform">
-                Go to Journal <ArrowRight className="ml-2 size-4" />
-              </Link>
-            </Button>
-        </CardFooter>
-      </Card>
       
        <Card className="col-span-1 flex flex-col">
         <CardHeader>
@@ -363,6 +293,12 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                 <span>Thought Record</span>
               </Link>
             </Button>
+             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/chatbot">
+                <MessageSquare className="size-5 text-primary" />
+                <span>AI Coach</span>
+              </Link>
+            </Button>
           </div>
         </CardContent>
         <CardFooter>
@@ -374,7 +310,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
         </CardFooter>
       </Card>
       
-      <Card className="col-span-1 md:col-span-2">
+      <Card className="col-span-1 md:col-span-2 lg:col-span-3">
         <CardHeader>
             <CardTitle className="font-headline">Recent Journal Entries</CardTitle>
             <CardDescription>Review and reflect on your past entries.</CardDescription>
@@ -393,16 +329,9 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                                 key={entry.id}
                                 className="block w-full text-left p-3 rounded-md border hover:bg-muted/50"
                                 onClick={() => {
-                                    setJournalEntry(entry.content);
-                                    setJournalAnalysis(entry.analysis ? {
-                                        analysis: entry.analysis,
-                                        keyThemes: entry.keyThemes || [],
-                                        suggestedTool: entry.suggestedToolName ? {
-                                            name: entry.suggestedToolName,
-                                            href: entry.suggestedToolHref || '#',
-                                            reason: '',
-                                        } : undefined,
-                                    } : null);
+                                    setIssue(entry.content);
+                                    setTriageResult(null);
+                                    window.scrollTo({top: 0, behavior: 'smooth'});
                                 }}
                             >
                                 <p className="text-sm font-medium truncate">{entry.content}</p>
