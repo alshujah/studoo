@@ -25,7 +25,7 @@ const journalModules = [
     { href: "/track/journal/freeform", title: "Unsent Letter", description: "Write a letter you don't intend to send." },
     { href: "/track/journal/freeform", title: "Role-Playing Journal", description: "Explore situations from different perspectives." },
     { href: "/tools/thought-record", title: "Automatic Thought Recording", description: "Quickly capture automatic thoughts." },
-    { href: "/tools/ptsd/post-trauma-growth", title: "Post-Traumatic Growth Exercises", description: "Focus on growth after trauma." },
+    { href: "/track/journal/freeform", title: "Post-Traumatic Growth Exercises", description: "Focus on growth after trauma." },
 ];
 
 export default function JournalPage() {
