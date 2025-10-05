@@ -15,13 +15,17 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export default function ChatbotPage() {
     const auth = useAuth();
     const [user] = useAuthState(auth);
     const firestore = useFirestore();
     const { toast } = useToast();
-    const [activeChatId, setActiveChatId] = useState<string | null>(null);
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    const activeChatId = searchParams.get('id');
 
     const chatsQuery = useMemoFirebase(() => {
         if (!user || !firestore) return null;
@@ -41,11 +45,11 @@ export default function ChatbotPage() {
     }, [chatsSnapshot]);
 
     useEffect(() => {
-      // Set the first chat as active by default if none is selected
-      if(!activeChatId && chatHistory.length > 0) {
-        setActiveChatId(chatHistory[0].id);
+      // If no active chat is in the URL, and history exists, redirect to the most recent one.
+      if (!activeChatId && chatHistory.length > 0) {
+        router.replace(`/chatbot?id=${chatHistory[0].id}`);
       }
-    }, [chatHistory, activeChatId]);
+    }, [chatHistory, activeChatId, router]);
 
 
     const handleNewChat = async () => {
@@ -70,7 +74,7 @@ export default function ChatbotPage() {
 
         addDoc(chatsCollection, newChatData)
             .then(newChatRef => {
-                 setActiveChatId(newChatRef.id);
+                 router.push(`/chatbot?id=${newChatRef.id}`);
             })
             .catch(err => {
                 const permissionError = new FirestorePermissionError({
@@ -104,7 +108,7 @@ export default function ChatbotPage() {
                         {chatHistory.map(chat => (
                             <button
                                 key={chat.id}
-                                onClick={() => setActiveChatId(chat.id)}
+                                onClick={() => router.push(`/chatbot?id=${chat.id}`)}
                                 className={cn(
                                     "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
                                     activeChatId === chat.id && "bg-accent"
