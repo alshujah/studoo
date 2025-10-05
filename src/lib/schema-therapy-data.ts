@@ -1,3 +1,4 @@
+
 export type Schema = {
     name: string;
     description: string;
