@@ -8,13 +8,8 @@ export const metadata: Metadata = {
 
 const artTherapyTools = [
     { href: "/tools/art-therapy/canvas", title: "Art Therapy Canvas", description: "Digital art creation for emotional expression." },
-    { href: "#", title: "Music Therapy Playlists", description: "Mood-based curated playlists with binaural beats." },
-    { href: "#", title: "Writing Therapy Prompts", description: "Therapeutic writing exercises and journaling." },
-    { href: "#", title: "Play Therapy Elements", description: "Gamified therapeutic activities." },
-    { href: "#", title: "Pet Therapy Simulation", description: "Virtual pet companion for emotional support." },
-    { href: "#", title: "Laughter Therapy Sessions", description: "Curated content for therapeutic laughter." },
-    { href: "#", title: "Color Therapy Tools", description: "Chromotherapy exercises and environment customization." },
-    { href: "#", title: "Aromatherapy Guide", description: "Scent recommendations for emotional states." },
+    { href: "/tools/art-therapy/creative-wellness", title: "Music & Writing Therapy", description: "Use sound and words for healing." },
+    { href: "/tools/art-therapy/creative-wellness", title: "Color & Aroma Therapy", description: "Explore how senses affect mood." },
 ];
 
 export default function ArtTherapyPage() {
