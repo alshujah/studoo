@@ -2,6 +2,7 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Waves } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Somatic Therapy | Rejoyn',
@@ -12,6 +13,7 @@ const somaticTools = [
     { href: "/tools/somatic-therapy/somatic-experiencing", title: "Somatic Experiencing Exercises", description: "Body-based trauma release techniques." },
     { href: "/tools/dance-therapy", title: "Dance/Movement Therapy", description: "Guided movement exercises with motion tracking." },
     { href: "/tools/somatic-therapy/nature-therapy", title: "Nature Therapy (Ecotherapy)", description: "Virtual nature experiences and outdoor activity planning." },
+    { href: "/tools/somatic-therapy/voo-sounding", title: "Voo Sounding", description: "Use vocal vibration to calm the nervous system.", icon: Waves },
 ];
 
 export default function SomaticTherapyPage() {
@@ -25,6 +27,7 @@ export default function SomaticTherapyPage() {
             <Link href={tool.href} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
               <Card className="h-full">
                   <CardHeader>
+                      {tool.icon && <tool.icon className="size-6 text-primary mb-2" />}
                       <CardTitle>{tool.title}</CardTitle>
                       <CardDescription>{tool.description}</CardDescription>
                   </CardHeader>
