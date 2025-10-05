@@ -1,3 +1,4 @@
+
 import type { Timestamp } from 'firebase/firestore';
 
 export type ChatMessage = {
@@ -56,3 +57,16 @@ export interface BehavioralExperiment {
     whatILearned: string;
     createdAt: Timestamp;
 }
+
+export interface ProblemSolvingSession {
+    id: string;
+    userId: string;
+    problem: string;
+    solutions: { solution: string; pros: string; cons: string }[];
+    chosenSolution: string;
+    actionPlan: string;
+    outcome: string;
+    createdAt: Timestamp;
+}
+
+    

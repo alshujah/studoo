@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ const cbtTools = [
     { href: "/tools/thought-record", title: "Thought Records", description: "Track and reframe automatic thoughts." },
     { href: "/tools/cbt/behavioral-activation", title: "Behavioral Activation", description: "Schedule activities to combat depression." },
     { href: "/tools/cbt/behavioral-experiments", title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
-    { href: "#", title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
+    { href: "/tools/cbt/problem-solving", title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
     { href: "#", title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
     { href: "#", title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
     { href: "#", title: "Attention Training", description: "Practice focus redirection techniques." },
@@ -38,3 +39,5 @@ export default function CBTPage() {
     </main>
   );
 }
+
+    

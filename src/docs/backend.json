@@ -281,6 +281,31 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "belief", "prediction", "experiment", "createdAt"]
+    },
+    "problemSolvingSession": {
+      "title": "Problem Solving Session",
+      "description": "A record of a CBT problem-solving exercise.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "problem": { "type": "string" },
+        "solutions": { 
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "solution": { "type": "string" },
+              "pros": { "type": "string" },
+              "cons": { "type": "string" }
+            }
+          }
+        },
+        "chosenSolution": { "type": "string" },
+        "actionPlan": { "type": "string" },
+        "outcome": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "problem", "createdAt"]
     }
   },
   "auth": {
@@ -360,6 +385,12 @@
     "/users/{userId}/behavioralExperiments/{experimentId}": {
         "schema": { "$ref": "#/entities/behavioralExperiment" },
         "description": "Stores a user's CBT behavioral experiments."
+    },
+    "/users/{userId}/problemSolving/{sessionId}": {
+        "schema": { "$ref": "#/entities/problemSolvingSession" },
+        "description": "Stores a user's CBT problem-solving sessions."
     }
   }
 }
+
+    
