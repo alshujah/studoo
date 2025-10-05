@@ -15,7 +15,7 @@ export default function MbsrWeek2Page() {
       <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
         <h1 className="font-headline text-xl font-semibold">MBSR: Week 2</h1>
       </div>
-      <div className="flex-1 p-4 md-p-6 space-y-6">
+      <div className="flex-1 p-4 md:p-6 space-y-6">
         <Card>
           <CardHeader>
             <CardTitle className="font-headline">Mindful Awareness of Pleasant Events</CardTitle>
