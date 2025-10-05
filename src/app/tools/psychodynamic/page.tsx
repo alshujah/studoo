@@ -1,19 +1,21 @@
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { CircleUser, HeartHandshake, Armchair } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Psychodynamic Therapy | Rejoyn',
 };
 
 const psychodynamicTools = [
-    { title: "IFS (Internal Family Systems)", description: "Parts work and self-compassion exercises." },
-    { title: "Narrative Therapy Tools", description: "Story rewriting and externalization techniques." },
-    { title: "Solution-Focused Brief Therapy", description: "Goal-setting and exception-finding exercises." },
-    { title: "Gestalt Therapy Techniques", description: "Empty chair and awareness exercises." },
-    { title: "Psychodynamic Exploration", description: "Dream work and unconscious pattern analysis." },
-    { title: "Compassion-Focused Therapy", description: "Self-compassion and shame resilience exercises." },
-    { title: "Schema Therapy Worksheets", description: "Core belief identification and modification." },
-    { title: "Interpersonal Therapy (IPT)", description: "Relationship pattern analysis tools." },
+    { href: "/tools/psychodynamic/ifs", title: "IFS (Internal Family Systems)", description: "Work with your inner 'parts' with self-compassion.", icon: CircleUser },
+    { href: "/tools/psychodynamic/cft", title: "Compassion-Focused Therapy", description: "Cultivate your compassionate self to combat shame.", icon: HeartHandshake },
+    { href: "/tools/psychodynamic/gestalt", title: "Gestalt Therapy Techniques", description: "Focus on the 'here and now' with awareness exercises.", icon: Armchair },
+    { href: "/tools/narrative-therapy", title: "Narrative Therapy Tools", description: "Rewrite your story and externalize problems." },
+    { href: "/tools/solution-focused", title: "Solution-Focused Brief Therapy", description: "Focus on solutions, not problems." },
+    { href: "/tools/schema-therapy", title: "Schema Therapy Worksheets", description: "Identify and modify core beliefs." },
+    { href: "/tools/ipt", title: "Interpersonal Therapy (IPT)", description: "Analyze and improve relationship patterns." },
 ];
 
 export default function PsychodynamicPage() {
@@ -24,12 +26,15 @@ export default function PsychodynamicPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {psychodynamicTools.map((tool) => (
-            <Card key={tool.title}>
-                <CardHeader>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>{tool.description}</CardDescription>
-                </CardHeader>
-            </Card>
+            <Link href={tool.href} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+                <Card className="h-full">
+                    <CardHeader>
+                        {tool.icon && <tool.icon className="size-6 text-primary mb-2" />}
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                    </CardHeader>
+                </Card>
+            </Link>
         ))}
       </div>
     </main>
