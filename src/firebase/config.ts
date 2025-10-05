@@ -4,7 +4,7 @@
 // The following configuration is for a project that you have access to.
 // You can replace it with your own project's configuration.
 export const firebaseConfig = {
-  apiKey: "AIzaSyA_REDACTED_FOR_PRIVACY",
+  apiKey: "AIzaSyAfjSONDYXNTinaZWh0Im4pBwHCeC18S3o",
   authDomain: "sample-firebase-ai-app-5d0f1.firebaseapp.com",
   databaseURL: "https://sample-firebase-ai-app-5d0f1-default-rtdb.firebaseio.com",
   projectId: "sample-firebase-ai-app-5d0f1",
