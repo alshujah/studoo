@@ -196,15 +196,16 @@
       },
       "required": ["userId", "timestamp"]
     },
-    "sfbtGoal": {
-      "title": "SFBT Goal",
-      "description": "A user's goal in Solution-Focused Brief Therapy.",
+    "sfbtMiracleQuestion": {
+      "title": "SFBT Miracle Question",
+      "description": "A user's response to the SFBT Miracle Question.",
       "type": "object",
       "properties": {
         "userId": { "type": "string" },
+        "answer": { "type": "string"},
         "timestamp": { "type": "string", "format": "date-time" }
       },
-      "required": ["userId", "timestamp"]
+      "required": ["userId", "answer", "timestamp"]
     },
     "narrativeStory": {
       "title": "Narrative Story",
@@ -294,9 +295,9 @@
       "schema": { "$ref": "#/entities/schema" },
       "description": "Stores a user's identified schemas."
     },
-    "/users/{userId}/sfbtGoals/{sfbtGoalId}": {
-      "schema": { "$ref": "#/entities/sfbtGoal" },
-      "description": "Stores a user's Solution-Focused Brief Therapy goals."
+    "/users/{userId}/sfbtMiracleQuestions/{sfbtMiracleQuestionId}": {
+      "schema": { "$ref": "#/entities/sfbtMiracleQuestion" },
+      "description": "Stores a user's Solution-Focused Brief Therapy miracle question responses."
     },
     "/users/{userId}/narrativeStories/{narrativeStoryId}": {
       "schema": { "$ref": "#/entities/narrativeStory" },
