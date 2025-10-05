@@ -60,3 +60,14 @@
     font-family: var(--font-playfair-display);
   }
 }
+
+@layer utilities {
+    .fade-in-out {
+        animation: fade-in-out 4s ease-in-out infinite;
+    }
+
+    @keyframes fade-in-out {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
+}

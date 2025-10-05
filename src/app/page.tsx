@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/button';
 import { useAuth, signInWithGoogle, signUpWithEmail, signInWithEmail } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
-import { Loader, LogIn, Mail, UserPlus, Heart } from 'lucide-react';
+import { Loader, Mail, UserPlus } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,7 +40,6 @@ export default function LoginPage() {
     const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
     const { toast } = useToast();
     const image = placeholderImages.find(img => img.id === 'calm-lake');
-
 
     const loginForm = useForm<z.infer<typeof loginSchema>>({
       resolver: zodResolver(loginSchema),
@@ -176,7 +174,7 @@ export default function LoginPage() {
                                             </FormItem>
                                         )}/>
                                         <Button type="submit" disabled={isSubmitting} className="w-full">
-                                            {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Mail />}
+                                            {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
                                             Sign In with Email
                                         </Button>
                                     </form>
@@ -206,7 +204,7 @@ export default function LoginPage() {
                                             </FormItem>
                                         )}/>
                                         <Button type="submit" disabled={isSubmitting} className="w-full">
-                                            {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus />}
+                                            {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
                                             Create Account
                                         </Button>
                                     </form>

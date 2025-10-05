@@ -3,7 +3,7 @@
 
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
-import { analyzeThoughtRecord, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/ai/flows/analyze-thought-record';
+import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/ai/flows/analyze-thought-record';
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
 import type { ChatMessage } from '@/lib/types';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
@@ -68,7 +68,7 @@ export async function analyzeThoughtRecord(
     input: AnalyzeThoughtRecordInput
 ): Promise<{ success: boolean; data?: AnalyzeThoughtRecordOutput; error?: string }> {
     try {
-        const result = await analyzeThoughtRecordAction(input);
+        const result = await analyzeThoughtRecordFlow(input);
         return { success: true, data: result };
     } catch (error: any) {
         console.error('Error analyzing thought record:', error);

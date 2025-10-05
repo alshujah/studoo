@@ -21,7 +21,7 @@ export default function ChatbotPage() {
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
     const chatsQuery = useMemoFirebase(() => {
-        if (!user) return null;
+        if (!user || !firestore) return null;
         return query(
             collection(firestore, 'users', user.uid, 'chats'),
             orderBy('updatedAt', 'desc')
