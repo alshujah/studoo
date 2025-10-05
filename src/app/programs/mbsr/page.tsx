@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const programSchedule = [
     { week: 1, title: "Waking Up from Automatic Pilot", focus: "The Body Scan Meditation", unlocked: true, href: "/programs/mbsr/week-1" },
-    { week: 2, title: "Living in Our Heads", focus: "Mindful Breathing & Pleasant Events", unlocked: false },
+    { week: 2, title: "Living in Our Heads", focus: "Mindful Breathing & Pleasant Events", unlocked: true, href: "/programs/mbsr/week-2" },
     { week: 3, title: "Gathering the Scattered Mind", focus: "Mindful Movement & Difficult Events", unlocked: false },
     { week: 4, title: "The Power of Presence", focus: "Responding vs. Reacting to Stress", unlocked: false },
     { week: 5, title: "Acceptance and Willingness", focus: "Allowing things to be as they are", unlocked: false },
