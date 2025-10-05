@@ -1,3 +1,4 @@
+
 export const coreValues = [
     { name: "Acceptance", description: "To be open to and accepting of myself, others, and life." },
     { name: "Adventure", description: "To be adventurous; to actively seek, create, or explore novel or stimulating experiences." },
