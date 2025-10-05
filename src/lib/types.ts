@@ -149,3 +149,10 @@ export interface SubstanceUseLog {
     urgeIntensity: number;
     notes?: string;
 }
+
+export interface SfbtMiracleQuestion {
+    id: string;
+    userId: string;
+    answer: string;
+    timestamp: Timestamp;
+}
