@@ -435,6 +435,30 @@
         "notes": { "type": "string" }
       },
       "required": ["userId", "timestamp", "substance", "amount"]
+    },
+    "todo": {
+      "title": "Todo Item",
+      "description": "A single todo item.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "text": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "text", "completed", "createdAt"]
+    },
+    "wemwbsScore": {
+      "title": "WEMWBS Score",
+      "description": "A user's score on the WEMWBS well-being assessment.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "score": { "type": "number" },
+        "answers": { "type": "object" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "score", "answers", "timestamp"]
     }
   },
   "auth": {
@@ -447,7 +471,7 @@
       },
       "description": "Stores public information about a user."
     },
-     "/users/{userId}/thoughtRecords/{recordId}": {
+    "/users/{userId}/thoughtRecords/{recordId}": {
       "schema": {
         "$ref": "#/entities/thoughtRecord"
       },
@@ -552,6 +576,16 @@
     "/users/{userId}/substanceUseLogs/{logId}": {
       "schema": { "$ref": "#/entities/substanceUseLog" },
       "description": "Stores a user's substance use logs."
+    },
+    "/users/{userId}/todos/{todoId}": {
+      "schema": { "$ref": "#/entities/todo" },
+      "description": "Stores a user's todo items."
+    },
+     "/users/{userId}/wemwbsScores/{scoreId}": {
+      "schema": { "$ref": "#/entities/wemwbsScore" },
+      "description": "Stores a user's WEMWBS scores."
     }
   }
 }
+
+    

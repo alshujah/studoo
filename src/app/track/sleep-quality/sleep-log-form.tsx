@@ -57,8 +57,9 @@ export function SleepLogForm() {
     try {
       await addDoc(collection(firestore, 'users', user.uid, 'sleepLogs'), {
         ...data,
-        date: Timestamp.fromDate(data.date),
+        date: data.date.toISOString().split('T')[0], // Format as YYYY-MM-DD string
         userId: user.uid,
+        createdAt: serverTimestamp(),
       });
       toast({ title: 'Sleep Logged', description: 'Your sleep entry has been saved.' });
       router.push('/dashboard');
@@ -169,3 +170,5 @@ export function SleepLogForm() {
     </Form>
   );
 }
+
+    

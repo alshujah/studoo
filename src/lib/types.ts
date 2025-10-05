@@ -118,7 +118,7 @@ export interface PanicLog {
 export interface SleepLog {
   id: string;
   userId: string;
-  date: Timestamp;
+  date: string; // Should be a string in 'YYYY-MM-DD' format
   timeSlept: number; // in hours
   quality: 'Poor' | 'Fair' | 'Good' | 'Excellent';
   awakenings: number;
@@ -173,3 +173,21 @@ export interface MbsrProgress {
     currentWeek: number;
     updatedAt: Timestamp;
 }
+
+export interface Todo {
+  id: string;
+  text: string;
+  completed: boolean;
+  createdAt: Timestamp;
+  userId: string;
+}
+
+export interface WemwbsScore {
+    id: string;
+    userId: string;
+    score: number;
+    answers: Record<string, string>;
+    timestamp: Timestamp;
+}
+
+    

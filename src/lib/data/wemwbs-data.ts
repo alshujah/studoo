@@ -22,3 +22,5 @@ export const wemwbsScale = [
     { label: "Often", value: 4 },
     { label: "All of the time", value: 5 },
 ];
+
+    
