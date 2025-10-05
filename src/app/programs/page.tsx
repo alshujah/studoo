@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 const programs = [
     { href: "/programs/social-cognition", title: "6-Week Social Cognition Training", description: "Improve emotional recognition and processing skills." },
+    { href: "/programs/mbsr", title: "8-Week MBSR Program", description: "Mindfulness-Based Stress Reduction to cultivate awareness and reduce stress." },
 ];
 
 export default function ProgramsPage() {

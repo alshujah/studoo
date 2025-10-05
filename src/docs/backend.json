@@ -176,26 +176,16 @@
         },
         "required": ["userId", "score", "answers", "timestamp"]
     },
-    "wemwbsScore": {
-        "title": "WEMWBS Score",
-        "description": "A user's score on the Warwick-Edinburgh Mental Well-being Scale.",
-        "type": "object",
-        "properties": {
-            "userId": {
-                "type": "string"
-            },
-            "score": {
-                "type": "number"
-            },
-            "answers": {
-                "type": "object"
-            },
-            "timestamp": {
-                "type": "string",
-                "format": "date-time"
-            }
-        },
-        "required": ["userId", "score", "answers", "timestamp"]
+    "mbsrProgress": {
+      "title": "MBSR Program Progress",
+      "description": "Tracks a user's progress through the 8-week MBSR program.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "currentWeek": { "type": "number", "description": "The current week the user is on (1-8)." },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "currentWeek", "updatedAt"]
     },
     "iptSession": {
       "title": "IPT Session",
@@ -489,11 +479,11 @@
         },
         "description": "Stores a user's PHQ-9 assessment scores."
     },
-    "/users/{userId}/wemwbsScores/{wemwbsScoreId}": {
+    "/users/{userId}/mbsrProgress/{progressId}": {
         "schema": {
-            "$ref": "#/entities/wemwbsScore"
+            "$ref": "#/entities/mbsrProgress"
         },
-        "description": "Stores a user's WEMWBS assessment scores."
+        "description": "Stores a user's progress in the MBSR program."
     },
     "/users/{userId}/iptSessions/{iptSessionId}": {
       "schema": { "$ref": "#/entities/iptSession" },

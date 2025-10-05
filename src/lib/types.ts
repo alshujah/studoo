@@ -156,3 +156,10 @@ export interface SfbtMiracleQuestion {
     answer: string;
     timestamp: Timestamp;
 }
+
+export interface MbsrProgress {
+    id: string;
+    userId: string;
+    currentWeek: number;
+    updatedAt: Timestamp;
+}
