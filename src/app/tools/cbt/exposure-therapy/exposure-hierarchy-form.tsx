@@ -58,10 +58,14 @@ export function ExposureHierarchyForm() {
   });
 
   const sortedFields = React.useMemo(() => {
-    return [...fields].sort((a, b) => {
-        const sudsA = form.watch(`steps.${fields.indexOf(a)}.suds`);
-        const sudsB = form.watch(`steps.${fields.indexOf(b)}.suds`);
-        return sudsA - sudsB;
+    // Create a copy of the fields array with their original indices
+    const fieldsWithIndices = fields.map((field, index) => ({ ...field, originalIndex: index }));
+  
+    // Sort the new array based on the watched SUDS value
+    return fieldsWithIndices.sort((a, b) => {
+      const sudsA = form.watch(`steps.${a.originalIndex}.suds`);
+      const sudsB = form.watch(`steps.${b.originalIndex}.suds`);
+      return sudsA - sudsB;
     });
   }, [fields, form.watch]);
 
@@ -114,13 +118,12 @@ export function ExposureHierarchyForm() {
           <h3 className="text-lg mb-4">Build Your Ladder</h3>
           <div className="space-y-4">
             {sortedFields.map((field) => {
-              const originalIndex = fields.findIndex(f => f.id === field.id);
-              const sudsValue = form.watch(`steps.${originalIndex}.suds`);
+              const sudsValue = form.watch(`steps.${field.originalIndex}.suds`);
                return (
                 <div key={field.id} className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-4 p-4 border rounded-lg bg-muted/20">
                   <FormField
                     control={form.control}
-                    name={`steps.${originalIndex}.step`}
+                    name={`steps.${field.originalIndex}.step`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Step</FormLabel>
@@ -133,14 +136,14 @@ export function ExposureHierarchyForm() {
                   />
                   <FormField
                     control={form.control}
-                    name={`steps.${originalIndex}.suds`}
+                    name={`steps.${field.originalIndex}.suds`}
                     render={({ field: { onChange, value, ...restField } }) => (
                         <FormItem className="w-full md:w-48">
-                            <FormLabel>SUDS ({value})</FormLabel>
+                            <FormLabel>SUDS ({sudsValue})</FormLabel>
                             <FormControl>
                                 <Slider
                                     min={0} max={100} step={5}
-                                    defaultValue={[value]}
+                                    defaultValue={[sudsValue]}
                                     onValueChange={(val) => onChange(val[0])}
                                     {...restField}
                                 />
@@ -148,7 +151,7 @@ export function ExposureHierarchyForm() {
                         </FormItem>
                     )}
                   />
-                   <Button type="button" variant="ghost" size="icon" onClick={() => remove(originalIndex)} className="self-end">
+                   <Button type="button" variant="ghost" size="icon" onClick={() => remove(field.originalIndex)} className="self-end">
                       <Trash2 className="text-destructive" />
                    </Button>
                 </div>
@@ -174,5 +177,3 @@ export function ExposureHierarchyForm() {
     </Form>
   );
 }
-
-    

@@ -91,5 +91,3 @@ export interface ExposureHierarchy {
         suds: number;
     }[];
 }
-
-    
