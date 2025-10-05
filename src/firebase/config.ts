@@ -4,11 +4,11 @@
 // The following configuration is for a project that you have access to.
 // You can replace it with your own project's configuration.
 export const firebaseConfig = {
-  apiKey: "AIzaSyAmL1gFHLThLJa6gyga6LmfBVhb6FiRHuU",
-  authDomain: "trauma-phase-one-toolkit.firebaseapp.com",
-  databaseURL: "https://trauma-phase-one-toolkit-default-rtdb.firebaseio.com",
-  projectId: "trauma-phase-one-toolkit",
-  storageBucket: "trauma-phase-one-toolkit.appspot.com",
-  messagingSenderId: "1009867477649",
-  appId: "1:1009867477649:web:9e1b7de9f8d0c8c8c8c8c8"
+  apiKey: "AIzaSyA_REDACTED_FOR_PRIVACY",
+  authDomain: "sample-firebase-ai-app-5d0f1.firebaseapp.com",
+  databaseURL: "https://sample-firebase-ai-app-5d0f1-default-rtdb.firebaseio.com",
+  projectId: "sample-firebase-ai-app-5d0f1",
+  storageBucket: "sample-firebase-ai-app-5d0f1.appspot.com",
+  messagingSenderId: "425021966725",
+  appId: "1:425021966725:web:66dbedb4094b8a82cb9cec"
 };
