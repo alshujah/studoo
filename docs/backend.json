@@ -266,6 +266,62 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "title", "scheduledDate", "completed", "createdAt"]
+    },
+    "behavioralExperiment": {
+      "title": "Behavioral Experiment",
+      "description": "A record of a CBT behavioral experiment.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "belief": { "type": "string" },
+        "prediction": { "type": "string" },
+        "experiment": { "type": "string" },
+        "outcome": { "type": "string" },
+        "whatILearned": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "belief", "prediction", "experiment", "createdAt"]
+    },
+    "problemSolvingSession": {
+      "title": "Problem Solving Session",
+      "description": "A record of a CBT problem-solving exercise.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "problem": { "type": "string" },
+        "solutions": { 
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "solution": { "type": "string" },
+              "pros": { "type": "string" },
+              "cons": { "type": "string" }
+            }
+          }
+        },
+        "chosenSolution": { "type": "string" },
+        "actionPlan": { "type": "string" },
+        "outcome": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "problem", "createdAt"]
+    },
+    "behavioralChainAnalysis": {
+      "title": "Behavioral Chain Analysis",
+      "description": "A record of a DBT behavioral chain analysis.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "problemBehavior": { "type": "string" },
+        "promptingEvent": { "type": "string" },
+        "vulnerabilityFactors": { "type": "string" },
+        "chainOfEvents": { "type": "string" },
+        "consequences": { "type": "string" },
+        "solutions": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "problemBehavior", "promptingEvent", "vulnerabilityFactors", "chainOfEvents", "consequences", "solutions", "createdAt"]
     }
   },
   "auth": {
@@ -341,6 +397,18 @@
     "/users/{userId}/behavioralActivation/{activityId}": {
       "schema": { "$ref": "#/entities/behavioralActivationActivity" },
       "description": "Stores a user's scheduled activities for Behavioral Activation."
+    },
+    "/users/{userId}/behavioralExperiments/{experimentId}": {
+        "schema": { "$ref": "#/entities/behavioralExperiment" },
+        "description": "Stores a user's CBT behavioral experiments."
+    },
+    "/users/{userId}/problemSolving/{sessionId}": {
+        "schema": { "$ref": "#/entities/problemSolvingSession" },
+        "description": "Stores a user's CBT problem-solving sessions."
+    },
+    "/users/{userId}/behavioralChainAnalyses/{analysisId}": {
+        "schema": { "$ref": "#/entities/behavioralChainAnalysis" },
+        "description": "Stores a user's DBT behavioral chain analyses."
     }
   }
 }
