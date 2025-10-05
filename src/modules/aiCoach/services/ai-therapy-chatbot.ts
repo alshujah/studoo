@@ -12,8 +12,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
-import { AIMessage, HumanMessage, SystemMessage, Message } from 'genkit';
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
+import { getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { subDays } from 'date-fns';
 
@@ -216,17 +215,13 @@ const aiTherapyChatbotFlow = ai.defineFlow(
   },
   async (input) => {
     
-    const history: Message[] = input.messages.map(msg => {
-        if (msg.role === 'user') {
-          return new HumanMessage(msg.content);
-        } else {
-          return new AIMessage(msg.content);
-        }
-    });
-
+    // Genkit can directly handle the role/content message format.
     const { stream } = await ai.generate({
-      history,
-      prompt: systemPrompt, // System prompt is now the main prompt
+      history: input.messages,
+      prompt: {
+        text: systemPrompt,
+        role: 'system',
+      },
       stream: true
     });
     
