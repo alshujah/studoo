@@ -28,6 +28,27 @@
       },
       "required": ["displayName", "email", "createdAt"]
     },
+    "todo": {
+      "title": "Todo",
+      "description": "Represents a single to-do item.",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The content of the to-do item."
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether the to-do item is completed."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the to-do item was created."
+        }
+      },
+      "required": ["text", "completed", "createdAt"]
+    },
     "moodLog": {
         "title": "Mood Log",
         "description": "A log of a user's mood at a specific point in time.",
@@ -442,6 +463,12 @@
         "$ref": "#/entities/userProfile"
       },
       "description": "Stores public information about a user."
+    },
+    "/users/{userId}/todos/{todoId}": {
+      "schema": {
+        "$ref": "#/entities/todo"
+      },
+      "description": "Stores a user's to-do items."
     },
     "/users/{userId}/moodLogs/{moodLogId}": {
         "schema": {

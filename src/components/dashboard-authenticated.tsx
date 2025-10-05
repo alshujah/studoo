@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState, useTransition, useMemo } from 'react';
@@ -9,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { MoodChart } from './mood-chart';
-import { triageIssue } from '@/app/dashboard/actions';
+import { triageIssue } from '@/app/(main)/chatbot/actions';
 import type { TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
@@ -326,3 +327,5 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
     </div>
   );
 }
+
+    

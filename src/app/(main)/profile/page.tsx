@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -14,17 +15,16 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LogOut } from 'lucide-react';
 import Link from 'next/link';
-import { PageLayout } from '@/components/layout/page-layout';
 
 export default function ProfilePage() {
   const auth = useAuth();
   const [user, loading] = useAuthState(auth);
 
   return (
-    <PageLayout
-      title="Profile & Settings"
-      action={
-        <Button
+    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+       <div className="flex items-center justify-between">
+        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Profile & Settings</h1>
+         <Button
           variant="outline"
           onClick={() => auth.signOut()}
           disabled={loading}
@@ -33,8 +33,7 @@ export default function ProfilePage() {
           <LogOut className="mr-2 h-4 w-4" />
           Sign Out
         </Button>
-      }
-    >
+      </div>
       <div className="space-y-6">
         <Card>
           <CardHeader className="flex flex-row items-center gap-4">
@@ -150,6 +149,6 @@ export default function ProfilePage() {
           </Card>
         </div>
       </div>
-    </PageLayout>
+    </main>
   );
 }

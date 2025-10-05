@@ -1,11 +1,14 @@
+
 'use server';
 
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
-import { triageUserIssue, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
+import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
 import type { ChatMessage } from '@/lib/types';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/ai/flows/identify-mood-triggers';
+
 
 // Initialize Firebase Admin SDK
 if (!getApps().length) {
@@ -60,6 +63,19 @@ export async function getJournalAnalysis(
   }
 }
 
+export async function getMoodTriggers(
+    input: IdentifyMoodTriggersInput
+): Promise<{ success: boolean; data?: IdentifyMoodTriggersOutput; error?: string }> {
+    try {
+        const result = await identifyMoodTriggers(input);
+        return { success: true, data: result };
+    } catch (error: any) {
+        console.error('Error getting mood triggers:', error);
+        return { success: false, error: 'Failed to get insights from the AI coach.' };
+    }
+}
+
+
 export async function triageIssue(
   input: TriageUserIssueInput
 ): Promise<{ success: boolean; data?: TriageUserIssueOutput; error?: string }> {
@@ -67,10 +83,12 @@ export async function triageIssue(
     if (!input.issue.trim()) {
       return { success: false, error: 'Issue description cannot be empty.' };
     }
-    const result = await triageUserIssue(input);
+    const result = await triageUserIssueFlow(input);
     return { success: true, data: result };
   } catch (error) {
     console.error('Error getting triage recommendation:', error);
     return { success: false, error: 'Failed to get a recommendation.' };
   }
 }
+
+    

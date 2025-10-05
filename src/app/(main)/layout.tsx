@@ -1,4 +1,5 @@
-import { AppLayout } from '@/components/layout/app-layout';
+
+import { Sidebar } from '@/components/layout/sidebar';
 
 export default function MainAppLayout({
   children,
@@ -6,8 +7,9 @@ export default function MainAppLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <AppLayout>
-        {children}
-      </AppLayout>
+    <div className="flex min-h-screen w-full">
+      <Sidebar />
+      {children}
+    </div>
   );
 }

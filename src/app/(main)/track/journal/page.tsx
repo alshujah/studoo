@@ -2,6 +2,7 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: 'Journal | Rejoyn',
@@ -20,10 +21,7 @@ const journalModules = [
 
 export default function JournalPage() {
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Journaling Tools</h1>
-      </div>
+    <PageLayout title="Journaling Tools">
        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {journalModules.map((module) => (
             <Link href={module.href} key={module.title} className="block hover:bg-muted/50 rounded-lg">
@@ -36,6 +34,6 @@ export default function JournalPage() {
             </Link>
         ))}
       </div>
-    </main>
+    </PageLayout>
   );
 }

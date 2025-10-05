@@ -1,9 +1,9 @@
 
-
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CircleUser, HeartHandshake, Armchair, UsersRound, Anchor } from 'lucide-react';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: 'Psychodynamic Therapy | Rejoyn',
@@ -19,10 +19,7 @@ const psychodynamicTools = [
 
 export default function PsychodynamicPage() {
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Psychodynamic Approaches</h1>
-      </div>
+    <PageLayout title="Psychodynamic Approaches">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {psychodynamicTools.map((tool) => (
             <Link href={tool.href} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
@@ -36,6 +33,6 @@ export default function PsychodynamicPage() {
             </Link>
         ))}
       </div>
-    </main>
+    </PageLayout>
   );
 }

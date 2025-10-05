@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
-import { pt_sans, playfair_display } from '@/lib/fonts';
-import { cn } from '@/lib/utils';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Rejoyn',
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('font-body antialiased', pt_sans.variable, playfair_display.variable)}>
+      <body className={inter.className}>
         <FirebaseClientProvider>
             {children}
         </FirebaseClientProvider>

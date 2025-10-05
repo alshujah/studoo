@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Bell } from 'lucide-react';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: 'Mindfulness Tools | Rejoyn',
@@ -23,10 +24,7 @@ const mindfulnessTools = [
 
 export default function MindfulnessPage() {
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Mindfulness & Meditation</h1>
-      </div>
+    <PageLayout title="Mindfulness & Meditation">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {mindfulnessTools.map((tool) => (
             <Link href={tool.href || "#"} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
@@ -39,6 +37,6 @@ export default function MindfulnessPage() {
             </Link>
         ))}
       </div>
-    </main>
+    </PageLayout>
   );
 }
