@@ -37,7 +37,7 @@ export function ValuesClarificationTool() {
           <CardHeader>
             <CardTitle>Step 1: Choose Your Values</CardTitle>
             <CardDescription>
-              From the list below, select all the values that feel important to you. Don't
+              From the list below, select all the values that feel important to you. Don\'t
               overthink it; just go with your gut feeling. Aim for 10-15 values.
             </CardDescription>
           </CardHeader>
@@ -107,7 +107,7 @@ export function ValuesClarificationTool() {
           <CardHeader>
             <CardTitle>Step 3: Reflection & Commitment</CardTitle>
             <CardDescription>
-              These are your prioritized core values. Now, let's think about how to live by them.
+              These are your prioritized core values. Now, let\'s think about how to live by them.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
