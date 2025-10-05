@@ -1,7 +1,7 @@
+
 'use client';
 
 import { GoogleAuthProvider, signInWithPopup, type Auth } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 
 const provider = new GoogleAuthProvider();
 

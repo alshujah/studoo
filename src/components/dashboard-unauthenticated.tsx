@@ -1,7 +1,8 @@
+
 'use client';
 
 import { redirect } from 'next/navigation';
 
 export function DashboardUnauthenticated() {
-    redirect('/');
+    redirect('/login');
 }

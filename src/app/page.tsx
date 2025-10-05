@@ -9,6 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Loader } from 'lucide-react';
+import { Logo } from '@/components/icons';
 
 function GoogleIcon() {
     return (
@@ -22,7 +23,7 @@ function GoogleIcon() {
     )
 }
 
-export default function Home() {
+export default function LoginPage() {
     const auth = useAuth();
     const [user, loading] = useAuthState(auth);
     const router = useRouter();
@@ -48,9 +49,9 @@ export default function Home() {
 
     return (
         <main className="flex-1">
-            <div className="container relative h-[calc(100vh-3.5rem)] flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+            <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
                 <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-                    <div className="absolute inset-0 bg-zinc-900" />
+                    <div className="absolute inset-0" />
                     <Image
                         src="https://images.unsplash.com/photo-1519817914152-22d216bb9170?q=80&w=1974&auto=format&fit=crop"
                         alt="Person sitting on a rock looking at a lake"
@@ -59,6 +60,9 @@ export default function Home() {
                         priority
                         data-ai-hint="calm nature"
                     />
+                     <div className="relative z-20 flex items-center text-lg font-medium">
+                        <Logo className="mr-2 size-8" /> Rejoyn
+                     </div>
                      <div className="relative z-20 mt-auto">
                         <blockquote className="space-y-2">
                         <p className="text-lg backdrop-blur-sm bg-black/20 p-4 rounded-md">
