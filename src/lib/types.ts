@@ -174,6 +174,20 @@ export interface MbsrProgress {
     updatedAt: Timestamp;
 }
 
+export interface SocialSkillAssessment {
+    id: string;
+    userId: string;
+    timestamp: Timestamp;
+    scores: {
+        'Listening': number;
+        'Small Talk': number;
+        'Empathy': number;
+        'Nonverbal': number;
+        'Assertiveness': number;
+    };
+    answers: Record<string, string>;
+}
+
 export interface Todo {
   id: string;
   text: string;
@@ -189,5 +203,3 @@ export interface WemwbsScore {
     answers: Record<string, string>;
     timestamp: Timestamp;
 }
-
-    
