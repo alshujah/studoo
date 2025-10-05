@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 };
 
 const ptsdTools = [
-    { href: "#", title: "Trauma Timeline Creator", description: "Visual mapping of traumatic events." },
-    { href: "#", title: "Trigger Identification System", description: "Comprehensive trigger logging and pattern analysis." },
+    { href: "/tools/ptsd/timeline", title: "Trauma Timeline Creator", description: "Visual mapping of traumatic events." },
+    { href: "/tools/ptsd/triggers", title: "Trigger Identification System", description: "Comprehensive trigger logging and pattern analysis." },
     { href: "/tools/ptsd/grounding", title: "Flashback Grounding Toolkit", description: "5-4-3-2-1 technique and other grounding exercises." },
     { href: "#", title: "Nightmares Rescripting Tool", description: "Imagery rehearsal therapy for trauma nightmares." },
     { href: "#", title: "Hypervigilance Reduction Training", description: "Exercises to reduce constant alertness." },
