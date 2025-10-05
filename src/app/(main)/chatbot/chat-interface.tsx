@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect, useTransition } from 'react';
@@ -13,6 +14,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, setDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 
 const initialMessages: ChatMessage[] = [
@@ -53,17 +56,17 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
             }
         }, (error) => {
             console.error("Error listening to chat document:", error);
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: "Could not load chat.",
+            const permissionError = new FirestorePermissionError({
+                path: chatDocRef.path,
+                operation: 'get',
             });
+            errorEmitter.emit('permission-error', permissionError);
         });
         return () => unsubscribe();
     } else {
         setMessages(initialMessages);
     }
-  }, [chatDocRef, toast]);
+  }, [chatDocRef]);
 
 
   const scrollToBottom = () => {
@@ -89,21 +92,39 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     setInput('');
 
     startTransition(async () => {
-      // Optimistically update Firestore with the user's message
-      await setDoc(chatDocRef, {
+      const optimisticUpdate = {
         messages: newMessages,
         updatedAt: serverTimestamp(),
-      }, { merge: true });
+      };
+      
+      setDoc(chatDocRef, optimisticUpdate, { merge: true }).catch(err => {
+         const permissionError = new FirestorePermissionError({
+            path: chatDocRef.path,
+            operation: 'update',
+            requestResourceData: optimisticUpdate,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+      });
       
       const result = await getAiResponse(newMessages, user.uid);
 
       if (result.success && result.data) {
         const finalMessages = [...newMessages, result.data];
-        setMessages(finalMessages);
-        await setDoc(chatDocRef, {
+        const finalUpdate = {
             messages: finalMessages,
             updatedAt: serverTimestamp(),
-        }, { merge: true });
+        };
+
+        setMessages(finalMessages);
+        
+        setDoc(chatDocRef, finalUpdate, { merge: true }).catch(err => {
+            const permissionError = new FirestorePermissionError({
+                path: chatDocRef.path,
+                operation: 'update',
+                requestResourceData: finalUpdate,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
 
       } else {
         toast({

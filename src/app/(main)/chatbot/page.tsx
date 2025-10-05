@@ -13,6 +13,8 @@ import { Loader, MessageSquare, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 export default function ChatbotPage() {
     const auth = useAuth();
@@ -47,7 +49,7 @@ export default function ChatbotPage() {
 
 
     const handleNewChat = async () => {
-        if (!user) {
+        if (!user || !firestore) {
             toast({
                 variant: 'destructive',
                 title: 'Not signed in',
@@ -57,22 +59,27 @@ export default function ChatbotPage() {
         }
 
         const initialMessages = [{ role: 'assistant', content: "Hello! I'm your AI Coach. I can now access your recent journal and mood logs to provide more personalized support. How can I help you today?" }];
-        try {
-            const newChatRef = await addDoc(collection(firestore, 'users', user.uid, 'chats'), {
-                messages: initialMessages,
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp(),
-                userId: user.uid,
+        const newChatData = {
+            messages: initialMessages,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            userId: user.uid,
+        };
+
+        const chatsCollection = collection(firestore, 'users', user.uid, 'chats');
+
+        addDoc(chatsCollection, newChatData)
+            .then(newChatRef => {
+                 setActiveChatId(newChatRef.id);
+            })
+            .catch(err => {
+                const permissionError = new FirestorePermissionError({
+                    path: `users/${user.uid}/chats/new`,
+                    operation: 'create',
+                    requestResourceData: newChatData,
+                });
+                errorEmitter.emit('permission-error', permissionError);
             });
-            setActiveChatId(newChatRef.id);
-        } catch (error) {
-            console.error("Error creating new chat:", error);
-            toast({
-                variant: 'destructive',
-                title: 'Error',
-                description: 'Could not create a new chat session.',
-            });
-        }
     };
     
     const getChatTitle = (messages: any[]) => {

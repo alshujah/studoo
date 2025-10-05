@@ -25,6 +25,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import type { Todo } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 
 export default function TodoPage() {
   const auth = useAuth();
@@ -42,7 +44,7 @@ export default function TodoPage() {
     );
   }, [user, firestore]);
 
-  const [tasksSnapshot, tasksLoading] = useCollection(tasksQuery);
+  const [tasksSnapshot, tasksLoading, error] = useCollection(tasksQuery);
 
   const tasks = useMemo(
     () =>
@@ -58,56 +60,63 @@ export default function TodoPage() {
       return;
     }
     setIsSubmitting(true);
-    try {
-      await addDoc(collection(firestore, 'users', user.uid, 'todos'), {
+    
+    const taskData = {
         text: taskText,
         completed: false,
         createdAt: serverTimestamp(),
         userId: user.uid,
+    };
+
+    addDoc(collection(firestore, 'users', user.uid, 'todos'), taskData)
+      .then(() => {
+        setTaskText('');
+        toast({ title: 'Task added!' });
+      })
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: `users/${user.uid}/todos/new`,
+          operation: 'create',
+          requestResourceData: taskData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => {
+          setIsSubmitting(false);
       });
-      setTaskText('');
-      toast({ title: 'Task added!' });
-    } catch (error) {
-      console.error('Error adding task: ', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to add task.',
-      });
-    } finally {
-        setIsSubmitting(false);
-    }
   };
 
   const handleToggleTask = async (id: string, completed: boolean) => {
     if (!user) return;
-    try {
-        await updateDoc(doc(firestore, 'users', user.uid, 'todos', id), {
-            completed: !completed,
+    const docRef = doc(firestore, 'users', user.uid, 'todos', id);
+    const updatedData = { completed: !completed };
+    
+    updateDoc(docRef, updatedData)
+        .catch(async (serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: docRef.path,
+                operation: 'update',
+                requestResourceData: updatedData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
         });
-    } catch (error) {
-        console.error('Error toggling task: ', error);
-        toast({
-            variant: 'destructive',
-            title: 'Error',
-            description: 'Failed to update task.',
-        });
-    }
   };
 
   const handleDeleteTask = async (id: string) => {
     if (!user) return;
-    try {
-      await deleteDoc(doc(firestore, 'users', user.uid, 'todos', id));
-      toast({ title: 'Task deleted.' });
-    } catch (error) {
-      console.error('Error deleting task: ', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Failed to delete task.',
-      });
-    }
+    const docRef = doc(firestore, 'users', user.uid, 'todos', id);
+
+    deleteDoc(docRef)
+        .then(() => {
+            toast({ title: 'Task deleted.' });
+        })
+        .catch(async (serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: docRef.path,
+                operation: 'delete',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
   };
 
   if (userLoading) {

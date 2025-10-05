@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -5,11 +6,11 @@ import {
   useContext,
   type ReactNode,
   useMemo,
-  useCallback,
 } from 'react';
 import type { Auth } from 'firebase/auth';
 import type { Firestore } from 'firebase/firestore';
 import type { FirebaseApp } from 'firebase/app';
+import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 // This file provides a Firebase context and a hook to access it.
 // The context is used to store the Firebase app, auth, and firestore instances.
@@ -46,6 +47,7 @@ firestore,
 
   return (
     <FirebaseContext.Provider value={value}>
+      <FirebaseErrorListener />
       {children}
     </FirebaseContext.Provider>
   );
