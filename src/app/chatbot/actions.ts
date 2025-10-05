@@ -13,24 +13,6 @@ if (!getApps().length) {
   initializeApp();
 }
 
-async function getUserId(): Promise<string | null> {
-    const authorization = headers().get('Authorization');
-    if (!authorization?.startsWith('Bearer ')) {
-        return null;
-    }
-    const idToken = authorization.split('Bearer ')[1];
-    if (!idToken) return null;
-
-    try {
-        const decodedToken = await auth().verifyIdToken(idToken);
-        return decodedToken.uid;
-    } catch (e) {
-         console.error("Error verifying ID token", e);
-         return null;
-    }
-}
-
-
 export async function getAiResponse(
   messages: ChatMessage[],
   userId: string
