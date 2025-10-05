@@ -15,8 +15,18 @@ export interface JournalEntry {
   analysis?: string;
   keyThemes?: string[];
   suggestedToolName?: string;
-
   suggestedToolHref?: string;
+}
+
+export interface ThoughtRecord {
+    id: string;
+    userId: string;
+    situation: string;
+    automaticThought: string;
+    cognitiveDistortions: string[];
+    alternativeThought: string;
+    analysis: string;
+    timestamp: Timestamp;
 }
 
 export interface MoodLog {

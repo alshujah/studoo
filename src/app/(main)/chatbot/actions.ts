@@ -3,6 +3,7 @@
 
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
+import { analyzeThoughtRecord, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/ai/flows/analyze-thought-record';
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
 import type { ChatMessage } from '@/lib/types';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
@@ -63,6 +64,19 @@ export async function getJournalAnalysis(
   }
 }
 
+export async function analyzeThoughtRecord(
+    input: AnalyzeThoughtRecordInput
+): Promise<{ success: boolean; data?: AnalyzeThoughtRecordOutput; error?: string }> {
+    try {
+        const result = await analyzeThoughtRecordAction(input);
+        return { success: true, data: result };
+    } catch (error: any) {
+        console.error('Error analyzing thought record:', error);
+        return { success: false, error: 'Failed to get analysis from the AI coach.' };
+    }
+}
+
+
 export async function getMoodTriggers(
     input: IdentifyMoodTriggersInput
 ): Promise<{ success: boolean; data?: IdentifyMoodTriggersOutput; error?: string }> {
@@ -90,5 +104,3 @@ export async function triageIssue(
     return { success: false, error: 'Failed to get a recommendation.' };
   }
 }
-
-    

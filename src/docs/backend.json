@@ -28,26 +28,20 @@
       },
       "required": ["displayName", "email", "createdAt"]
     },
-    "todo": {
-      "title": "Todo",
-      "description": "Represents a single to-do item.",
+    "thoughtRecord": {
+      "title": "Thought Record",
+      "description": "A CBT thought record to challenge negative thoughts.",
       "type": "object",
       "properties": {
-        "text": {
-          "type": "string",
-          "description": "The content of the to-do item."
-        },
-        "completed": {
-          "type": "boolean",
-          "description": "Whether the to-do item is completed."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "The date and time the to-do item was created."
-        }
+        "userId": { "type": "string" },
+        "situation": { "type": "string" },
+        "automaticThought": { "type": "string" },
+        "cognitiveDistortions": { "type": "array", "items": { "type": "string" } },
+        "alternativeThought": { "type": "string" },
+        "analysis": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
       },
-      "required": ["text", "completed", "createdAt"]
+      "required": ["userId", "situation", "automaticThought", "cognitiveDistortions", "timestamp"]
     },
     "moodLog": {
         "title": "Mood Log",
@@ -196,17 +190,6 @@
             }
         },
         "required": ["userId", "score", "answers", "timestamp"]
-    },
-    "mbsrProgress": {
-      "title": "MBSR Program Progress",
-      "description": "Tracks a user's progress through the 8-week MBSR program.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "currentWeek": { "type": "number", "description": "The current week the user is on (1-8)." },
-        "updatedAt": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "currentWeek", "updatedAt"]
     },
     "iptSession": {
       "title": "IPT Session",
@@ -464,11 +447,11 @@
       },
       "description": "Stores public information about a user."
     },
-    "/users/{userId}/todos/{todoId}": {
+     "/users/{userId}/thoughtRecords/{recordId}": {
       "schema": {
-        "$ref": "#/entities/todo"
+        "$ref": "#/entities/thoughtRecord"
       },
-      "description": "Stores a user's to-do items."
+      "description": "Stores a user's thought records."
     },
     "/users/{userId}/moodLogs/{moodLogId}": {
         "schema": {
@@ -505,12 +488,6 @@
             "$ref": "#/entities/phq9Score"
         },
         "description": "Stores a user's PHQ-9 assessment scores."
-    },
-    "/users/{userId}/mbsrProgress/{progressId}": {
-        "schema": {
-            "$ref": "#/entities/mbsrProgress"
-        },
-        "description": "Stores a user's progress in the MBSR program."
     },
     "/users/{userId}/iptSessions/{iptSessionId}": {
       "schema": { "$ref": "#/entities/iptSession" },

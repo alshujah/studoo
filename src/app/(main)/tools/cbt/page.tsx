@@ -1,4 +1,5 @@
 
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const cbtTools = [
-    { href: "/tools/thought-record", title: "Thought Records", description: "Track and reframe automatic thoughts." },
+    { href: "/tools/thought-record", title: "Thought Record", description: "Track and reframe automatic thoughts." },
     { href: "/tools/cbt/behavioral-activation", title: "Behavioral Activation", description: "Schedule activities to combat depression." },
     { href: "/tools/cbt/behavioral-experiments", title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
     { href: "/tools/cbt/problem-solving", title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
