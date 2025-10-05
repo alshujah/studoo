@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,11 +16,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { addDoc, collection, serverTimestamp, query, orderBy } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, query, orderBy, doc, updateDoc } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Loader, FlaskConical, Beaker, CheckCircle, RotateCcw } from 'lucide-react';
 import type { BehavioralExperiment } from '@/lib/types';
