@@ -1,3 +1,4 @@
+
 'use server';
 import { config } from 'dotenv';
 config();
@@ -7,3 +8,4 @@ import '@/ai/flows/analyze-journal-entry.ts';
 import '@/ai/tools/user-data';
 import '@/ai/flows/analyze-thought-record.ts';
 import '@/ai/flows/identify-mood-triggers.ts';
+import '@/ai/flows/generate-meditation-flow.ts';
