@@ -50,9 +50,12 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                  if (data.messages && data.messages.length > 0) {
                     setMessages(data.messages);
                 } else {
+                    // This handles a new chat document that might be created but not yet populated
                     setMessages(initialMessages);
                 }
             } else {
+                // Document doesn't exist, which might happen if a new chat is being created.
+                // We'll show initial messages until the doc is created and the listener fires.
                 setMessages(initialMessages);
             }
         }, async (error) => {
@@ -65,6 +68,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         });
         return () => unsubscribe();
     } else {
+        // No chat ID, so reset to initial state.
         setMessages(initialMessages);
     }
   }, [chatDocRef]);
@@ -85,7 +89,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || !user || !chatDocRef) return;
+    if (!input.trim() || isPending || !user || !chatDocRef) return;
 
     const userMessage: ChatMessage = { role: 'user', content: input };
     const newMessages: ChatMessage[] = [...messages, userMessage];
@@ -106,8 +110,16 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                     messages: newMessages,
                     userId: user.uid,
                 }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
 
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "API request failed");
+            }
+            
             if (!response.body) {
                 throw new Error("No response body");
             }
@@ -161,32 +173,6 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
       )
   }
 
-  const renderMessageContent = (content: string, isAssistant: boolean, isLastMessage: boolean) => {
-    const isStreaming = isPending && isAssistant && isLastMessage;
-
-    if (isStreaming && content === '') {
-        return <Loader className="animate-spin size-4" />;
-    }
-    
-    const contentWithLists = content.split('\n').map((line, i, arr) => {
-      const trimmedLine = line.trim();
-      if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
-        // Return as a list item element
-        return <li key={i} className="ml-4 list-disc">{trimmedLine.substring(2)}</li>;
-      }
-      // Return as a standard text node within a span
-      return <span key={i}>{line}{i < arr.length - 1 && <br />}</span>;
-    });
-    
-    return (
-        <div className="prose prose-sm max-w-none text-current dark:prose-invert prose-p:my-0">
-            {contentWithLists}
-            {isStreaming && <span className="inline-block w-2 h-4 bg-current animate-pulse ml-1" />}
-        </div>
-    );
-  };
-
-
   return (
     <div className={cn("flex h-[calc(100vh-3.5rem)] flex-col md:h-full", className)}>
       <ScrollArea className="flex-1" ref={scrollAreaRef}>
@@ -206,14 +192,13 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
               )}
               <div
                 className={cn(
-                  'max-w-prose rounded-lg p-3 text-sm',
+                  'max-w-md rounded-lg p-3 text-sm',
                   message.role === 'user'
                     ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted',
-                  isPending && index === messages.length - 1 && 'flex items-center'
+                    : 'bg-muted'
                 )}
               >
-                 {renderMessageContent(message.content, message.role === 'assistant', index === messages.length - 1)}
+                <p className="whitespace-pre-wrap">{message.content}</p>
               </div>
                {message.role === 'user' && (
                 <Avatar className="h-8 w-8 border">
@@ -222,6 +207,16 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
               )}
             </div>
           ))}
+           {isPending && (
+            <div className="flex items-start gap-4 mb-6 justify-start">
+              <Avatar className="h-8 w-8 border">
+                <AvatarFallback><Bot size={16}/></AvatarFallback>
+              </Avatar>
+              <div className="max-w-md rounded-lg p-3 bg-muted flex items-center">
+                <Loader className="animate-spin size-4" />
+              </div>
+            </div>
+          )}
         </div>
       </ScrollArea>
       <div className="border-t p-4 md:px-6 md:py-4">
@@ -244,3 +239,4 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
   );
 }
 
+    

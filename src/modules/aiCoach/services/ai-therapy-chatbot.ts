@@ -12,7 +12,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
-import { getApps, initializeApp } from 'firebase-admin/app';
+import { getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { subDays } from 'date-fns';
 
@@ -206,11 +206,10 @@ export async function aiTherapyChatbot(input: AiTherapyChatbotInput): Promise<Re
         "It sounds like you are going through a lot right now, and I'm concerned for your safety. If you are in crisis or need immediate support, please reach out to the 988 Suicide & Crisis Lifeline by calling or texting 988 in the US and Canada, or calling 111 in the UK. You are not alone, and help is available."`;
 
     const { stream } = await ai.generate({
-        history: input.messages,
-        prompt: {
-            text: systemPrompt,
-            role: 'system',
-        },
+        history: [
+            { role: 'system', content: systemPrompt },
+            ...input.messages
+        ],
         tools: [getRecentMoodLogs, getRecentJournalEntries, getRecentAnxietyScores, getRecentDepressionScores],
         stream: true
     });
@@ -229,4 +228,5 @@ export async function aiTherapyChatbot(input: AiTherapyChatbotInput): Promise<Re
     return outputStream;
   });
 }
+
     
