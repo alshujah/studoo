@@ -1,30 +1,596 @@
+/**
+ * @fileoverview Firestore Security Rules for the application.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model.  Each user can only
+ * access their own data.  All data is nested under /users/{userId}, ensuring
+ * clear ownership.
+ *
+ * Data Structure:
+ * Data is organized hierarchically under the /users/{userId} collection. Each
+ * user has their own subcollections for different types of data, such as mood logs,
+ * journal entries, and gratitude entries.
+ *
+ * Key Security Decisions:
+ * - User listing is disallowed.
+ * - All data is private and requires authentication.
+ * - Data types and schema validation are relaxed to allow for rapid prototyping.
+ *
+ * Denormalization for Authorization:
+ *  - Each document nested under a user's path MUST contain a `userId` field
+ *    that matches the UID in the path. This ensures that the user ID is
+ *    consistent and cannot be spoofed. This is validated on `create` and
+ *    enforced as immutable on `update`.
+ */
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper functions
-    function isOwner(userId) {
-      return request.auth != null && request.auth.uid == userId;
+    // Helper function to check if the user is signed in.
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    // USERS
+    // Helper function to check if the user is the owner of the resource.
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Helper function to check if the user is the existing owner of the resource.
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Controls access to user profiles.
+     * @path /users/{userId}
+     * @allow (create) - Authenticated user can create their own profile if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own profile.
+     * @allow (update) - Authenticated user can update their own profile.
+     * @allow (delete) - Authenticated user can delete their own profile.
+     * @deny (create) - Non-authenticated user cannot create a profile.
+     * @deny (get) - Non-authenticated user cannot read a profile.
+     * @deny (update) - Non-authenticated user cannot update a profile.
+     * @deny (delete) - Non-authenticated user cannot delete a profile.
+     * @deny (create) - Authenticated user cannot create a profile with a mismatched userId.
+     * @deny (update) - Authenticated user cannot update someone else's profile.
+     * @principle Enforces document ownership for all operations.
+     */
     match /users/{userId} {
-      allow get: if true;
-      allow list: if false;
-      allow create: if isOwner(userId);
-      allow update: if isOwner(userId);
-      allow delete: if false;
+      allow get: if isOwner(userId);
+      allow list: if false; // User listing is not allowed
 
-        // MOOD LOGS
-        match /moodLogs/{moodLogId} {
-            allow read, write: if isOwner(userId);
-        }
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
 
-        // JOURNAL ENTRIES
-        match /journalEntries/{journalEntryId} {
-            allow read, write: if isOwner(userId);
-        }
+    /**
+     * @description Controls access to mood logs for a specific user.
+     * @path /users/{userId}/moodLogs/{moodLogId}
+     * @allow (create) - Authenticated user can create a mood log for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own mood log.
+     * @allow (update) - Authenticated user can update their own mood log.
+     * @allow (delete) - Authenticated user can delete their own mood log.
+     * @deny (create) - Non-authenticated user cannot create a mood log.
+     * @deny (get) - Non-authenticated user cannot read a mood log.
+     * @deny (update) - Non-authenticated user cannot update a mood log.
+     * @deny (delete) - Non-authenticated user cannot delete a mood log.
+     * @deny (create) - Authenticated user cannot create a mood log for another user.
+     * @deny (update) - Authenticated user cannot update another user's mood log.
+     * @principle Enforces document ownership for writes; allows owner to list their own logs.
+     */
+    match /users/{userId}/moodLogs/{moodLogId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to journal entries for a specific user.
+     * @path /users/{userId}/journalEntries/{journalEntryId}
+     * @allow (create) - Authenticated user can create a journal entry for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own journal entry.
+     * @allow (update) - Authenticated user can update their own journal entry.
+     * @allow (delete) - Authenticated user can delete their own journal entry.
+     * @deny (create) - Non-authenticated user cannot create a journal entry.
+     * @deny (get) - Non-authenticated user cannot read a journal entry.
+     * @deny (update) - Non-authenticated user cannot update a journal entry.
+     * @deny (delete) - Non-authenticated user cannot delete a journal entry.
+     * @deny (create) - Authenticated user cannot create a journal entry for another user.
+     * @deny (update) - Authenticated user cannot update another user's journal entry.
+     * @principle Enforces document ownership for writes; allows owner to list their own entries.
+     */
+    match /users/{userId}/journalEntries/{journalEntryId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to gratitude entries for a specific user.
+     * @path /users/{userId}/gratitudeEntries/{gratitudeEntryId}
+     * @allow (create) - Authenticated user can create a gratitude entry for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own gratitude entry.
+     * @allow (update) - Authenticated user can update their own gratitude entry.
+     * @allow (delete) - Authenticated user can delete their own gratitude entry.
+     * @deny (create) - Non-authenticated user cannot create a gratitude entry.
+     * @deny (get) - Non-authenticated user cannot read a gratitude entry.
+     * @deny (update) - Non-authenticated user cannot update a gratitude entry.
+     * @deny (delete) - Non-authenticated user cannot delete a gratitude entry.
+     * @deny (create) - Authenticated user cannot create a gratitude entry for another user.
+     * @deny (update) - Authenticated user cannot update another user's gratitude entry.
+     * @principle Enforces document ownership for writes; allows owner to list their own entries.
+     */
+    match /users/{userId}/gratitudeEntries/{gratitudeEntryId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+     /**
+     * @description Controls access to chat sessions for a specific user.
+     * @path /users/{userId}/chats/{chatId}
+     * @allow (create) - Authenticated user can create a chat session for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own chat session.
+     * @allow (update) - Authenticated user can update their own chat session.
+     * @allow (delete) - Authenticated user can delete their own chat session.
+     * @deny (create) - Non-authenticated user cannot create a chat session.
+     * @deny (get) - Non-authenticated user cannot read a chat session.
+     * @deny (update) - Non-authenticated user cannot update a chat session.
+     * @deny (delete) - Non-authenticated user cannot delete a chat session.
+     * @deny (create) - Authenticated user cannot create a chat session for another user.
+     * @deny (update) - Authenticated user cannot update another user's chat session.
+     * @principle Enforces document ownership for writes; allows owner to list their own sessions.
+     */
+    match /users/{userId}/chats/{chatId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to GAD-7 scores for a specific user.
+     * @path /users/{userId}/gad7Scores/{gad7ScoreId}
+     * @allow (create) - Authenticated user can create a GAD-7 score for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own GAD-7 score.
+     * @allow (update) - Authenticated user can update their own GAD-7 score.
+     * @allow (delete) - Authenticated user can delete their own GAD-7 score.
+     * @deny (create) - Non-authenticated user cannot create a GAD-7 score.
+     * @deny (get) - Non-authenticated user cannot read a GAD-7 score.
+     * @deny (update) - Non-authenticated user cannot update a GAD-7 score.
+     * @deny (delete) - Non-authenticated user cannot delete a GAD-7 score.
+     * @deny (create) - Authenticated user cannot create a GAD-7 score for another user.
+     * @deny (update) - Authenticated user cannot update another user's GAD-7 score.
+     * @principle Enforces document ownership for writes; allows owner to list their own scores.
+     */
+    match /users/{userId}/gad7Scores/{gad7ScoreId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to PHQ-9 scores for a specific user.
+     * @path /users/{userId}/phq9Scores/{phq9ScoreId}
+     * @allow (create) - Authenticated user can create a PHQ-9 score for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own PHQ-9 score.
+     * @allow (update) - Authenticated user can update their own PHQ-9 score.
+     * @allow (delete) - Authenticated user can delete their own PHQ-9 score.
+     * @deny (create) - Non-authenticated user cannot create a PHQ-9 score.
+     * @deny (get) - Non-authenticated user cannot read a PHQ-9 score.
+     * @deny (update) - Non-authenticated user cannot update a PHQ-9 score.
+     * @deny (delete) - Non-authenticated user cannot delete a PHQ-9 score.
+     * @deny (create) - Authenticated user cannot create a PHQ-9 score for another user.
+     * @deny (update) - Authenticated user cannot update another user's PHQ-9 score.
+     * @principle Enforces document ownership for writes; allows owner to list their own scores.
+     */
+    match /users/{userId}/phq9Scores/{phq9ScoreId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to IPT sessions for a specific user.
+     * @path /users/{userId}/iptSessions/{iptSessionId}
+     * @allow (create) - Authenticated user can create an IPT session for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own IPT session.
+     * @allow (update) - Authenticated user can update their own IPT session.
+     * @allow (delete) - Authenticated user can delete their own IPT session.
+     * @deny (create) - Non-authenticated user cannot create an IPT session.
+     * @deny (get) - Non-authenticated user cannot read an IPT session.
+     * @deny (update) - Non-authenticated user cannot update an IPT session.
+     * @deny (delete) - Non-authenticated user cannot delete an IPT session.
+     * @deny (create) - Authenticated user cannot create an IPT session for another user.
+     * @deny (update) - Authenticated user cannot update another user's IPT session.
+     * @principle Enforces document ownership for writes; allows owner to list their own sessions.
+     */
+    match /users/{userId}/iptSessions/{iptSessionId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to schemas for a specific user.
+     * @path /users/{userId}/schemas/{schemaId}
+     * @allow (create) - Authenticated user can create a schema for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own schema.
+     * @allow (update) - Authenticated user can update their own schema.
+     * @allow (delete) - Authenticated user can delete their own schema.
+     * @deny (create) - Non-authenticated user cannot create a schema.
+     * @deny (get) - Non-authenticated user cannot read a schema.
+     * @deny (update) - Non-authenticated user cannot update a schema.
+     * @deny (delete) - Non-authenticated user cannot delete a schema.
+     * @deny (create) - Authenticated user cannot create a schema for another user.
+     * @deny (update) - Authenticated user cannot update another user's schema.
+     * @principle Enforces document ownership for writes; allows owner to list their own schemas.
+     */
+    match /users/{userId}/schemas/{schemaId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to SFBT miracle questions for a specific user.
+     * @path /users/{userId}/sfbtMiracleQuestions/{sfbtMiracleQuestionId}
+     * @allow (create) - Authenticated user can create an SFBT miracle question for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own SFBT miracle question.
+     * @allow (update) - Authenticated user can update their own SFBT miracle question.
+     * @allow (delete) - Authenticated user can delete their own SFBT miracle question.
+     * @deny (create) - Non-authenticated user cannot create an SFBT miracle question.
+     * @deny (get) - Non-authenticated user cannot read an SFBT miracle question.
+     * @deny (update) - Non-authenticated user cannot update an SFBT miracle question.
+     * @deny (delete) - Non-authenticated user cannot delete an SFBT miracle question.
+     * @deny (create) - Authenticated user cannot create an SFBT miracle question for another user.
+     * @deny (update) - Authenticated user cannot update another user's SFBT miracle question.
+     * @principle Enforces document ownership for writes; allows owner to list their own questions.
+     */
+    match /users/{userId}/sfbtMiracleQuestions/{sfbtMiracleQuestionId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to narrative stories for a specific user.
+     * @path /users/{userId}/narrativeStories/{narrativeStoryId}
+     * @allow (create) - Authenticated user can create a narrative story for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own narrative story.
+     * @allow (update) - Authenticated user can update their own narrative story.
+     * @allow (delete) - Authenticated user can delete their own narrative story.
+     * @deny (create) - Non-authenticated user cannot create a narrative story.
+     * @deny (get) - Non-authenticated user cannot read a narrative story.
+     * @deny (update) - Non-authenticated user cannot update a narrative story.
+     * @deny (delete) - Non-authenticated user cannot delete a narrative story.
+     * @deny (create) - Authenticated user cannot create a narrative story for another user.
+     * @deny (update) - Authenticated user cannot update another user's narrative story.
+     * @principle Enforces document ownership for writes; allows owner to list their own stories.
+     */
+    match /users/{userId}/narrativeStories/{narrativeStoryId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to social skill assessments for a specific user.
+     * @path /users/{userId}/socialSkillAssessments/{assessmentId}
+     * @allow (create) - Authenticated user can create a social skill assessment for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own social skill assessment.
+     * @allow (update) - Authenticated user can update their own social skill assessment.
+     * @allow (delete) - Authenticated user can delete their own social skill assessment.
+     * @deny (create) - Non-authenticated user cannot create a social skill assessment.
+     * @deny (get) - Non-authenticated user cannot read a social skill assessment.
+     * @deny (update) - Non-authenticated user cannot update a social skill assessment.
+     * @deny (delete) - Non-authenticated user cannot delete a social skill assessment.
+     * @deny (create) - Authenticated user cannot create a social skill assessment for another user.
+     * @deny (update) - Authenticated user cannot update another user's social skill assessment.
+     * @principle Enforces document ownership for writes; allows owner to list their own assessments.
+     */
+    match /users/{userId}/socialSkillAssessments/{assessmentId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to worry logs for a specific user.
+     * @path /users/{userId}/worryLogs/{worryLogId}
+     * @allow (create) - Authenticated user can create a worry log for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own worry log.
+     * @allow (update) - Authenticated user can update their own worry log.
+     * @allow (delete) - Authenticated user can delete their own worry log.
+     * @deny (create) - Non-authenticated user cannot create a worry log.
+     * @deny (get) - Non-authenticated user cannot read a worry log.
+     * @deny (update) - Non-authenticated user cannot update a worry log.
+     * @deny (delete) - Non-authenticated user cannot delete a worry log.
+     * @deny (create) - Authenticated user cannot create a worry log for another user.
+     * @deny (update) - Authenticated user cannot update another user's worry log.
+     * @principle Enforces document ownership for writes; allows owner to list their own logs.
+     */
+    match /users/{userId}/worryLogs/{worryLogId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to behavioral activation activities for a specific user.
+     * @path /users/{userId}/behavioralActivation/{activityId}
+     * @allow (create) - Authenticated user can create a behavioral activation activity for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own behavioral activation activity.
+     * @allow (update) - Authenticated user can update their own behavioral activation activity.
+     * @allow (delete) - Authenticated user can delete their own behavioral activation activity.
+     * @deny (create) - Non-authenticated user cannot create a behavioral activation activity.
+     * @deny (get) - Non-authenticated user cannot read a behavioral activation activity.
+     * @deny (update) - Non-authenticated user cannot update a behavioral activation activity.
+     * @deny (delete) - Non-authenticated user cannot delete a behavioral activation activity.
+     * @deny (create) - Authenticated user cannot create a behavioral activation activity for another user.
+     * @deny (update) - Authenticated user cannot update another user's behavioral activation activity.
+     * @principle Enforces document ownership for writes; allows owner to list their own activities.
+     */
+    match /users/{userId}/behavioralActivation/{activityId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to behavioral experiments for a specific user.
+     * @path /users/{userId}/behavioralExperiments/{experimentId}
+     * @allow (create) - Authenticated user can create a behavioral experiment for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own behavioral experiment.
+     * @allow (update) - Authenticated user can update their own behavioral experiment.
+     * @allow (delete) - Authenticated user can delete their own behavioral experiment.
+     * @deny (create) - Non-authenticated user cannot create a behavioral experiment.
+     * @deny (get) - Non-authenticated user cannot read a behavioral experiment.
+     * @deny (update) - Non-authenticated user cannot update a behavioral experiment.
+     * @deny (delete) - Non-authenticated user cannot delete a behavioral experiment.
+     * @deny (create) - Authenticated user cannot create a behavioral experiment for another user.
+     * @deny (update) - Authenticated user cannot update another user's behavioral experiment.
+     * @principle Enforces document ownership for writes; allows owner to list their own experiments.
+     */
+    match /users/{userId}/behavioralExperiments/{experimentId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to problem solving sessions for a specific user.
+     * @path /users/{userId}/problemSolving/{sessionId}
+     * @allow (create) - Authenticated user can create a problem solving session for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own problem solving session.
+     * @allow (update) - Authenticated user can update their own problem solving session.
+     * @allow (delete) - Authenticated user can delete their own problem solving session.
+     * @deny (create) - Non-authenticated user cannot create a problem solving session.
+     * @deny (get) - Non-authenticated user cannot read a problem solving session.
+     * @deny (update) - Non-authenticated user cannot update a problem solving session.
+     * @deny (delete) - Non-authenticated user cannot delete a problem solving session.
+     * @deny (create) - Authenticated user cannot create a problem solving session for another user.
+     * @deny (update) - Authenticated user cannot update another user's problem solving session.
+     * @principle Enforces document ownership for writes; allows owner to list their own sessions.
+     */
+    match /users/{userId}/problemSolving/{sessionId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to behavioral chain analyses for a specific user.
+     * @path /users/{userId}/behavioralChainAnalyses/{analysisId}
+     * @allow (create) - Authenticated user can create a behavioral chain analysis for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own behavioral chain analysis.
+     * @allow (update) - Authenticated user can update their own behavioral chain analysis.
+     * @allow (delete) - Authenticated user can delete their own behavioral chain analysis.
+     * @deny (create) - Non-authenticated user cannot create a behavioral chain analysis.
+     * @deny (get) - Non-authenticated user cannot read a behavioral chain analysis.
+     * @deny (update) - Non-authenticated user cannot update a behavioral chain analysis.
+     * @deny (delete) - Non-authenticated user cannot delete a behavioral chain analysis.
+     * @deny (create) - Authenticated user cannot create a behavioral chain analysis for another user.
+     * @deny (update) - Authenticated user cannot update another user's behavioral chain analysis.
+     * @principle Enforces document ownership for writes; allows owner to list their own analyses.
+     */
+    match /users/{userId}/behavioralChainAnalyses/{analysisId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to exposure hierarchies for a specific user.
+     * @path /users/{userId}/exposureHierarchies/{hierarchyId}
+     * @allow (create) - Authenticated user can create an exposure hierarchy for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own exposure hierarchy.
+     * @allow (update) - Authenticated user can update their own exposure hierarchy.
+     * @allow (delete) - Authenticated user can delete their own exposure hierarchy.
+     * @deny (create) - Non-authenticated user cannot create an exposure hierarchy.
+     * @deny (get) - Non-authenticated user cannot read an exposure hierarchy.
+     * @deny (update) - Non-authenticated user cannot update an exposure hierarchy.
+     * @deny (delete) - Non-authenticated user cannot delete an exposure hierarchy.
+     * @deny (create) - Authenticated user cannot create an exposure hierarchy for another user.
+     * @deny (update) - Authenticated user cannot update another user's exposure hierarchy.
+     * @principle Enforces document ownership for writes; allows owner to list their own hierarchies.
+     */
+    match /users/{userId}/exposureHierarchies/{hierarchyId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to panic logs for a specific user.
+     * @path /users/{userId}/panicLogs/{panicLogId}
+     * @allow (create) - Authenticated user can create a panic log for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own panic log.
+     * @allow (update) - Authenticated user can update their own panic log.
+     * @allow (delete) - Authenticated user can delete their own panic log.
+     * @deny (create) - Non-authenticated user cannot create a panic log.
+     * @deny (get) - Non-authenticated user cannot read a panic log.
+     * @deny (update) - Non-authenticated user cannot update a panic log.
+     * @deny (delete) - Non-authenticated user cannot delete a panic log.
+     * @deny (create) - Authenticated user cannot create a panic log for another user.
+     * @deny (update) - Authenticated user cannot update another user's panic log.
+     * @principle Enforces document ownership for writes; allows owner to list their own logs.
+     */
+    match /users/{userId}/panicLogs/{panicLogId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to sleep logs for a specific user.
+     * @path /users/{userId}/sleepLogs/{sleepLogId}
+     * @allow (create) - Authenticated user can create a sleep log for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own sleep log.
+     * @allow (update) - Authenticated user can update their own sleep log.
+     * @allow (delete) - Authenticated user can delete their own sleep log.
+     * @deny (create) - Non-authenticated user cannot create a sleep log.
+     * @deny (get) - Non-authenticated user cannot read a sleep log.
+     * @deny (update) - Non-authenticated user cannot update a sleep log.
+     * @deny (delete) - Non-authenticated user cannot delete a sleep log.
+     * @deny (create) - Authenticated user cannot create a sleep log for another user.
+     * @deny (update) - Authenticated user cannot update another user's sleep log.
+     * @principle Enforces document ownership for writes; allows owner to list their own logs.
+     */
+    match /users/{userId}/sleepLogs/{sleepLogId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to activity logs for a specific user.
+     * @path /users/{userId}/activityLogs/{activityLogId}
+     * @allow (create) - Authenticated user can create an activity log for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own activity log.
+     * @allow (update) - Authenticated user can update their own activity log.
+     * @allow (delete) - Authenticated user can delete their own activity log.
+     * @deny (create) - Non-authenticated user cannot create an activity log.
+     * @deny (get) - Non-authenticated user cannot read an activity log.
+     * @deny (update) - Non-authenticated user cannot update an activity log.
+     * @deny (delete) - Non-authenticated user cannot delete an activity log.
+     * @deny (create) - Authenticated user cannot create an activity log for another user.
+     * @deny (update) - Authenticated user cannot update another user's activity log.
+     * @principle Enforces document ownership for writes; allows owner to list their own logs.
+     */
+    match /users/{userId}/activityLogs/{activityLogId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to medication logs for a specific user.
+     * @path /users/{userId}/medicationLogs/{medicationLogId}
+     * @allow (create) - Authenticated user can create a medication log for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own medication log.
+     * @allow (update) - Authenticated user can update their own medication log.
+     * @allow (delete) - Authenticated user can delete their own medication log.
+     * @deny (create) - Non-authenticated user cannot create a medication log.
+     * @deny (get) - Non-authenticated user cannot read a medication log.
+     * @deny (update) - Non-authenticated user cannot update a medication log.
+     * @deny (delete) - Non-authenticated user cannot delete a medication log.
+     * @deny (create) - Authenticated user cannot create a medication log for another user.
+     * @deny (update) - Authenticated user cannot update another user's medication log.
+     * @principle Enforces document ownership for writes; allows owner to list their own logs.
+     */
+    match /users/{userId}/medicationLogs/{medicationLogId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to substance use logs for a specific user.
+     * @path /users/{userId}/substanceUseLogs/{logId}
+     * @allow (create) - Authenticated user can create a substance use log for themselves if the userId matches their auth.uid.
+     * @allow (get) - Authenticated user can read their own substance use log.
+     * @allow (update) - Authenticated user can update their own substance use log.
+     * @allow (delete) - Authenticated user can delete their own substance use log.
+     * @deny (create) - Non-authenticated user cannot create a substance use log.
+     * @deny (get) - Non-authenticated user cannot read a substance use log.
+     * @deny (update) - Non-authenticated user cannot update a substance use log.
+     * @deny (delete) - Non-authenticated user cannot delete a substance use log.
+     * @deny (create) - Authenticated user cannot create a substance use log for another user.
+     * @deny (update) - Authenticated user cannot update another user's substance use log.
+     * @principle Enforces document ownership for writes; allows owner to list their own logs.
+     */
+    match /users/{userId}/substanceUseLogs/{logId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
     }
   }
 }
