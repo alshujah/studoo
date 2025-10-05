@@ -15,7 +15,7 @@ const actTools = [
     { href: "/tools/cbt/attention-training", title: "Attention Training", description: "Focus redirection techniques." },
     { href: "/tools/act/psychological-flexibility", title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
     { href: "#", title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
-    { href: "#", title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
+    { href: "/tools/act/self-as-context", title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
 ];
 
 export default function ACTPage() {
