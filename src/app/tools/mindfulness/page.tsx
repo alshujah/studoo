@@ -8,10 +8,10 @@ export const metadata: Metadata = {
 };
 
 const mindfulnessTools = [
-    { href: "#", title: "Guided Meditation", description: "Sessions for various lengths and styles." },
-    { href: "#", title: "Body Scan Exercises", description: "Bring awareness to your physical self." },
-    { href: "#", title: "Mindful Breathing", description: "Anchor yourself in the present moment." },
-    { href: "#", title: "Walking Meditation", description: "Practice mindfulness in motion." },
+    { href: "/tools/mindfulness/guided-meditation", title: "Guided Meditation", description: "Sessions for various lengths and styles." },
+    { href: "/tools/mindfulness/body-scan", title: "Body Scan Exercises", description: "Bring awareness to your physical self." },
+    { href: "/tools/mindfulness/mindful-breathing", title: "Mindful Breathing", description: "Anchor yourself in the present moment." },
+    { href: "/tools/mindfulness/walking-meditation", title: "Walking Meditation", description: "Practice mindfulness in motion." },
     { href: "#", title: "Loving-Kindness Meditation", description: "Cultivate compassion for self and others." },
     { href: "#", title: "Progressive Muscle Relaxation", description: "Release physical tension." },
     { href: "/tools/ptsd/grounding", title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
