@@ -2,18 +2,28 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Anchor, Baby, Film, ListChecks, Map, Network, ShieldAlert, ShieldBan, Swords } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'PTSD Support | Rejoyn',
 };
 
 const ptsdTools = [
-    { href: "/tools/ptsd/timeline", title: "Trauma Timeline Creator", description: "Visual mapping of traumatic events." },
-    { href: "/tools/ptsd/triggers", title: "Trigger Identification System", description: "Comprehensive trigger logging and pattern analysis." },
-    { href: "/tools/ptsd/grounding", title: "Flashback Grounding Toolkit", description: "5-4-3-2-1 technique and other grounding exercises." },
-    { href: "/tools/ptsd/nightmare-rescripting", title: "Nightmares Rescripting Tool", description: "Imagery rehearsal therapy for trauma nightmares." },
-    { href: "/tools/ptsd/hypervigilance", title: "Hypervigilance Reduction Training", description: "Exercises to reduce constant alertness." },
-    { href: "/tools/ptsd/grounding", title: "Dissociation Management Tools", description: "Reality testing and anchoring techniques." },
+    { href: "/tools/ptsd/timeline", title: "Trauma Timeline Creator", description: "Visual mapping of traumatic events.", icon: Map },
+    { href: "/tools/ptsd/triggers", title: "Trigger Identification System", description: "Comprehensive trigger logging and pattern analysis.", icon: ListChecks },
+    { href: "/tools/ptsd/grounding", title: "Flashback Grounding Toolkit", description: "5-4-3-2-1 technique and other grounding exercises.", icon: Anchor },
+    { href: "/tools/ptsd/nightmare-rescripting", title: "Nightmares Rescripting Tool", description: "Imagery rehearsal therapy for trauma nightmares.", icon: Film },
+    { href: "/tools/ptsd/hypervigilance", title: "Hypervigilance Reduction Training", description: "Exercises to reduce constant alertness.", icon: ShieldAlert },
+    { href: "/tools/ptsd/grounding", title: "Dissociation Management Tools", description: "Reality testing and anchoring techniques.", icon: Anchor },
+    { href: "/tools/ptsd/complex-ptsd", title: "Complex PTSD Workbook", description: "Resources for understanding and healing from complex trauma.", icon: Network },
+    { href: "/tools/ptsd/military-combat-support", title: "Military/Combat PTSD Support", description: "Specific information and resources for veterans.", icon: Swords },
+    { href: "/tools/ptsd/sexual-trauma-recovery", title: "Sexual Trauma Recovery Program", description: "Guidance and support for survivors of sexual trauma.", icon: ShieldBan },
+    { href: "/tools/ptsd/childhood-trauma-integration", title: "Childhood Trauma Integration", description: "Tools for understanding and integrating childhood experiences.", icon: Baby },
+    { href: "#", title: "Trauma Memory Reconsolidation", description: "Exercises to update and reconsolidate traumatic memories." },
+    { href: "#", title: "Post-Trauma Growth Tracking", description: "Identify and cultivate positive changes after trauma." },
+    { href: "#", title: "Vicarious Trauma Support", description: "Support for caregivers and professionals exposed to trauma." },
+    { href: "#", title: "Collective Trauma Processing", description: "Tools for processing trauma experienced by a group or community." },
+    { href: "#", title: "Intergenerational Trauma Work", description: "Understanding and addressing trauma passed down through generations." }
 ];
 
 export default function PTSDPage() {
