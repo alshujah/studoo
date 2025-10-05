@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, HandHeart, Wind } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 7 | Rejoyn',
@@ -41,7 +42,9 @@ export default function MbsrWeek7Page() {
             </Header>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                 <p>This autonomy is a key step in making the practice your own. Trust your intuition about what your mind and body need each day.</p>
-                <Link href="/tools/mindfulness" className="text-primary underline">Revisit the Mindfulness Tools</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/mindfulness">Revisit the Mindfulness Tools</Link>
+                </Button>
             </CardContent>
         </Card>
 

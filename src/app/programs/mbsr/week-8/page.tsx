@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, Sprout } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 8 | Rejoyn',
@@ -58,7 +59,9 @@ export default function MbsrWeek8Page() {
                     <li><strong>Keep Learning:</strong> Continue to explore mindfulness and other well-being tools. Your journey of self-discovery is ongoing.</li>
                </ul>
                 <div className="mt-4">
-                    <Link href="/tools" className="text-primary underline">Continue exploring all tools</Link>
+                    <Button asChild variant="link" className="p-0 h-auto">
+                        <Link href="/tools">Continue exploring all tools</Link>
+                    </Button>
                 </div>
             </CardContent>
         </Card>

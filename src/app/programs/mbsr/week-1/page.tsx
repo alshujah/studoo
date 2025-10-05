@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, Scan, Footprints } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 1 | Rejoyn',
@@ -41,7 +42,9 @@ export default function MbsrWeek1Page() {
             </CardHeader>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                 <p>This is not a relaxation exercise, though you might feel relaxed. The intention is to practice paying attention and to become more familiar with the landscape of your body. You can find a guided version of this practice in our tools.</p>
-                <Link href="/tools/mindfulness/body-scan" className="text-primary underline">Go to Body Scan Meditation script</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/mindfulness/body-scan">Go to Body Scan Meditation script</Link>
+                </Button>
             </CardContent>
         </Card>
 

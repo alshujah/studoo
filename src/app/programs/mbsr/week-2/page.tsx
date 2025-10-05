@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, Wind, Smile } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 2 | Rejoyn',
@@ -41,7 +42,9 @@ export default function MbsrWeek2Page() {
             </CardHeader>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                 <p>Find a comfortable, upright sitting posture. You can sit in a chair with your feet flat on the floor or on a cushion. The goal is to be alert yet relaxed. Gently close your eyes and bring your attention to the sensation of the breath, wherever you feel it most clearly. When the mind wanders, as it naturally will, gently acknowledge it and guide your attention back to the breath.</p>
-                <Link href="/tools/mindfulness/mindful-breathing" className="text-primary underline">Go to Mindful Breathing Guide</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/mindfulness/mindful-breathing">Go to Mindful Breathing Guide</Link>
+                </Button>
             </CardContent>
         </Card>
 

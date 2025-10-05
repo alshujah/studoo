@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, Footprints, Drama } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 3 | Rejoyn',
@@ -41,7 +42,9 @@ export default function MbsrWeek3Page() {
             </Header>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                 <p>The goal of mindful movement is not to achieve a perfect pose, but to pay intimate attention to the sensations of your body as it moves and stretches. Notice the feelings of stretching, strengthening, and releasing. If you feel any pain, ease up. The attitude is one of kindness and curiosity toward your body.</p>
-                <Link href="/tools/mindfulness/walking-meditation" className="text-primary underline">Explore Mindful Movement Guides</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/mindfulness/walking-meditation">Explore Mindful Movement Guides</Link>
+                </Button>
             </CardContent>
         </Card>
 

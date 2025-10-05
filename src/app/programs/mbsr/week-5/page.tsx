@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, HeartHandshake, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 5 | Rejoyn',
@@ -41,7 +42,9 @@ export default function MbsrWeek5Page() {
             </Header>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                 <p>When a difficult sensation or emotion arises, instead of pushing it away, see if you can allow it to be there. Investigate it: Where is it in your body? Does it change? What happens when you just let it be, without needing it to go away? This practice builds emotional resilience.</p>
-                <Link href="/tools/dbt/radical-acceptance" className="text-primary underline">Explore Radical Acceptance</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/dbt/radical-acceptance">Explore Radical Acceptance</Link>
+                </Button>
             </CardContent>
         </Card>
 
@@ -53,7 +56,9 @@ export default function MbsrWeek5Page() {
             <CardContent className="prose prose-sm max-w-none text-foreground">
                <p>In your next conversation, try to listen with your full attention. Notice the other person's words, tone, and body language. Also notice your own internal reactions (thoughts, feelings, judgments) without having to act on them. Just listen, fully.</p>
                <p>This is related to the 'Interested' part of the GIVE skill.</p>
-                <Link href="/tools/dbt/interpersonal-effectiveness" className="text-primary underline">Learn more about the GIVE skill</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/dbt/interpersonal-effectiveness">Learn more about the GIVE skill</Link>
+                </Button>
             </CardContent>
         </Card>
 

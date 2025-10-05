@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, MessageCircle, HeartHandshake } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 6 | Rejoyn',
@@ -41,7 +42,9 @@ export default function MbsrWeek6Page() {
             </Header>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                 <p>This practice cultivates a spacious and non-reactive mind. The instruction is simple: sit and notice what you notice, without getting attached to anything.</p>
-                <Link href="/tools/act/decentering" className="text-primary underline">Learn more about Defusion Techniques</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/act/decentering">Learn more about Defusion Techniques</Link>
+                </Button>
             </CardContent>
         </Card>
 
@@ -52,7 +55,9 @@ export default function MbsrWeek6Page() {
             </Header>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                <p>When you notice your inner critic is active, or when you make a mistake, pause. Place a hand over your heart and offer yourself a few words of kindness. For example: "This is a moment of suffering. Suffering is a part of life. May I be kind to myself in this moment."</p>
-               <Link href="/tools/psychodynamic/cft" className="text-primary underline">Explore Compassion-Focused exercises</Link>
+               <Button asChild variant="link" className="p-0 h-auto">
+                  <Link href="/tools/psychodynamic/cft">Explore Compassion-Focused exercises</Link>
+               </Button>
             </CardContent>
         </Card>
 

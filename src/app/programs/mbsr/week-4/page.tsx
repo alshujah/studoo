@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, PauseCircle, Ear } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'MBSR Week 4 | Rejoyn',
@@ -41,7 +42,9 @@ export default function MbsrWeek4Page() {
             </Header>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                 <p>Instead of treating sounds and thoughts as distractions, we learn to receive them with open awareness. Notice how sounds arise, exist for a moment, and then pass away. Similarly, notice thoughts as mental events, clouds passing in the sky of your mind, without getting caught up in their content.</p>
-                <Link href="/tools/mindfulness/mindful-breathing" className="text-primary underline">Go to Mindful Breathing Guide</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/mindfulness/mindful-breathing">Go to Mindful Breathing Guide</Link>
+                </Button>
             </CardContent>
         </Card>
 
@@ -58,7 +61,9 @@ export default function MbsrWeek4Page() {
                     <li><strong>O</strong> - Observe. Notice your thoughts, feelings, and bodily sensations without judgment.</li>
                     <li><strong>P</strong> - Proceed. Having checked in with yourself, choose how to proceed with more awareness.</li>
                </ul>
-                <Link href="/tools/dbt/stop-skill" className="text-primary underline">Learn more about the STOP skill</Link>
+                <Button asChild variant="link" className="p-0 h-auto">
+                    <Link href="/tools/dbt/stop-skill">Learn more about the STOP skill</Link>
+                </Button>
             </CardContent>
         </Card>
 
