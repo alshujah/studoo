@@ -276,27 +276,27 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
       
        <Card className="col-span-1 flex flex-col">
         <CardHeader>
-          <CardTitle className="font-headline">Quick Tools</CardTitle>
-          <CardDescription>Access powerful tools for immediate relief.</CardDescription>
+          <CardTitle className="font-headline">Start Here</CardTitle>
+          <CardDescription>Begin your journey with these core tools.</CardDescription>
         </CardHeader>
         <CardContent className="flex-grow">
           <div className="flex flex-col gap-4">
             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/tools/relaxation/box-breathing">
+              <Link href="/track/mood">
                 <Wind className="size-5 text-primary" />
-                <span>Breathing Exercise</span>
+                <span>Check-in Mood</span>
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/tools/thought-record">
+              <Link href="/track/journal/freeform">
                 <Pen className="size-5 text-primary" />
-                <span>Thought Record</span>
+                <span>Write in Journal</span>
               </Link>
             </Button>
              <Button asChild variant="outline" size="lg" className="justify-start gap-4">
               <Link href="/chatbot">
                 <MessageSquare className="size-5 text-primary" />
-                <span>AI Coach</span>
+                <span>Talk to AI Coach</span>
               </Link>
             </Button>
           </div>

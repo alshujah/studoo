@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { DashboardClient } from '@/components/dashboard-client';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: 'Dashboard | Rejoyn',
@@ -7,11 +8,8 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Dashboard</h1>
-      </div>
+    <PageLayout title="Dashboard">
       <DashboardClient />
-    </main>
+    </PageLayout>
   );
 }

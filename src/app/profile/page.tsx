@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -15,19 +14,28 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LogOut } from 'lucide-react';
 import Link from 'next/link';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export default function ProfilePage() {
   const auth = useAuth();
   const [user, loading] = useAuthState(auth);
 
   return (
-    <main className="flex flex-1 flex-col">
-      <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
-        <h1 className="font-headline text-xl font-semibold">
-          Profile & Settings
-        </h1>
-      </div>
-      <div className="flex-1 space-y-6 p-4 md:p-6">
+    <PageLayout
+      title="Profile & Settings"
+      action={
+        <Button
+          variant="outline"
+          onClick={() => auth.signOut()}
+          disabled={loading}
+          size="sm"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign Out
+        </Button>
+      }
+    >
+      <div className="space-y-6">
         <Card>
           <CardHeader className="flex flex-row items-center gap-4">
             {loading ? (
@@ -59,16 +67,6 @@ export default function ProfilePage() {
               </CardDescription>
             </div>
           </CardHeader>
-          <CardContent>
-            <Button
-              variant="outline"
-              onClick={() => auth.signOut()}
-              disabled={loading}
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
-          </CardContent>
         </Card>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -152,6 +150,6 @@ export default function ProfilePage() {
           </Card>
         </div>
       </div>
-    </main>
+    </PageLayout>
   );
 }
