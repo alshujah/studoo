@@ -23,13 +23,8 @@ import { Button } from '@/components/ui/button';
 import { PlusIcon, Trash2, Loader, Check } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-
-interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Timestamp;
-}
+import type { Todo } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
 export default function TodoPage() {
   const auth = useAuth();
@@ -68,6 +63,7 @@ export default function TodoPage() {
         text: taskText,
         completed: false,
         createdAt: serverTimestamp(),
+        userId: user.uid,
       });
       setTaskText('');
       toast({ title: 'Task added!' });
@@ -127,7 +123,7 @@ export default function TodoPage() {
         <Card>
             <CardHeader>
                 <CardTitle>My Tasks</CardTitle>
-                <CardDescription>A modern and professional task manager.</CardDescription>
+                <CardDescription>A simple and effective task manager to keep you organized.</CardDescription>
             </CardHeader>
             <CardContent>
                  <form onSubmit={handleAddTask} className="flex gap-2 mb-8">
@@ -141,6 +137,7 @@ export default function TodoPage() {
                     <Button
                         type="submit"
                         disabled={isSubmitting || !taskText.trim()}
+                        aria-label="Add Task"
                     >
                         {isSubmitting ? (
                             <Loader className="animate-spin" />
@@ -157,27 +154,29 @@ export default function TodoPage() {
                     </div>
                 ) : tasks.length === 0 ? (
                     <div className="text-center py-10 px-4 bg-muted/50 rounded-lg">
-                        <h3 className="text-lg font-medium text-foreground">You have no tasks yet.</h3>
-                        <p className="text-muted-foreground">Add one to get started!</p>
+                        <Check className="mx-auto h-12 w-12 text-muted-foreground" />
+                        <h3 className="mt-4 text-lg font-medium text-foreground">All done!</h3>
+                        <p className="mt-1 text-muted-foreground">You have no pending tasks. Add one above to get started.</p>
                     </div>
                 ) : (
                     <ul className="space-y-3">
                        {tasks.map((task) => (
-                           <li key={task.id} className="flex items-center gap-4 p-3 bg-card rounded-lg shadow-sm transition hover:shadow-md border">
+                           <li key={task.id} className={cn("flex items-center gap-4 p-3 bg-card rounded-lg shadow-sm transition-all border", task.completed && "bg-muted/50")}>
                                 <Checkbox
                                     id={`task-${task.id}`}
                                     checked={task.completed}
                                     onCheckedChange={() => handleToggleTask(task.id, task.completed)}
                                 />
-                                <label htmlFor={`task-${task.id}`} className={`flex-1 text-sm ${task.completed ? 'line-through text-muted-foreground' : 'text-card-foreground'}`}>
+                                <label htmlFor={`task-${task.id}`} className={cn("flex-1 text-sm cursor-pointer", task.completed ? 'line-through text-muted-foreground' : 'text-card-foreground')}>
                                     {task.text}
                                 </label>
                                 <Button
                                     onClick={() => handleDeleteTask(task.id)}
                                     variant="ghost"
                                     size="icon"
+                                    aria-label="Delete task"
                                 >
-                                    <Trash2 className="text-muted-foreground hover:text-destructive"/>
+                                    <Trash2 className="text-muted-foreground transition-colors hover:text-destructive"/>
                                     <span className="sr-only">Delete task</span>
                                 </Button>
                             </li>

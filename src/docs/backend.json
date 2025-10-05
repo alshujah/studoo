@@ -447,39 +447,6 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "text", "completed", "createdAt"]
-    },
-    "wemwbsScore": {
-      "title": "WEMWBS Score",
-      "description": "A user's score on the WEMWBS well-being assessment.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "score": { "type": "number" },
-        "answers": { "type": "object" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "score", "answers", "timestamp"]
-    },
-    "lifeBalanceScore": {
-        "title": "Life Balance Score",
-        "description": "A user's score on the life balance wheel assessment.",
-        "type": "object",
-        "properties": {
-            "userId": { "type": "string" },
-            "timestamp": { "type": "string", "format": "date-time" },
-            "domains": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "name": { "type": "string" },
-                        "satisfaction": { "type": "number" }
-                    },
-                    "required": ["name", "satisfaction"]
-                }
-            }
-        },
-        "required": ["userId", "timestamp", "domains"]
     }
   },
   "auth": {
@@ -601,14 +568,6 @@
     "/users/{userId}/todos/{todoId}": {
       "schema": { "$ref": "#/entities/todo" },
       "description": "Stores a user's todo items."
-    },
-     "/users/{userId}/wemwbsScores/{scoreId}": {
-      "schema": { "$ref": "#/entities/wemwbsScore" },
-      "description": "Stores a user's WEMWBS scores."
-    },
-    "/users/{userId}/lifeBalanceScores/{scoreId}": {
-        "schema": { "$ref": "#/entities/lifeBalanceScore" },
-        "description": "Stores a user's life balance scores."
     }
   }
 }
