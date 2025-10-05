@@ -46,12 +46,11 @@ const prompt = ai.definePrompt({
   name: 'identifyMoodTriggersPrompt',
   input: {schema: IdentifyMoodTriggersInputSchema},
   output: {schema: IdentifyMoodTriggersOutputSchema},
-  prompt: `You are an expert mental health data analyst. Analyze the following mood logs to identify recurring patterns and potential triggers for negative emotions.
-
-Mood Logs:
-{{{moodLogs}}}
-
-Based on this data, identify the top 2-3 triggers. For each trigger, describe the pattern and the emotions it's linked to. Present your findings in a structured format.`,
+  system: `You are an expert mental health data analyst. Your task is to analyze the provided mood logs to identify recurring patterns and potential triggers for negative emotions. Based on this data, identify the top 2-3 triggers. For each trigger, describe the pattern and the emotions it's linked to. Present your findings in a structured format.`,
+  prompt: `
+    Mood Logs:
+    {{{moodLogs}}}
+  `,
 });
 
 const identifyMoodTriggersFlow = ai.defineFlow(
