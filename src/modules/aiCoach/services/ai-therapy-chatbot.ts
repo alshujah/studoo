@@ -12,7 +12,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
-import { AIMessage, HumanMessage, SystemMessage, ToolMessage, Message } from 'genkit';
+import { AIMessage, HumanMessage, SystemMessage, Message } from 'genkit';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { subDays } from 'date-fns';
@@ -216,26 +216,17 @@ const aiTherapyChatbotFlow = ai.defineFlow(
   },
   async (input) => {
     
-    const userMessage = input.messages[input.messages.length - 1];
-    if (userMessage.role !== 'user') {
-      throw new Error("Last message must be from the user.");
-    }
-
-    const history: Message[] = [new SystemMessage(systemPrompt)];
-    // Add previous messages to history
-    if (input.messages.length > 1) {
-      for (const msg of input.messages.slice(0, -1)) {
+    const history: Message[] = input.messages.map(msg => {
         if (msg.role === 'user') {
-          history.push(new HumanMessage(msg.content));
-        } else if (msg.role === 'assistant') {
-          history.push(new AIMessage(msg.content));
+          return new HumanMessage(msg.content);
+        } else {
+          return new AIMessage(msg.content);
         }
-      }
-    }
+    });
 
     const { stream } = await ai.generate({
       history,
-      prompt: userMessage.content,
+      prompt: systemPrompt, // System prompt is now the main prompt
       stream: true
     });
     

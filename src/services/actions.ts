@@ -6,14 +6,7 @@ import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRe
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
 import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
-import { getApps, initializeApp, type App } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
 
-
-// Initialize Firebase Admin SDK
-if (!getApps().length) {
-  initializeApp();
-}
 
 export async function getJournalAnalysis(
   journalEntry: string
@@ -95,4 +88,6 @@ export async function generateMeditationAudioAction(
         return { success: false, error: 'Failed to generate meditation audio.' };
     }
 }
+    
+
     
