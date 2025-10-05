@@ -2,7 +2,7 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Anchor, Baby, Film, ListChecks, Map, Network, ShieldAlert, ShieldBan, Swords } from 'lucide-react';
+import { Anchor, Baby, Film, ListChecks, Map, Network, ShieldAlert, ShieldBan, Swords, History, TrendingUp, Users, Building, Workflow } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'PTSD Support | Rejoyn',
@@ -19,11 +19,11 @@ const ptsdTools = [
     { href: "/tools/ptsd/military-combat-support", title: "Military/Combat PTSD Support", description: "Specific information and resources for veterans.", icon: Swords },
     { href: "/tools/ptsd/sexual-trauma-recovery", title: "Sexual Trauma Recovery Program", description: "Guidance and support for survivors of sexual trauma.", icon: ShieldBan },
     { href: "/tools/ptsd/childhood-trauma-integration", title: "Childhood Trauma Integration", description: "Tools for understanding and integrating childhood experiences.", icon: Baby },
-    { href: "#", title: "Trauma Memory Reconsolidation", description: "Exercises to update and reconsolidate traumatic memories." },
-    { href: "#", title: "Post-Trauma Growth Tracking", description: "Identify and cultivate positive changes after trauma." },
-    { href: "#", title: "Vicarious Trauma Support", description: "Support for caregivers and professionals exposed to trauma." },
-    { href: "#", title: "Collective Trauma Processing", description: "Tools for processing trauma experienced by a group or community." },
-    { href: "#", title: "Intergenerational Trauma Work", description: "Understanding and addressing trauma passed down through generations." }
+    { href: "/tools/ptsd/trauma-memory-reconsolidation", title: "Trauma Memory Reconsolidation", description: "Exercises to update and reconsolidate traumatic memories.", icon: History },
+    { href: "/tools/ptsd/post-trauma-growth", title: "Post-Trauma Growth Tracking", description: "Identify and cultivate positive changes after trauma.", icon: TrendingUp },
+    { href: "/tools/ptsd/vicarious-trauma", title: "Vicarious Trauma Support", description: "Support for caregivers and professionals exposed to trauma.", icon: Users },
+    { href: "/tools/ptsd/collective-trauma", title: "Collective Trauma Processing", description: "Tools for processing trauma experienced by a group or community.", icon: Building },
+    { href: "/tools/ptsd/intergenerational-trauma", title: "Intergenerational Trauma Work", description: "Understanding and addressing trauma passed down through generations.", icon: Workflow }
 ];
 
 export default function PTSDPage() {
@@ -47,3 +47,4 @@ export default function PTSDPage() {
     </main>
   );
 }
+
