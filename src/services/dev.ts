@@ -3,7 +3,7 @@
 import { config } from 'dotenv';
 config();
 
-import './flows/ai-therapy-chatbot.ts';
+import '@/modules/aiCoach/services/ai-therapy-chatbot';
 import './flows/analyze-journal-entry.ts';
 import './flows/analyze-thought-record.ts';
 import './flows/identify-mood-triggers.ts';

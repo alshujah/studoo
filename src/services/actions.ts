@@ -1,11 +1,9 @@
 
 'use server';
 
-import { aiTherapyChatbot } from '@/services/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
 import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
-import type { ChatMessage } from '@/lib/types';
 import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
 import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
@@ -16,38 +14,6 @@ import { getAuth } from 'firebase-admin/auth';
 if (!getApps().length) {
   initializeApp();
 }
-
-export async function getAiResponse(
-  messages: ChatMessage[],
-  userId: string
-): Promise<{ success: boolean; data?: ChatMessage; error?: string }> {
-  try {
-    const userMessage = messages[messages.length - 1];
-    if (userMessage.role !== 'user') {
-      return { success: false, error: 'Invalid message sequence.' };
-    }
-    
-    const chatHistory = messages.slice(0, -1).map(msg => ({
-        role: msg.role as 'user' | 'assistant' | 'tool',
-        content: msg.content
-    }));
-
-    const result = await aiTherapyChatbot({
-      message: userMessage.content,
-      chatHistory: chatHistory,
-      userId: userId
-    });
-    
-    const assistantMessage: ChatMessage = { role: 'assistant' as const, content: result.response };
-
-    return { success: true, data: assistantMessage };
-
-  } catch (error) {
-    console.error('Error getting AI response:', error);
-    return { success: false, error: 'Failed to get a response from the AI coach.' };
-  }
-}
-
 
 export async function getJournalAnalysis(
   journalEntry: string
