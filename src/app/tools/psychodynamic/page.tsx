@@ -1,4 +1,5 @@
 
+
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -14,10 +15,6 @@ const psychodynamicTools = [
     { href: "/tools/psychodynamic/gestalt", title: "Gestalt Therapy Techniques", description: "Focus on the 'here and now' with awareness exercises.", icon: Armchair },
     { href: "/tools/psychodynamic/defense-mechanisms", title: "Defense Mechanisms", description: "Understand unconscious coping strategies.", icon: UsersRound },
     { href: "/tools/psychodynamic/attachment-theory", title: "Attachment-Based Therapy", description: "Explore how early bonds shape your current relationships.", icon: Anchor },
-    { href: "/tools/narrative-therapy", title: "Narrative Therapy Tools", description: "Rewrite your story and externalize problems." },
-    { href: "/tools/solution-focused", title: "Solution-Focused Brief Therapy", description: "Focus on solutions, not problems." },
-    { href: "/tools/schema-therapy", title: "Schema Therapy Worksheets", description: "Identify and modify core beliefs." },
-    { href: "/tools/ipt", title: "Interpersonal Therapy (IPT)", description: "Analyze and improve relationship patterns." },
 ];
 
 export default function PsychodynamicPage() {

@@ -1,23 +1,21 @@
 
+'use client';
+
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Target } from 'lucide-react';
-import Image from 'next/image';
-
-export const metadata: Metadata = {
-  title: 'Life Balance Wheel | Rejoyn',
-};
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
 const lifeDomains = [
-    "Career / Work",
-    "Finances",
-    "Health (Physical & Mental)",
-    "Family & Friends",
-    "Romance & Intimacy",
-    "Personal Growth",
-    "Fun & Recreation",
-    "Physical Environment (Home)",
+    { name: "Career / Work", satisfaction: 7 },
+    { name: "Finances", satisfaction: 5 },
+    { name: "Health", satisfaction: 8 },
+    { name: "Family & Friends", satisfaction: 9 },
+    { name: "Romance", satisfaction: 6 },
+    { name: "Personal Growth", satisfaction: 8 },
+    { name: "Fun & Recreation", satisfaction: 5 },
+    { name: "Environment", satisfaction: 7 },
 ];
 
 export default function LifeBalanceWheelPage() {
@@ -44,14 +42,15 @@ export default function LifeBalanceWheelPage() {
             </Alert>
             
             <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="w-full aspect-square rounded-lg bg-muted flex items-center justify-center border relative overflow-hidden">
-                    <Image 
-                        src="https://picsum.photos/seed/lifebalance/600/600"
-                        alt="Life Balance Wheel Diagram"
-                        data-ai-hint="abstract chart"
-                        fill
-                        objectFit="cover"
-                    />
+                <div className="w-full aspect-square">
+                     <ResponsiveContainer width="100%" height="100%">
+                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={lifeDomains}>
+                          <PolarGrid />
+                          <PolarAngleAxis dataKey="name" />
+                          <PolarRadiusAxis angle={30} domain={[0, 10]} />
+                          <Radar name="Satisfaction" dataKey="satisfaction" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.6} />
+                        </RadarChart>
+                      </ResponsiveContainer>
                 </div>
 
                 <Card className="bg-muted/30">
@@ -60,9 +59,8 @@ export default function LifeBalanceWheelPage() {
                     </CardHeader>
                     <CardContent className="prose prose-sm max-w-none text-foreground">
                         <ol>
-                            <li><strong>Consider Each Domain:</strong> Look at the 8 life domains listed below.</li>
-                            <li><strong>Rate Your Satisfaction:</strong> For each domain, rate your current level of satisfaction on a scale of 1 (not at all satisfied) to 10 (fully satisfied). The center of the wheel is 1, and the outer edge is 10.</li>
-                            <li><strong>Connect the Dots:</strong> In a journal or on a piece of paper, draw a circle, divide it into 8 sections, and label them. Mark your rating in each section and connect the dots to see your "wheel."</li>
+                            <li><strong>Consider Each Domain:</strong> Look at the 8 life domains shown in the chart.</li>
+                            <li><strong>Rate Your Satisfaction:</strong> In a private journal, rate your current level of satisfaction in each area on a scale of 1 (not at all satisfied) to 10 (fully satisfied).</li>
                             <li><strong>Reflect:</strong>
                                 <ul>
                                     <li>Is your wheel bumpy or smooth? A bumpy wheel might indicate an imbalance.</li>
@@ -75,18 +73,6 @@ export default function LifeBalanceWheelPage() {
                     </CardContent>
                 </Card>
             </div>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>The 8 Domains of Life</CardTitle>
-                </CardHeader>
-                <CardContent>
-                     <ul className="list-disc pl-5 text-sm space-y-2 font-medium">
-                        {lifeDomains.map(domain => <li key={domain}>{domain}</li>)}
-                    </ul>
-                </CardContent>
-            </Card>
-
           </CardContent>
         </Card>
       </div>

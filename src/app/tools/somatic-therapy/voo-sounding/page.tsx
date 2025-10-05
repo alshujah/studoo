@@ -1,12 +1,41 @@
 
+
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Waves } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'Voo Sounding | Rejoyn',
 };
+
+function VooSoundingTool() {
+    const playVooSound = () => {
+        const audioContext = new (window.AudioContext)();
+        const oscillator = audioContext.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(100, audioContext.currentTime); // Low frequency for 'Voo'
+        
+        const gainNode = audioContext.createGain();
+        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.5, audioContext.currentTime + 0.5);
+        gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 5);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 5);
+    };
+
+    return (
+        <Button onClick={playVooSound}>
+            Play "Voo" Sound Example
+        </Button>
+    )
+}
+
 
 export default function VooSoundingPage() {
   return (
@@ -43,6 +72,9 @@ export default function VooSoundingPage() {
                         <li><strong>Feel the vibration.</strong> As you make the sound, bring your attention to the vibration in your chest, throat, and belly. Imagine the vibration gently shaking loose any tension.</li>
                         <li><strong>Repeat.</strong> Continue for 3-5 breaths, or as long as it feels comfortable. Notice any shifts in your body or emotional state.</li>
                     </ol>
+                    <div className="mt-4">
+                        <VooSoundingTool />
+                    </div>
                 </CardContent>
             </Card>
           </CardContent>

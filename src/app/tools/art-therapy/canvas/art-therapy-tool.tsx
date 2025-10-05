@@ -1,11 +1,15 @@
+
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { Trash2, Save } from 'lucide-react';
+import { Trash2, Save, Loader } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth, useFirestore } from '@/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 export function ArtTherapyTool() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -13,12 +17,15 @@ export function ArtTherapyTool() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushColor, setBrushColor] = useState('#000000');
   const [brushSize, setBrushSize] = useState(5);
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
+  const auth = useAuth();
+  const [user] = useAuthState(auth);
+  const firestore = useFirestore();
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
-      // Adjust for device pixel ratio for sharper drawing
       const ratio = Math.max(window.devicePixelRatio || 1, 1);
       canvas.width = canvas.offsetWidth * ratio;
       canvas.height = canvas.offsetHeight * ratio;
@@ -70,15 +77,41 @@ export function ArtTherapyTool() {
     }
   };
 
-  const saveDrawing = () => {
+  const saveDrawing = async () => {
     const canvas = canvasRef.current;
-    if (canvas) {
-      const image = canvas.toDataURL('image/png');
-      console.log('Saved Drawing Data URL:', image);
+    if (!canvas || !user || !firestore) {
       toast({
-        title: 'Drawing Saved (to Console)',
-        description: 'In a real application, this would save the image to your journal.',
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Cannot save drawing. User not logged in or canvas not ready.',
       });
+      return;
+    }
+    
+    setIsSaving(true);
+    try {
+        const image = canvas.toDataURL('image/png');
+        await addDoc(collection(firestore, 'users', user.uid, 'journalEntries'), {
+            userId: user.uid,
+            content: `Art therapy entry.`,
+            imageUrl: image, // Storing image as a data URL
+            timestamp: serverTimestamp(),
+            keyThemes: ['Art Therapy'],
+        });
+
+        toast({
+            title: 'Drawing Saved',
+            description: 'Your art has been saved as a new journal entry.',
+        });
+    } catch (error) {
+        console.error("Error saving drawing to journal:", error);
+        toast({
+            variant: 'destructive',
+            title: 'Save failed',
+            description: 'Could not save your drawing.',
+        });
+    } finally {
+        setIsSaving(false);
     }
   };
   
@@ -129,13 +162,13 @@ export function ArtTherapyTool() {
         </div>
       </div>
       <div className="flex justify-end gap-4">
-        <Button variant="outline" onClick={clearCanvas}>
+        <Button variant="outline" onClick={clearCanvas} disabled={isSaving}>
           <Trash2 className="mr-2" />
           Clear
         </Button>
-        <Button onClick={saveDrawing}>
-          <Save className="mr-2" />
-          Save
+        <Button onClick={saveDrawing} disabled={isSaving}>
+          {isSaving ? <Loader className="mr-2 animate-spin" /> : <Save className="mr-2" />}
+          {isSaving ? 'Saving...' : 'Save'}
         </Button>
       </div>
     </div>
