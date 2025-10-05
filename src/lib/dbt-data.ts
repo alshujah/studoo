@@ -14,6 +14,18 @@ export type DistressToleranceSkill = {
 
 export const distressToleranceSkills: DistressToleranceSkill[] = [
     {
+        acronym: 'TIPP',
+        title: 'TIPP',
+        description: 'Change your body chemistry quickly.',
+        icon: Droplets,
+        steps: [
+             { name: 'Temperature', detail: 'Tip the temperature of your face with cold water to calm down fast. Hold your breath and put your face in cold water for 30 seconds.' },
+            { name: 'Intense Exercise', detail: 'Engage in intense exercise, even for a short while, to match your body\'s level of arousal.' },
+            { name: 'Paced Breathing', detail: 'Slow your breathing way down. Breathe out for longer than you breathe in (e.g., in for 4, out for 6).' },
+            { name: 'Paired Muscle Relaxation', detail: 'While breathing in, tense your muscles. While breathing out, relax them. Notice the difference.' }
+        ]
+    },
+    {
         acronym: 'ACCEPTS',
         title: 'Activities, Contributing, Comparisons, Emotions, Pushing Away, Thoughts, Sensations',
         description: 'Skills to distract yourself from overwhelming emotions.',
