@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const mindfulnessTools = [
-    { href: "/tools/mindfulness/guided-meditation", title: "Guided Meditation", description: "Sessions for various lengths and styles." },
+    { href: "/tools/mindfulness/guided-meditation", title: "AI Guided Meditation", description: "Personalized, voiced meditations." },
     { href: "/tools/mindfulness/body-scan", title: "Body Scan Exercises", description: "Bring awareness to your physical self." },
     { href: "/tools/mindfulness/mindful-breathing", title: "Mindful Breathing", description: "Anchor yourself in the present moment." },
     { href: "/tools/mindfulness/walking-meditation", title: "Walking Meditation", description: "Practice mindfulness in motion." },
