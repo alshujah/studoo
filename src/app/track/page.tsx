@@ -57,6 +57,9 @@ const trackingModules = [
     { href: "/track/activity-log", title: "Chronic Pain Management", description: "Tools for managing chronic pain." },
     { href: "/track/mood", title: "Bipolar Disorder Mood Stabilization", description: "Tools for mood stabilization." },
     { href: "/track/activity-log", title: "Schizophrenia Symptom Management", description: "Tools to help manage symptoms." },
+    { href: "/track/life-balance-wheel", title: "Life Balance Wheel", description: "Assess your balance across life domains." },
+    { href: "/tools/positive-psychology/life-satisfaction", title: "Well-being Assessments", description: "Evaluate your overall well-being." },
+    { href: "/tools/positive-psychology/strengths-finder", title: "Personality Assessments", description: "Discover your character strengths." },
 ];
 
 export default function TrackPage() {
