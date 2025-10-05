@@ -18,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { Logo } from '@/components/icons';
+import type { FirebaseError } from 'firebase/app';
 
 
 const loginSchema = z.object({
@@ -75,33 +76,66 @@ export default function LoginPage() {
 
     const handleLoginSubmit = async (values: z.infer<typeof loginSchema>) => {
         setIsSubmitting(true);
-        const success = await signInWithEmail(auth, values.email, values.password);
-        if (!success) {
+        try {
+            await signInWithEmail(auth, values.email, values.password);
+            // On success, the useEffect will redirect to /dashboard
+        } catch (error) {
+            const firebaseError = error as FirebaseError;
+            let description = 'An unexpected error occurred. Please try again.';
+            switch (firebaseError.code) {
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    description = 'Invalid email or password. Please check your credentials and try again.';
+                    break;
+                case 'auth/too-many-requests':
+                    description = 'Access to this account has been temporarily disabled due to many failed login attempts. You can reset your password or try again later.';
+                    break;
+                 case 'auth/invalid-email':
+                    description = 'The email address is not valid.';
+                    break;
+            }
             toast({
                 variant: 'destructive',
                 title: 'Login Failed',
-                description: 'Please check your email and password and try again.',
+                description,
             });
+        } finally {
+            setIsSubmitting(false);
         }
-        setIsSubmitting(false);
     };
 
     const handleSignupSubmit = async (values: z.infer<typeof signupSchema>) => {
         setIsSubmitting(true);
-        const success = await signUpWithEmail(auth, values.email, values.password, values.displayName);
-        if (!success) {
-            toast({
-                variant: 'destructive',
-                title: 'Sign Up Failed',
-                description: 'This email may already be in use or there was another error.',
-            });
-        } else {
+        try {
+            await signUpWithEmail(auth, values.email, values.password, values.displayName);
              toast({
                 title: 'Welcome!',
                 description: 'Your account has been created successfully.',
             });
+             // On success, the useEffect will redirect to /dashboard
+        } catch (error) {
+            const firebaseError = error as FirebaseError;
+            let description = 'An unexpected error occurred. Please try again.';
+            switch (firebaseError.code) {
+                case 'auth/email-already-in-use':
+                    description = 'This email address is already in use by another account.';
+                    break;
+                case 'auth/weak-password':
+                    description = 'The password is too weak. Please use a stronger password.';
+                    break;
+                case 'auth/invalid-email':
+                    description = 'The email address is not valid.';
+                    break;
+            }
+            toast({
+                variant: 'destructive',
+                title: 'Sign Up Failed',
+                description,
+            });
+        } finally {
+            setIsSubmitting(false);
         }
-        setIsSubmitting(false);
     };
 
 
