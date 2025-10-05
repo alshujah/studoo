@@ -14,15 +14,6 @@ const ptsdTools = [
     { href: "/tools/ptsd/nightmare-rescripting", title: "Nightmares Rescripting Tool", description: "Imagery rehearsal therapy for trauma nightmares." },
     { href: "/tools/ptsd/hypervigilance", title: "Hypervigilance Reduction Training", description: "Exercises to reduce constant alertness." },
     { href: "/tools/ptsd/grounding", title: "Dissociation Management Tools", description: "Reality testing and anchoring techniques." },
-    { href: "#", title: "Complex PTSD Workbook", description: "Specialized modules for developmental trauma." },
-    { href: "#", title: "Military/Combat PTSD Support", description: "Veteran-specific resources and peer support." },
-    { href: "#", title: "Sexual Trauma Recovery Program", description: "Specialized healing pathway." },
-    { href: "#", a: "Childhood Trauma Integration", description: "Inner child work and reparenting exercises." },
-    { href: "#", title: "Trauma Memory Reconsolidation", description: "Safe memory processing techniques." },
-    { href: "#", title: "Post-Trauma Growth Tracking", description: "Measuring positive changes after trauma." },
-    { href: "#", title: "Vicarious Trauma Support", description: "For healthcare workers and first responders." },
-    { href: "#", title: "Collective Trauma Processing", description: "Community healing spaces." },
-    { href: "#", title: "Intergenerational Trauma Work", description: "Family system healing approaches." },
 ];
 
 export default function PTSDPage() {
