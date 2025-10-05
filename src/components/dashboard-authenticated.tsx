@@ -22,14 +22,6 @@ import { subDays, format } from 'date-fns';
 import { useMoodTriggers } from '@/hooks/use-mood-triggers';
 import { ScrollArea } from './ui/scroll-area';
 
-const moodIcons = [
-  { mood: 'Happy', icon: '😊' },
-  { mood: 'Calm', icon: '😌' },
-  { mood: 'Okay', icon: '😐' },
-  { mood: 'Sad', icon: '😢' },
-  { mood: 'Anxious', icon: '😟' },
-];
-
 interface DashboardAuthenticatedProps {
     user: User;
 }
@@ -145,35 +137,11 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6">
-      <Card className="col-span-1 md:col-span-2">
+       <Card className="col-span-1 md:col-span-2 xl:col-span-4">
         <CardHeader>
-          <CardTitle className="font-headline">Welcome back, {user.displayName?.split(' ')[0] || 'friend'}!</CardTitle>
-          <CardDescription>How are you feeling today?</CardDescription>
+          <CardTitle className="font-headline text-3xl">Welcome back, {user.displayName?.split(' ')[0] || 'friend'}!</CardTitle>
+          <CardDescription>How can we support you today?</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex justify-around rounded-lg bg-muted/50 p-4">
-             {moodIcons.map(({ mood, icon }) => (
-              <Link href="/track/mood" key={mood} legacyBehavior>
-                <a className="h-16 w-16 flex-col gap-1 text-2xl text-center no-underline">
-                  <div className="flex items-center justify-center rounded-full h-12 w-12 mx-auto hover:bg-background transition-colors">
-                    {icon}
-                  </div>
-                  <span className="text-xs font-normal text-muted-foreground">{mood}</span>
-                </a>
-              </Link>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="col-span-1 md:col-span-2">
-        <CardHeader>
-          <CardTitle className="font-headline">Mood Patterns</CardTitle>
-          <CardDescription>Your mood trends over the last week.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <MoodChart data={moodChartData} loading={loadingMoodLogs} />
-        </CardContent>
       </Card>
       
       <Card className="col-span-1 md:col-span-2 xl:col-span-2">
@@ -218,6 +186,52 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
               {isTriagePending ? 'Analyzing...' : 'Get Suggestion'}
             </Button>
         </CardFooter>
+      </Card>
+
+      <Card className="col-span-1 flex flex-col">
+        <CardHeader>
+          <CardTitle className="font-headline">Start Here</CardTitle>
+          <CardDescription>Begin your journey with these core tools.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex-grow">
+          <div className="flex flex-col gap-4">
+            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/track/mood">
+                <Wind className="size-5 text-primary" />
+                <span>Check-in Mood</span>
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/track/journal/freeform">
+                <Pen className="size-5 text-primary" />
+                <span>Write in Journal</span>
+              </Link>
+            </Button>
+             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/chatbot">
+                <MessageSquare className="size-5 text-primary" />
+                <span>Talk to AI Coach</span>
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button asChild variant="ghost" className="w-full">
+            <Link href="/tools">
+              See all tools <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
+
+      <Card className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-1">
+        <CardHeader>
+          <CardTitle className="font-headline">Mood Patterns</CardTitle>
+          <CardDescription>Your mood trends over the last week.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <MoodChart data={moodChartData} loading={loadingMoodLogs} />
+        </CardContent>
       </Card>
 
       <Card className="col-span-1 md:col-span-2 xl:col-span-2">
@@ -274,43 +288,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
         </CardFooter>
       </Card>
       
-       <Card className="col-span-1 flex flex-col">
-        <CardHeader>
-          <CardTitle className="font-headline">Start Here</CardTitle>
-          <CardDescription>Begin your journey with these core tools.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex-grow">
-          <div className="flex flex-col gap-4">
-            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/track/mood">
-                <Wind className="size-5 text-primary" />
-                <span>Check-in Mood</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/track/journal/freeform">
-                <Pen className="size-5 text-primary" />
-                <span>Write in Journal</span>
-              </Link>
-            </Button>
-             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/chatbot">
-                <MessageSquare className="size-5 text-primary" />
-                <span>Talk to AI Coach</span>
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button asChild variant="ghost" className="w-full">
-            <Link href="/tools">
-              See all tools <ArrowRight className="ml-2 size-4" />
-            </Link>
-          </Button>
-        </CardFooter>
-      </Card>
-      
-      <Card className="col-span-1 md:col-span-2 lg:col-span-3">
+      <Card className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-2">
         <CardHeader>
             <CardTitle className="font-headline">Recent Journal Entries</CardTitle>
             <CardDescription>Review and reflect on your past entries.</CardDescription>

@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import type { Metadata } from 'next';
 import { BrainCircuit, HeartPulse, Shield, Bot, Languages, MessageSquare, Mic, AlertTriangle, UserCheck, Activity, Droplets, Bed, Leaf, Bike, Zap, Brain, Smile, GitCommitHorizontal, Group, FolderKanban, Users, HandHeart, Eye, Wind, Sparkles } from 'lucide-react';
 import React from 'react';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: 'AI Features | Rejoyn',
@@ -68,10 +69,7 @@ const categories = [
 
 export default function AIFeaturesPage() {
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">AI Features</h1>
-      </div>
+    <PageLayout title="AI Features">
       <div className="space-y-8">
         {categories.map((category) => (
             <div key={category.title}>
@@ -97,6 +95,6 @@ export default function AIFeaturesPage() {
             </div>
         ))}
       </div>
-    </main>
+    </PageLayout>
   );
 }

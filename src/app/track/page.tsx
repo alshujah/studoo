@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
 import { Activity, BedDouble, FlaskConical, Pill, Siren, BarChart, Book, Brain, Calendar, CheckSquare, Clock, Edit, ListChecks, Sun, TrendingUp, Users, Smile } from 'lucide-react';
+import { PageLayout } from '@/components/layout/page-layout';
+
 
 export const metadata: Metadata = {
   title: 'Track | Rejoyn',
@@ -28,10 +30,7 @@ const trackingModules = [
 
 export default function TrackPage() {
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
-        <h1 className="font-headline text-2xl font-semibold md:text-3xl">Track</h1>
-      </div>
+    <PageLayout title="Tracking Tools">
        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {trackingModules.map((module) => (
             <Link href={module.href} key={module.title} className="block hover:bg-muted/50 rounded-lg">
@@ -44,6 +43,6 @@ export default function TrackPage() {
             </Link>
         ))}
       </div>
-    </main>
+    </PageLayout>
   );
 }
