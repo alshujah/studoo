@@ -172,7 +172,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     // This is a simple way to handle markdown-like lists. For full markdown, a library would be better.
     const formattedContent = content.replace(/(\n\s*-\s)/g, '<br/>&bull; ').replace(/\n/g, '<br/>');
 
-    return <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: formattedContent + cursor }} />;
+    return <div className="prose prose-sm max-w-none text-foreground" dangerouslySetInnerHTML={{ __html: formattedContent + cursor }} />;
   };
 
 
@@ -232,3 +232,5 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     </div>
   );
 }
+
+    
