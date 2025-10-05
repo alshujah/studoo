@@ -36,3 +36,12 @@ export interface WorryLog {
     didComeTrue?: boolean;
     createdAt: Timestamp;
 }
+
+export interface BehavioralActivationActivity {
+    id: string;
+    userId: string;
+    title: string;
+    scheduledDate: Timestamp;
+    completed: boolean;
+    createdAt: Timestamp;
+}

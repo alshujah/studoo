@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 
 const cbtTools = [
     { href: "/tools/thought-record", title: "Thought Records", description: "Track and reframe automatic thoughts." },
-    { title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
-    { title: "Behavioral Activation", description: "Schedule activities to combat depression." },
-    { title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
-    { title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
-    { title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
-    { title: "Attention Training", description: "Practice focus redirection techniques." },
-    { title: "Decentering Techniques", description: "Create distance from your thoughts." },
+    { href: "/tools/cbt/behavioral-activation", title: "Behavioral Activation", description: "Schedule activities to combat depression." },
+    { href: "#", title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
+    { href: "#", title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
+    { href: "#", title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
+    { href: "#", title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
+    { href: "#", title: "Attention Training", description: "Practice focus redirection techniques." },
+    { href: "#", title: "Decentering Techniques", description: "Create distance from your thoughts." },
 ];
 
 export default function CBTPage() {

@@ -253,6 +253,19 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "worry", "scheduledTime", "createdAt"]
+    },
+    "behavioralActivationActivity": {
+      "title": "Behavioral Activation Activity",
+      "description": "A scheduled activity for Behavioral Activation.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "scheduledDate": { "type": "string", "format": "date-time" },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "scheduledDate", "completed", "createdAt"]
     }
   },
   "auth": {
@@ -324,6 +337,10 @@
     "/users/{userId}/worryLogs/{worryLogId}": {
       "schema": { "$ref": "#/entities/worryLog" },
       "description": "Stores a user's worry log entries."
+    },
+    "/users/{userId}/behavioralActivation/{activityId}": {
+      "schema": { "$ref": "#/entities/behavioralActivationActivity" },
+      "description": "Stores a user's scheduled activities for Behavioral Activation."
     }
   }
 }
