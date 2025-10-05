@@ -38,13 +38,13 @@ const categories = [
         title: "Building Skills",
         icon: BarChart,
         modules: [
-            { title: "Communication Skills", description: "Improve your interpersonal effectiveness." },
-            { title: "Coping Mechanisms Explained", description: "Learn how different strategies work." },
-            { title: "Self-Advocacy Skills", description: "Learn to advocate for your own needs." },
-            { title: "Relationship Management Tips", description: "Improve your relationships." },
-            { title: "Conflict Resolution Strategies", description: "Learn to navigate disagreements." },
-            { title: "Boundary-Setting Guidance", description: "Protect your energy and well-being." },
-            { title: "Social Skills Training", description: "Practice and improve social interactions." },
+            { title: "Communication Skills", description: "Improve your interpersonal effectiveness.", href: "/tools/ipt" },
+            { title: "Coping Mechanisms Explained", description: "Learn how different strategies work.", href: "/tools/dbt" },
+            { title: "Self-Advocacy Skills", description: "Learn to advocate for your own needs.", href: "/tools/dbt/interpersonal-effectiveness" },
+            { title: "Relationship Management Tips", description: "Improve your relationships.", href: "/tools/ipt" },
+            { title: "Conflict Resolution Strategies", description: "Learn to navigate disagreements.", href: "/tools/dbt/walking-the-middle-path" },
+            { title: "Boundary-Setting Guidance", description: "Protect your energy and well-being.", href: "/tools/dbt/interpersonal-effectiveness" },
+            { title: "Social Skills Training", description: "Practice and improve social interactions.", href: "/tools/ipt/social-skills-assessment" },
         ]
     },
     {
