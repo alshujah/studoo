@@ -58,10 +58,9 @@ const trackingModules = [
     { href: "/tools", title: "Coping Style Evaluation", description: "Evaluate your coping self-efficacy." },
     { href: "/tools/ptsd", title: "PTSD Assessments", description: "Assessments for post-traumatic stress disorder." },
     { href: "/track/substance-use", title: "Sobriety Tracking", description: "Track your journey in addiction recovery." },
-    { title: "Chronic Pain Management", description: "Tools for managing chronic pain." },
-    { title: "Bipolar Disorder Mood Stabilization", description: "Tools for mood stabilization." },
-    { title: "Schizophrenia Symptom Management", description: "Tools to help manage symptoms." },
-    { title: "Moon Phase Tracking", description: "For those interested in moon phases." },
+    { href: "/track/activity-log", title: "Chronic Pain Management", description: "Tools for managing chronic pain." },
+    { href: "/track/mood", title: "Bipolar Disorder Mood Stabilization", description: "Tools for mood stabilization." },
+    { href: "/track/activity-log", title: "Schizophrenia Symptom Management", description: "Tools to help manage symptoms." },
     { title: "Biometric Integration", description: "Sync with heart rate and step counters." },
     { title: "Wearable Device Sync", description: "Connect your favorite wearable." }
 ];
