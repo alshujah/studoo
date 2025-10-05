@@ -17,7 +17,7 @@ const mindfulnessTools = [
     { href: "/tools/mindfulness/progressive-muscle-relaxation", title: "Progressive Muscle Relaxation", description: "Release physical tension." },
     { href: "/tools/ptsd/grounding", title: "Grounding Techniques", description: "Use the 5-4-3-2-1 sensory exercise." },
     { href: "/tools/relaxation/safe-place", title: "Visualization Exercises", description: "Create calming mental imagery." },
-    { href: "#", title: "Mindfulness Bells/Reminders", description: "Periodic sounds to bring you to the present.", icon: Bell },
+    { href: "/tools/mindfulness/mindfulness-bell", title: "Mindfulness Bell", description: "Periodic sounds to bring you to the present.", icon: Bell },
     { href: "/tools/mindfulness/mindful-breathing", title: "Present-Moment Awareness", description: "Exercises to focus on the here and now." },
 ];
 
