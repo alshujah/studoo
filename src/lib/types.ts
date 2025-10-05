@@ -1,4 +1,5 @@
 
+
 import type { Timestamp } from 'firebase/firestore';
 
 export type ChatMessage = {
@@ -118,11 +119,15 @@ export interface ActivityLog {
   id: string;
   userId: string;
   timestamp: Timestamp;
-  activity: string;
-  durationInMinutes: number;
-  moodBefore: string;
-  moodAfter: string;
-  notes: string;
+  activity?: string;
+  durationInMinutes?: number;
+  moodBefore?: string;
+  moodAfter?: string;
+  energyLevel?: number;
+  physicalSymptoms?: string;
+  screenTimeHours?: number;
+  eatingHabits?: string;
+  notes?: string;
 }
 
 export interface MedicationLog {

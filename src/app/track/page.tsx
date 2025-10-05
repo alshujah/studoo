@@ -1,4 +1,5 @@
 
+
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
@@ -17,15 +18,15 @@ const trackingModules = [
     { href: "/track/sleep-quality", title: "Sleep Quality Tracking", description: "Monitor your sleep patterns.", icon: BedDouble },
     { href: "/track/activity-log", title: "Activity Logging", description: "Track daily activities and their impact.", icon: Activity },
     { href: "/track/medication-log", title: "Medication Adherence", description: "Track your medication intake.", icon: Pill },
-    { title: "Social Interaction Tracking", description: "Log your social engagements." },
+    { href: "/track/activity-log", title: "Social Interaction Tracking", description: "Log your social engagements." },
     { title: "Substance Use Tracking", description: "Monitor alcohol, caffeine, etc." },
     { href: "/track/journal/worry-log", title: "Worry/Rumination Logging", description: "Externalize and manage worries." },
-    { title: "Success/Achievement Log", description: "Record your accomplishments." },
-    { title: "Energy Level Monitoring", description: "Track your energy levels throughout the day." },
-    { title: "Physical Symptom Recording", description: "Log headaches, tension, pain, etc." },
-    { title: "Side Effect Documentation", description: "Note any medication side effects." },
-    { title: "Screen Time Monitoring", description: "Track your time on digital devices." },
-    { title: "Eating Habits Logging", description: "Monitor your nutritional intake." },
+    { href: "/track/journal/freeform", title: "Success/Achievement Log", description: "Record your accomplishments." },
+    { href: "/track/activity-log", title: "Energy Level Monitoring", description: "Track your energy levels throughout the day." },
+    { href: "/track/activity-log", title: "Physical Symptom Recording", description: "Log headaches, tension, pain, etc." },
+    { href: "/track/medication-log", title: "Side Effect Documentation", description: "Note any medication side effects." },
+    { href: "/track/activity-log", title: "Screen Time Monitoring", description: "Track your time on digital devices." },
+    { href: "/track/activity-log", title: "Eating Habits Logging", description: "Monitor your nutritional intake." },
     { title: "Menstrual Cycle Mood Correlation", description: "Track mood changes with your cycle." },
     { title: "Self-Care Activities Checklist", description: "Ensure you're taking care of yourself." },
     { title: "Trigger Event Documentation", description: "Identify events that affect your mood." },

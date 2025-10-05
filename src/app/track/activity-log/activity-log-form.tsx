@@ -16,20 +16,27 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
 
 const moodOptions = ['Happy', 'Sad', 'Anxious', 'Angry', 'Calm', 'Content', 'Stressed', 'Tired', 'Energetic'];
 
 const formSchema = z.object({
-  activity: z.string().min(3, { message: 'Please describe the activity.' }),
-  durationInMinutes: z.coerce.number().min(1, 'Duration must be at least 1 minute.'),
-  moodBefore: z.string({ required_error: 'Please select your mood before the activity.' }),
-  moodAfter: z.string({ required_error: 'Please select your mood after the activity.' }),
+  activity: z.string().optional(),
+  durationInMinutes: z.coerce.number().optional(),
+  moodBefore: z.string().optional(),
+  moodAfter: z.string().optional(),
+  energyLevel: z.number().min(1).max(5).optional(),
+  physicalSymptoms: z.string().optional(),
+  screenTimeHours: z.coerce.number().optional(),
+  eatingHabits: z.string().optional(),
   notes: z.string().optional(),
+}).refine(data => Object.values(data).some(v => v !== undefined && v !== ''), {
+    message: 'Please fill out at least one field.'
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function ActivityLogForm() {
+export function DailyLogForm() {
   const firestore = useFirestore();
   const auth = useAuth();
   const [user] = useAuthState(auth);
@@ -39,6 +46,7 @@ export function ActivityLogForm() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {},
   });
 
   async function onSubmit(data: FormValues) {
@@ -53,11 +61,11 @@ export function ActivityLogForm() {
         userId: user.uid,
         timestamp: serverTimestamp(),
       });
-      toast({ title: 'Activity Logged', description: 'Your activity has been saved.' });
+      toast({ title: 'Daily Log Saved', description: 'Your entry has been saved.' });
       router.push('/dashboard');
     } catch (error) {
-      console.error('Error saving activity log:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your activity log.' });
+      console.error('Error saving daily log:', error);
+      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your daily log.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -71,7 +79,7 @@ export function ActivityLogForm() {
           name="activity"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Activity</FormLabel>
+              <FormLabel>Primary Activity</FormLabel>
               <FormControl>
                 <Input placeholder="e.g., Went for a run, read a book, had coffee with a friend" {...field} />
               </FormControl>
@@ -85,7 +93,7 @@ export function ActivityLogForm() {
           name="durationInMinutes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration (in minutes)</FormLabel>
+              <FormLabel>Activity Duration (in minutes)</FormLabel>
               <FormControl>
                 <Input type="number" placeholder="e.g., 30" {...field} />
               </FormControl>
@@ -100,11 +108,11 @@ export function ActivityLogForm() {
             name="moodBefore"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Mood Before</FormLabel>
+                <FormLabel>Mood Before Activity</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select your mood" />
+                      <SelectValue placeholder="Select a mood" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -120,11 +128,11 @@ export function ActivityLogForm() {
             name="moodAfter"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Mood After</FormLabel>
+                <FormLabel>Mood After Activity</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select your mood" />
+                      <SelectValue placeholder="Select a mood" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -139,21 +147,78 @@ export function ActivityLogForm() {
 
         <FormField
           control={form.control}
-          name="notes"
+          name="energyLevel"
+          render={({ field: { value, onChange } }) => (
+            <FormItem>
+              <FormLabel>Energy Level (1=Exhausted, 5=Energized): {value}</FormLabel>
+              <FormControl>
+                <Slider min={1} max={5} step={1} defaultValue={[3]} onValueChange={(vals) => onChange(vals[0])} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+         <FormField
+          control={form.control}
+          name="physicalSymptoms"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notes</FormLabel>
+              <FormLabel>Physical Symptoms</FormLabel>
               <FormControl>
-                <Textarea placeholder="Any additional thoughts or reflections about the activity?" {...field} />
+                <Input placeholder="e.g., Headache, stomach ache, muscle tension" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="screenTimeHours"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Screen Time (in hours)</FormLabel>
+              <FormControl>
+                <Input type="number" placeholder="e.g., 4" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="eatingHabits"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Eating Habits</FormLabel>
+              <FormControl>
+                <Input placeholder="e.g., Ate 3 regular meals, skipped lunch" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="notes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>General Notes</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Any other reflections or thoughts about your day?" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <p className="text-sm text-destructive">{form.formState.errors.root?.message}</p>
+
         <Button type="submit" disabled={isSubmitting} size="lg">
           {isSubmitting && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-          Save Activity Log
+          Save Daily Log
         </Button>
       </form>
     </Form>

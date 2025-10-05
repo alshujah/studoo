@@ -376,7 +376,7 @@
     },
     "activityLog": {
       "title": "Activity Log",
-      "description": "A record of a user's daily activities.",
+      "description": "A record of a user's daily activities and other metrics.",
       "type": "object",
       "properties": {
         "userId": { "type": "string" },
@@ -385,9 +385,13 @@
         "durationInMinutes": { "type": "number" },
         "moodBefore": { "type": "string" },
         "moodAfter": { "type": "string" },
+        "energyLevel": { "type": "number", "description": "A rating from 1 to 5 for energy level." },
+        "physicalSymptoms": { "type": "string", "description": "A description of any physical symptoms." },
+        "screenTimeHours": { "type": "number", "description": "Hours of screen time." },
+        "eatingHabits": { "type": "string", "description": "A brief note on eating habits for the day." },
         "notes": { "type": "string" }
       },
-      "required": ["userId", "timestamp", "activity", "durationInMinutes", "moodBefore", "moodAfter"]
+      "required": ["userId", "timestamp"]
     },
     "medicationLog": {
       "title": "Medication Log",
