@@ -306,6 +306,44 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "problem", "createdAt"]
+    },
+    "behavioralChainAnalysis": {
+      "title": "Behavioral Chain Analysis",
+      "description": "A record of a DBT behavioral chain analysis.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "problemBehavior": { "type": "string" },
+        "promptingEvent": { "type": "string" },
+        "vulnerabilityFactors": { "type": "string" },
+        "chainOfEvents": { "type": "string" },
+        "consequences": { "type": "string" },
+        "solutions": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "problemBehavior", "promptingEvent", "vulnerabilityFactors", "chainOfEvents", "consequences", "solutions", "createdAt"]
+    },
+    "exposureHierarchy": {
+      "title": "Exposure Hierarchy",
+      "description": "A user's fear ladder for exposure therapy.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "fear": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": { "type": "string" },
+              "suds": { "type": "number" }
+            },
+            "required": ["step", "suds"]
+          }
+        }
+      },
+      "required": ["userId", "fear", "createdAt", "steps"]
     }
   },
   "auth": {
@@ -389,6 +427,14 @@
     "/users/{userId}/problemSolving/{sessionId}": {
         "schema": { "$ref": "#/entities/problemSolvingSession" },
         "description": "Stores a user's CBT problem-solving sessions."
+    },
+    "/users/{userId}/behavioralChainAnalyses/{analysisId}": {
+        "schema": { "$ref": "#/entities/behavioralChainAnalysis" },
+        "description": "Stores a user's DBT behavioral chain analyses."
+    },
+    "/users/{userId}/exposureHierarchies/{hierarchyId}": {
+      "schema": { "$ref": "#/entities/exposureHierarchy" },
+      "description": "Stores a user's exposure therapy fear ladders."
     }
   }
 }

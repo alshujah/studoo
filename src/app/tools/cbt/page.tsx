@@ -13,9 +13,9 @@ const cbtTools = [
     { href: "/tools/cbt/behavioral-experiments", title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
     { href: "/tools/cbt/problem-solving", title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
     { href: "/tools/thought-record", title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
-    { href: "#", title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
+    { href: "/tools/cbt/exposure-therapy", title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
     { href: "/tools/cbt/attention-training", title: "Attention Training", description: "Practice focus redirection techniques." },
-    { href: "#", title: "Decentering Techniques", description: "Create distance from your thoughts." },
+    { href: "/tools/act/decentering", title: "Decentering Techniques", description: "Create distance from your thoughts." },
 ];
 
 export default function CBTPage() {

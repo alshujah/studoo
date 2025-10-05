@@ -80,3 +80,16 @@ export interface BehavioralChainAnalysis {
     solutions: string;
     createdAt: Timestamp;
 }
+
+export interface ExposureHierarchy {
+    id: string;
+    userId: string;
+    fear: string;
+    createdAt: Timestamp;
+    steps: {
+        step: string;
+        suds: number;
+    }[];
+}
+
+    
