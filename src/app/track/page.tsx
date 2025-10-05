@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
-import { Activity, BedDouble, FlaskConical, Pill, Siren, BarChart, Book, Brain, Calendar, CheckSquare, Clock, Edit, ListChecks, Sun, TrendingUp, Users } from 'lucide-react';
+import { Activity, BedDouble, FlaskConical, Pill, Siren, BarChart, Book, Brain, Calendar, CheckSquare, Clock, Edit, ListChecks, Sun, TrendingUp, Users, Smile } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Track | Rejoyn',
