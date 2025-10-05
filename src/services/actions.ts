@@ -7,6 +7,7 @@ import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRe
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 import type { ChatMessage } from '@/lib/types';
 import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
+import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
@@ -103,4 +104,28 @@ export async function triageIssue(
     console.error('Error getting triage recommendation:', error);
     return { success: false, error: 'Failed to get a recommendation.' };
   }
+}
+
+export async function generateMeditationScriptAction(
+    input: GenerateMeditationScriptInput
+): Promise<{ success: boolean; data?: GenerateMeditationScriptOutput; error?: string }> {
+    try {
+        const result = await generateMeditationScript(input);
+        return { success: true, data: result };
+    } catch (error: any) {
+        console.error('Error generating meditation script:', error);
+        return { success: false, error: 'Failed to generate meditation script.' };
+    }
+}
+
+export async function generateMeditationAudioAction(
+    input: GenerateMeditationAudioInput
+): Promise<{ success: boolean; data?: GenerateMeditationAudioOutput; error?: string }> {
+    try {
+        const result = await generateMeditationAudio(input);
+        return { success: true, data: result };
+    } catch (error: any) {
+        console.error('Error generating meditation audio:', error);
+        return { success: false, error: 'Failed to generate meditation audio.' };
+    }
 }
