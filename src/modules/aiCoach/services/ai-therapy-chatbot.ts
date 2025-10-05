@@ -170,11 +170,10 @@ const getRecentDepressionScores = ai.defineTool(
 // ----------------- Flow Definition -----------------
 
 const AiTherapyChatbotInputSchema = z.object({
-  message: z.string().describe('The user message to the chatbot.'),
-  chatHistory: z.array(z.object({
+  messages: z.array(z.object({
     role: z.enum(['user', 'assistant', 'tool']).describe('The role of the message sender.'),
     content: z.string().describe('The content of the message.'),
-  })).optional().describe('The chat history between the user and the chatbot.'),
+  })).describe('The chat history, with the most recent user message last.'),
   userId: z.string().describe('The user ID.'),
 });
 export type AiTherapyChatbotInput = z.infer<typeof AiTherapyChatbotInputSchema>;
@@ -202,7 +201,7 @@ Your primary goal is to develop a "Theory of Mind" about the user by synthesizin
 
 6.  **Mindful Grounding:** If your tools or the conversation suggest high stress or anxiety (e.g., words like 'panic', 'overwhelmed', 'can't breathe'), dynamically activate a grounding exercise. For example: "It sounds incredibly stressful right now. Before we go any further, would you be open to trying a quick 1-minute breathing exercise with me to help calm your body?"
 
-7.  **Be Concise:** Keep your responses brief and focused (2-4 sentences is ideal). Use questions to encourage user reflection and guide the conversation. Avoid long, multi-paragraph lectures.
+7.  **Be Concise:** Keep your responses brief and focused (2-4 sentences is ideal). Use questions to encourage user reflection and guide the conversation. Avoid long, multi-paragraph lectures. Use markdown for lists where appropriate.
 
 8.  **Safety First (CRITICAL & NON-NEGOTIABLE):** If a user expresses any thoughts of self-harm, suicide, or being in a crisis, you MUST IMMEDIATELY and ONLY respond with the following text. Do not add any other words.
     "It sounds like you are going through a lot right now, and I'm concerned for your safety. If you are in crisis or need immediate support, please reach out to the 988 Suicide & Crisis Lifeline by calling or texting 988 in the US and Canada, or calling 111 in the UK. You are not alone, and help is available."`;
@@ -212,15 +211,20 @@ const aiTherapyChatbotFlow = ai.defineFlow(
   {
     name: 'aiTherapyChatbotFlow',
     inputSchema: AiTherapyChatbotInputSchema,
-    outputSchema: z.any(), // Changed to z.any() to support streaming
+    outputSchema: z.any(), // Important for streaming
     tools: [getRecentMoodLogs, getRecentJournalEntries, getRecentAnxietyScores, getRecentDepressionScores],
-    system: systemPrompt,
   },
   async (input) => {
+    
+    const userMessage = input.messages[input.messages.length - 1];
+    if (userMessage.role !== 'user') {
+      throw new Error("Last message must be from the user.");
+    }
 
-    const history: Message[] = [];
-    if (input.chatHistory) {
-      for (const msg of input.chatHistory) {
+    const history: Message[] = [new SystemMessage(systemPrompt)];
+    // Add previous messages to history
+    if (input.messages.length > 1) {
+      for (const msg of input.messages.slice(0, -1)) {
         if (msg.role === 'user') {
           history.push(new HumanMessage(msg.content));
         } else if (msg.role === 'assistant') {
@@ -231,7 +235,7 @@ const aiTherapyChatbotFlow = ai.defineFlow(
 
     const { stream } = await ai.generate({
       history,
-      prompt: input.message,
+      prompt: userMessage.content,
       stream: true
     });
     
@@ -249,7 +253,6 @@ const aiTherapyChatbotFlow = ai.defineFlow(
       }
     });
 
-    // Return the new stream
     return outputStream;
   }
 );

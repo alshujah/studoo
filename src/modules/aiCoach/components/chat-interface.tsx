@@ -9,7 +9,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { getAiResponse } from '@/modules/aiCoach/services/actions';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -86,71 +85,70 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isPending || !user || !chatDocRef) return;
+    if (!input.trim() || !user || !chatDocRef) return;
 
     const userMessage: ChatMessage = { role: 'user', content: input };
     const newMessages: ChatMessage[] = [...messages, userMessage];
-    setMessages(newMessages);
     const optimisticInput = input;
+    
+    // Optimistically update the UI with the user's message
+    setMessages(newMessages);
     setInput('');
-
+    
     startTransition(async () => {
-      const optimisticUpdate = {
-        messages: newMessages,
-        updatedAt: serverTimestamp(),
-      };
-      
-      setDoc(chatDocRef, optimisticUpdate, { merge: true }).catch(err => {
-         const permissionError = new FirestorePermissionError({
-            path: chatDocRef.path,
-            operation: 'update',
-            requestResourceData: optimisticUpdate,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-      });
+        // Add a placeholder for the streaming response
+        setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
-      // Add a placeholder for the streaming response
-      setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                body: JSON.stringify({
+                    messages: newMessages,
+                    userId: user.uid,
+                }),
+            });
 
-      try {
-        const stream = await getAiResponse(newMessages, user.uid);
-        let streamedResponse = '';
-        const reader = stream.getReader();
-        const decoder = new TextDecoder();
+            if (!response.body) {
+                throw new Error("No response body");
+            }
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let streamedResponse = '';
 
-          const chunk = decoder.decode(value, { stream: true });
-          streamedResponse += chunk;
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
 
-          setMessages(prev => {
-            const updatedMessages = [...prev];
-            updatedMessages[updatedMessages.length - 1] = { role: 'assistant', content: streamedResponse };
-            return updatedMessages;
-          });
+                const chunk = decoder.decode(value, { stream: true });
+                streamedResponse += chunk;
+
+                setMessages(prev => {
+                    const updatedMessages = [...prev];
+                    updatedMessages[updatedMessages.length - 1] = { role: 'assistant', content: streamedResponse };
+                    return updatedMessages;
+                });
+            }
+
+            const finalMessages = [...newMessages, { role: 'assistant', content: streamedResponse }];
+            const finalUpdate = {
+                messages: finalMessages,
+                updatedAt: serverTimestamp(),
+            };
+            
+            await setDoc(chatDocRef, finalUpdate, { merge: true });
+
+        } catch (error: any) {
+            console.error('Error with streaming response:', error);
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: error.message || "An unknown error occurred.",
+            });
+            // Restore previous messages on error
+            setMessages(messages);
+            setInput(optimisticInput); // Restore user input
         }
-
-        const finalMessages = [...newMessages, { role: 'assistant', content: streamedResponse }];
-        const finalUpdate = {
-            messages: finalMessages,
-            updatedAt: serverTimestamp(),
-        };
-        
-        await setDoc(chatDocRef, finalUpdate, { merge: true });
-
-      } catch (error: any) {
-        console.error('Error with streaming response:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message || "An unknown error occurred.",
-        });
-        // Restore previous messages on error
-        setMessages(messages);
-        setInput(optimisticInput); // Restore user input
-      }
     });
   };
   
@@ -163,14 +161,18 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
       )
   }
 
-  const renderMessageContent = (content: string) => {
-    const isStreaming = isPending && messages[messages.length - 1].content === content;
+  const renderMessageContent = (content: string, isAssistant: boolean, isLastMessage: boolean) => {
+    const isStreaming = isPending && isAssistant && isLastMessage;
+
     if (isStreaming && content === '') {
         return <Loader className="animate-spin size-4" />;
     }
-    // Render the content with a blinking cursor if it's the last message and we are streaming
+
     const cursor = isStreaming ? '<span class="animate-pulse">|</span>' : '';
-    return <p className="whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: content + cursor }} />;
+    // This is a simple way to handle markdown-like lists. For full markdown, a library would be better.
+    const formattedContent = content.replace(/(\n\s*-\s)/g, '<br/>&bull; ').replace(/\n/g, '<br/>');
+
+    return <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: formattedContent + cursor }} />;
   };
 
 
@@ -193,14 +195,14 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
               )}
               <div
                 className={cn(
-                  'max-w-md rounded-lg p-3 text-sm',
+                  'max-w-prose rounded-lg p-3 text-sm',
                   message.role === 'user'
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted',
                   isPending && index === messages.length - 1 && 'flex items-center'
                 )}
               >
-                 {renderMessageContent(message.content)}
+                 {renderMessageContent(message.content, message.role === 'assistant', index === messages.length - 1)}
               </div>
                {message.role === 'user' && (
                 <Avatar className="h-8 w-8 border">
@@ -230,5 +232,3 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     </div>
   );
 }
-
-    
