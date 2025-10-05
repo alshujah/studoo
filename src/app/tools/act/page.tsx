@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 const actTools = [
     { href: "/tools/act/values-clarification", title: "Values Clarification Exercises", description: "Identify what truly matters to you." },
     { href: "/tools/act/committed-action", title: "Committed Action Planning", description: "Take steps towards your values." },
+    { href: "/tools/act/decentering", title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
+    { href: "/tools/dbt/radical-acceptance", title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
+    { href: "/tools/cbt/attention-training", title: "Attention Training", description: "Focus redirection techniques." },
     { href: "#", title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
     { href: "#", title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
-    { href: "#", title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
-    { href: "#", title: "Attention Training", description: "Focus redirection techniques." },
-    { href: "#", title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
     { href: "#", title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
 ];
 
