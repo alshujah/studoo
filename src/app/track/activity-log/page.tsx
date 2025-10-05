@@ -1,7 +1,7 @@
 
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { DailyLogForm } from './daily-log-form';
+import { DailyLogForm } from './activity-log-form';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Activity } from 'lucide-react';
 
