@@ -1,8 +1,9 @@
-
 'use server';
 
 /**
- * @fileoverview A Genkit flow that generates a personalized, voiced guided meditation.
+ * @fileoverview Genkit flows for generating personalized, voiced guided meditations.
+ * - generateMeditationScript: Creates the text script for a meditation.
+ * - generateMeditationAudio: Converts a script into voiced audio.
  */
 
 import { ai } from '@/ai/genkit';
@@ -10,47 +11,71 @@ import { z } from 'genkit';
 import wav from 'wav';
 import { googleAI } from '@genkit-ai/google-genai';
 
+// --- Script Generation ---
 
-// Define input and output schemas
-const GenerateMeditationInputSchema = z.object({
-  topic: z.string().describe('The topic or feeling the user wants to focus on for the meditation.'),
+const GenerateMeditationScriptInputSchema = z.object({
+  topic: z.string().describe('The topic or feeling for the meditation.'),
 });
-export type GenerateMeditationInput = z.infer<typeof GenerateMeditationInputSchema>;
+export type GenerateMeditationScriptInput = z.infer<typeof GenerateMeditationScriptInputSchema>;
 
-const GenerateMeditationOutputSchema = z.object({
-  script: z.string().describe('The text of the guided meditation.'),
+const GenerateMeditationScriptOutputSchema = z.object({
+  script: z.string().describe('The text of the guided meditation script.'),
+});
+export type GenerateMeditationScriptOutput = z.infer<typeof GenerateMeditationScriptOutputSchema>;
+
+export async function generateMeditationScript(
+  input: GenerateMeditationScriptInput
+): Promise<GenerateMeditationScriptOutput> {
+  return generateMeditationScriptFlow(input);
+}
+
+const generateMeditationScriptFlow = ai.defineFlow(
+  {
+    name: 'generateMeditationScriptFlow',
+    inputSchema: GenerateMeditationScriptInputSchema,
+    outputSchema: GenerateMeditationScriptOutputSchema,
+  },
+  async ({ topic }) => {
+    const llmResponse = await ai.generate({
+      prompt: `Create a short, calming, 2-minute guided meditation script focused on the following topic: "${topic}". The script should be gentle, reassuring, and use simple language. Start with a brief instruction to get comfortable and end by gently bringing the user back to the present moment.`,
+      config: {
+        temperature: 0.8,
+      },
+    });
+
+    return {
+      script: llmResponse.text,
+    };
+  }
+);
+
+
+// --- Audio Generation ---
+
+const GenerateMeditationAudioInputSchema = z.object({
+    script: z.string().describe('The meditation script to be converted to audio.'),
+});
+export type GenerateMeditationAudioInput = z.infer<typeof GenerateMeditationAudioInputSchema>;
+
+const GenerateMeditationAudioOutputSchema = z.object({
   audioDataUri: z.string().describe("A data URI of the meditation audio in WAV format. Format: 'data:audio/wav;base64,<encoded_data>'."),
 });
-export type GenerateMeditationOutput = z.infer<typeof GenerateMeditationOutputSchema>;
+export type GenerateMeditationAudioOutput = z.infer<typeof GenerateMeditationAudioOutputSchema>;
 
-
-// Exported server action that the frontend will call
-export async function generateMeditation(
-  input: GenerateMeditationInput
-): Promise<GenerateMeditationOutput> {
-  return generateMeditationFlow(input);
+export async function generateMeditationAudio(
+    input: GenerateMeditationAudioInput
+): Promise<GenerateMeditationAudioOutput> {
+    return generateMeditationAudioFlow(input);
 }
 
 
-// Internal Genkit flow
-const generateMeditationFlow = ai.defineFlow(
+const generateMeditationAudioFlow = ai.defineFlow(
   {
-    name: 'generateMeditationFlow',
-    inputSchema: GenerateMeditationInputSchema,
-    outputSchema: GenerateMeditationOutputSchema,
+    name: 'generateMeditationAudioFlow',
+    inputSchema: GenerateMeditationAudioInputSchema,
+    outputSchema: GenerateMeditationAudioOutputSchema,
   },
-  async ({ topic }) => {
-    // 1. Generate the meditation script
-    const scriptGeneration = await ai.generate({
-        prompt: `Create a short, calming, 2-minute guided meditation script focused on the following topic: "${topic}". The script should be gentle, reassuring, and use simple language. Start with a brief instruction to get comfortable and end by gently bringing the user back to the present moment.`,
-        config: {
-            temperature: 0.8
-        }
-    });
-
-    const script = scriptGeneration.text;
-
-    // 2. Convert the script to speech
+  async ({ script }) => {
     const { media } = await ai.generate({
       model: googleAI.model('gemini-2.5-flash-preview-tts'),
       config: {
@@ -73,11 +98,9 @@ const generateMeditationFlow = ai.defineFlow(
       'base64'
     );
 
-    // 3. Convert PCM audio to WAV format
     const wavData = await toWav(pcmData);
 
     return {
-      script: script,
       audioDataUri: 'data:audio/wav;base64,' + wavData,
     };
   }

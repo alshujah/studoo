@@ -3,21 +3,23 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Ear, Loader, Sparkles } from 'lucide-react';
+import { Ear, Loader, Sparkles, Wand } from 'lucide-react';
 import React, { useState, useTransition } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { generateMeditation, type GenerateMeditationOutput } from '@/ai/flows/generate-meditation-flow';
+import { generateMeditationScript, generateMeditationAudio } from '@/ai/flows/generate-meditation-flow';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 
 export default function GuidedMeditationPage() {
   const [topic, setTopic] = useState('');
-  const [isPending, startTransition] = useTransition();
-  const [result, setResult] = useState<GenerateMeditationOutput | null>(null);
+  const [script, setScript] = useState<string | null>(null);
+  const [audioDataUri, setAudioDataUri] = useState<string | null>(null);
+  const [isScriptPending, startScriptTransition] = useTransition();
+  const [isAudioPending, startAudioTransition] = useTransition();
   const { toast } = useToast();
 
-  const handleSubmit = () => {
+  const handleScriptSubmit = () => {
     if (!topic.trim()) {
       toast({
         variant: 'destructive',
@@ -27,21 +29,49 @@ export default function GuidedMeditationPage() {
       return;
     }
 
-    setResult(null);
-    startTransition(async () => {
+    setScript(null);
+    setAudioDataUri(null);
+    startScriptTransition(async () => {
       try {
-        const meditationResult = await generateMeditation({ topic });
-        setResult(meditationResult);
+        const result = await generateMeditationScript({ topic });
+        setScript(result.script);
       } catch (error: any) {
-        console.error('Failed to generate meditation:', error);
+        console.error('Failed to generate meditation script:', error);
         toast({
           variant: 'destructive',
-          title: 'Generation Failed',
-          description: error.message || 'Could not generate the meditation audio.',
+          title: 'Script Generation Failed',
+          description: error.message || 'Could not generate the meditation script.',
         });
       }
     });
   };
+
+  const handleAudioSubmit = () => {
+    if (!script) {
+        toast({
+            variant: 'destructive',
+            title: 'No script available',
+            description: 'Please generate a script first.',
+        });
+        return;
+    }
+
+    startAudioTransition(async () => {
+        try {
+            const result = await generateMeditationAudio({ script });
+            setAudioDataUri(result.audioDataUri);
+        } catch (error: any) {
+            console.error('Failed to generate meditation audio:', error);
+            toast({
+                variant: 'destructive',
+                title: 'Audio Generation Failed',
+                description: error.message || 'Could not generate the meditation audio.',
+            });
+        }
+    });
+  };
+  
+  const isPending = isScriptPending || isAudioPending;
 
   return (
     <main className="flex flex-1 flex-col">
@@ -53,7 +83,7 @@ export default function GuidedMeditationPage() {
           <CardHeader>
             <CardTitle className="font-headline">Your Personal Meditation Guide</CardTitle>
             <CardDescription>
-              Enter a topic, feeling, or situation you'd like to focus on. Our AI will generate a unique, voiced guided meditation just for you.
+              Enter a topic, feeling, or situation you'd like to focus on. Our AI will generate a unique guided meditation just for you.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -66,53 +96,67 @@ export default function GuidedMeditationPage() {
                 onChange={(e) => setTopic(e.target.value)}
                 disabled={isPending}
               />
-              <Button onClick={handleSubmit} disabled={isPending || !topic.trim()}>
-                {isPending ? (
+              <Button onClick={handleScriptSubmit} disabled={isPending || !topic.trim()}>
+                {isScriptPending ? (
                   <Loader className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Sparkles className="mr-2 h-4 w-4" />
+                  <Wand className="mr-2 h-4 w-4" />
                 )}
-                Generate My Meditation
+                Generate Script
               </Button>
             </div>
 
-            {isPending && (
+            {isScriptPending && (
               <div className="flex items-center justify-center gap-4 rounded-lg border bg-muted/50 p-8">
                 <Loader className="h-8 w-8 animate-spin text-primary" />
                 <div className="text-center">
-                    <p className="font-semibold">Generating your meditation...</p>
-                    <p className="text-sm text-muted-foreground">This may take up to a minute. Please wait.</p>
+                    <p className="font-semibold">Generating your meditation script...</p>
                 </div>
               </div>
             )}
 
-            {result && (
+            {script && (
               <div className="space-y-6">
-                 <Alert>
-                  <Ear className="h-4 w-4" />
-                  <AlertTitle>Your Meditation is Ready</AlertTitle>
-                  <AlertDescription>
-                    Find a comfortable position, press play, and follow the guidance.
-                  </AlertDescription>
-                </Alert>
-                <Card className="bg-muted/30">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Listen</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <audio controls className="w-full" src={result.audioDataUri}>
-                      Your browser does not support the audio element.
-                    </audio>
-                  </CardContent>
-                </Card>
                 <Card className="bg-muted/30">
                   <CardHeader>
                     <CardTitle className="text-lg">Meditation Script</CardTitle>
                   </CardHeader>
                   <CardContent className="prose prose-sm max-w-none text-foreground whitespace-pre-wrap">
-                    {result.script}
+                    {script}
                   </CardContent>
                 </Card>
+
+                {!audioDataUri && (
+                    <Button onClick={handleAudioSubmit} disabled={isAudioPending}>
+                        {isAudioPending ? (
+                            <Loader className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                            <Sparkles className="mr-2 h-4 w-4" />
+                        )}
+                        Generate Audio
+                    </Button>
+                )}
+
+                {isAudioPending && (
+                    <div className="flex items-center justify-center gap-4 rounded-lg border bg-muted/50 p-8">
+                        <Loader className="h-8 w-8 animate-spin text-primary" />
+                        <div className="text-center">
+                            <p className="font-semibold">Generating audio...</p>
+                            <p className="text-sm text-muted-foreground">This may take a moment.</p>
+                        </div>
+                    </div>
+                )}
+                
+                {audioDataUri && (
+                    <Alert>
+                        <Ear className="h-4 w-4" />
+                        <AlertTitle>Your Audio is Ready</AlertTitle>
+                        <AlertDescription>Find a comfortable position and press play.</AlertDescription>
+                         <audio controls className="w-full mt-4" src={audioDataUri}>
+                            Your browser does not support the audio element.
+                        </audio>
+                    </Alert>
+                )}
               </div>
             )}
           </CardContent>
