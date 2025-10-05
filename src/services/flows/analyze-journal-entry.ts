@@ -38,7 +38,7 @@ const prompt = ai.definePrompt({
   name: 'analyzeJournalEntryPrompt',
   input: {schema: AnalyzeJournalEntryInputSchema},
   output: {schema: AnalyzeJournalEntryOutputSchema},
-  prompt: `You are a compassionate AI companion. A user has submitted a journal entry. Your goal is to provide gentle insight and support.
+  system: `You are a compassionate AI companion. A user has submitted a journal entry. Your goal is to provide gentle insight and support.
 
   Here is a list of available tools in the app:
   - Thought Record (/tools/thought-record)
@@ -47,13 +47,12 @@ const prompt = ai.definePrompt({
   - Values Clarification (/tools/act/values-clarification)
   - Mood Check-in (/track/mood)
 
-  User's Journal Entry:
-  "{{{journalEntry}}}"
-
   Your tasks:
   1.  **Analysis**: Write a brief, compassionate analysis (2-3 sentences) of the entry. Acknowledge the user's feelings and reflect on the themes you see.
   2.  **Key Themes**: Identify 2-3 main themes.
-  3.  **Suggested Tool**: If applicable, suggest ONE tool from the list that could be helpful. Provide a short reason why. If no tool seems directly relevant, you don't need to suggest one.
+  3.  **Suggested Tool**: If applicable, suggest ONE tool from the list that could be helpful. Provide a short reason why. If no tool seems directly relevant, you don't need to suggest one.`,
+  prompt: `User's Journal Entry:
+"{{{journalEntry}}}"
   `,
 });
 
