@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const actTools = [
     { href: "/tools/act/values-clarification", title: "Values Clarification Exercises", description: "Identify what truly matters to you." },
-    { href: "#", title: "Committed Action Planning", description: "Take steps towards your values." },
+    { href: "/tools/act/committed-action", title: "Committed Action Planning", description: "Take steps towards your values." },
     { href: "#", title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
     { href: "#", title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
     { href: "#", title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
