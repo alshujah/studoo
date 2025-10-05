@@ -19,6 +19,7 @@ import { Skeleton } from '../ui/skeleton';
 import { Button } from '../ui/button';
 import { signInWithGoogle } from '@/firebase/auth/google-provider';
 import { LogOut } from 'lucide-react';
+import Link from 'next/link';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
@@ -46,22 +47,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           ) : user ? (
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3 overflow-hidden">
+             <div className="flex items-center gap-3 overflow-hidden">
+                <Link href="/profile">
                     <Avatar className="size-8">
                         {user.photoURL && <AvatarImage src={user.photoURL} alt="User Avatar" />}
                         <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col overflow-hidden">
-                        <span className="text-sm font-medium text-sidebar-foreground truncate">{user.displayName}</span>
-                        <span className="text-xs text-sidebar-foreground/70 truncate">{user.email}</span>
-                    </div>
+                </Link>
+                <div className="flex flex-col overflow-hidden">
+                    <Link href="/profile" className="text-sm font-medium text-sidebar-foreground truncate hover:underline">{user.displayName}</Link>
+                    <span className="text-xs text-sidebar-foreground/70 truncate">{user.email}</span>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => auth.signOut()} className="shrink-0">
-                    <LogOut className="size-4" />
-                </Button>
             </div>
-
           ) : (
              <Button className="w-full" onClick={() => signInWithGoogle(auth)}>
                 Sign In

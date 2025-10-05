@@ -23,12 +23,13 @@ const navItems = [
     subItems: [
       { href: '/track/mood', label: 'Mood Check-in' },
       { href: '/track/journal', label: 'Journal' },
+      { href: '/track/phq-9', label: 'PHQ-9 Assessment' },
+      { href: '/track/gad-7', label: 'GAD-7 Assessment' },
     ]
   },
   { href: '/tools', icon: Sprout, label: 'Tools' },
   { href: '/programs', icon: Rocket, label: 'Programs' },
   { href: '/chatbot', icon: Bot, label: 'AI Coach' },
-  { href: '/ai-features', icon: BrainCircuit, label: 'AI Features' },
   { href: '/learn', icon: BookOpen, label: 'Learn' },
   { href: '/profile', icon: User, label: 'Profile' },
 ];
@@ -37,9 +38,7 @@ export function SidebarNav() {
   const pathname = usePathname();
 
   const isActive = (href: string, isSubItem: boolean = false) => {
-    if (isSubItem) {
-        return pathname === href;
-    }
+    // Exact match for dashboard, otherwise prefix match
     if (href === '/dashboard') return pathname === href;
     return pathname.startsWith(href);
   };
@@ -50,7 +49,7 @@ export function SidebarNav() {
         <SidebarMenuItem key={item.href}>
           <SidebarMenuButton
             asChild
-            isActive={!item.subItems && isActive(item.href)}
+            isActive={isActive(item.href) && !item.subItems}
             tooltip={{ children: item.label }}
           >
             <Link href={item.href}>
@@ -62,7 +61,7 @@ export function SidebarNav() {
               <SidebarMenuSub>
                 {item.subItems.map(subItem => (
                     <SidebarMenuSubItem key={subItem.href}>
-                        <SidebarMenuSubButton asChild isActive={isActive(subItem.href, true)}>
+                        <SidebarMenuSubButton asChild isActive={pathname === subItem.href}>
                             <Link href={subItem.href}>{subItem.label}</Link>
                         </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
