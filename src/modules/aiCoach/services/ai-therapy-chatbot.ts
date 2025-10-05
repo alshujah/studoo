@@ -7,7 +7,6 @@
  *
  * - aiTherapyChatbot - A function that handles the chatbot interaction.
  * - AiTherapyChatbotInput - The input type for the aiTherapyChatbot function.
- * - AiTherapyChatbotOutput - The return type for the aiTherapyChatbot function.
  */
 
 import { ai } from '@/ai/genkit';
@@ -180,11 +179,6 @@ const AiTherapyChatbotInputSchema = z.object({
 });
 export type AiTherapyChatbotInput = z.infer<typeof AiTherapyChatbotInputSchema>;
 
-const AiTherapyChatbotOutputSchema = z.object({
-  responseStream: z.any().describe('A stream of chatbot response chunks.'),
-});
-export type AiTherapyChatbotOutput = z.infer<typeof AiTherapyChatbotOutputSchema>;
-
 
 export async function aiTherapyChatbot(input: AiTherapyChatbotInput): Promise<ReadableStream<string>> {
   return runInUserContext(input.userId, () => aiTherapyChatbotFlow(input));
@@ -218,7 +212,7 @@ const aiTherapyChatbotFlow = ai.defineFlow(
   {
     name: 'aiTherapyChatbotFlow',
     inputSchema: AiTherapyChatbotInputSchema,
-    outputSchema: z.string(),
+    outputSchema: z.any(), // Changed to z.any() to support streaming
     tools: [getRecentMoodLogs, getRecentJournalEntries, getRecentAnxietyScores, getRecentDepressionScores],
     system: systemPrompt,
   },
@@ -241,19 +235,21 @@ const aiTherapyChatbotFlow = ai.defineFlow(
       stream: true
     });
     
-    let fullText = '';
+    // Create a new ReadableStream from the Genkit stream
     const outputStream = new ReadableStream({
       async start(controller) {
+        // Pipe the Genkit stream chunks to the new stream
         for await (const chunk of stream) {
-            fullText += chunk.text;
-            controller.enqueue(chunk.text);
+            // We only care about the text content for the chat
+            if (chunk.text) {
+                controller.enqueue(chunk.text);
+            }
         }
         controller.close();
       }
     });
 
+    // Return the new stream
     return outputStream;
   }
 );
-
-    
