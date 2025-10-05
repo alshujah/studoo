@@ -4,9 +4,7 @@
 import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
 import type { ChatMessage } from '@/lib/types';
-import { auth } from 'firebase-admin';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
-import { headers } from 'next/headers';
 
 // Initialize Firebase Admin SDK
 if (!getApps().length) {
