@@ -14,7 +14,7 @@ const dbtTools = [
     { href: "/tools/dbt/radical-acceptance", title: "Radical Acceptance Exercises", description: "Accept reality as it is." },
     { href: "/tools/dbt/stop-skill", title: "STOP Skill", description: "Stop, Take a step back, Observe, Proceed." },
     { href: "/tools/dbt/tipp-technique", title: "TIPP Technique", description: "Temperature, Intense exercise, Paced breathing, Paired muscle relaxation." },
-    { href: "#", title: "Walking the Middle Path", description: "Find synthesis between opposites." },
+    { href: "/tools/dbt/walking-the-middle-path", title: "Walking the Middle Path", description: "Find synthesis between opposites." },
     { href: "/tools/dbt/pros-and-cons", title: "Pros and Cons", description: "Weigh the advantages and disadvantages." },
     { href: "/tools/dbt/behavioral-chain-analysis", title: "Behavioral Chain Analysis", description: "Analyze the chain of events leading to a behavior." },
 ];
