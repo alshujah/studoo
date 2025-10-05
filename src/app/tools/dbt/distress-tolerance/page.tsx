@@ -39,7 +39,7 @@ export default function DistressTolerancePage() {
                            <div className='flex items-center gap-4'>
                                 <skill.icon className="size-6 text-primary" />
                                 <div className='text-left'>
-                                    <h3 className="font-semibold text-lg">{skill.title} (ACCEPTS)</h3>
+                                    <h3 className="font-semibold text-lg">{skill.title} ({skill.acronym})</h3>
                                     <p className="text-sm text-muted-foreground">{skill.description}</p>
                                 </div>
                             </div>
