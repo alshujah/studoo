@@ -35,7 +35,18 @@ export default function ChatbotPage() {
         );
     }, [user, firestore]);
 
-    const [chatsSnapshot, loadingChats] = useCollection(chatsQuery);
+    const [chatsSnapshot, loadingChats, error] = useCollection(chatsQuery);
+     
+    useEffect(() => {
+        if (error) {
+            const permissionError = new FirestorePermissionError({
+                path: `users/${user?.uid}/chats`,
+                operation: 'list',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }
+    }, [error, user]);
+
 
     const chatHistory = useMemo(() => {
         return chatsSnapshot?.docs.map(doc => ({
@@ -78,7 +89,7 @@ export default function ChatbotPage() {
             })
             .catch(err => {
                 const permissionError = new FirestorePermissionError({
-                    path: `users/${user.uid}/chats/new`,
+                    path: `users/${user.uid}/chats`,
                     operation: 'create',
                     requestResourceData: newChatData,
                 });
@@ -136,3 +147,4 @@ export default function ChatbotPage() {
         </main>
     );
 }
+

@@ -51,10 +51,15 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                  if (data.messages && data.messages.length > 0) {
                     setMessages(data.messages);
                 } else {
+                    // This handles a new chat document that might be created but not yet populated
                     setMessages(initialMessages);
                 }
+            } else {
+                // Document doesn't exist, which might happen if a new chat is being created.
+                // We'll show initial messages until the doc is created and the listener fires.
+                setMessages(initialMessages);
             }
-        }, (error) => {
+        }, async (error) => {
             console.error("Error listening to chat document:", error);
             const permissionError = new FirestorePermissionError({
                 path: chatDocRef.path,
@@ -64,6 +69,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         });
         return () => unsubscribe();
     } else {
+        // No chat ID, so reset to initial state.
         setMessages(initialMessages);
     }
   }, [chatDocRef]);
@@ -89,6 +95,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     const userMessage: ChatMessage = { role: 'user', content: input };
     const newMessages: ChatMessage[] = [...messages, userMessage];
     setMessages(newMessages);
+    const optimisticInput = input;
     setInput('');
 
     startTransition(async () => {
@@ -134,6 +141,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         });
         // Restore previous messages on error
         setMessages(messages);
+        setInput(optimisticInput); // Restore user input
       }
     });
   };
@@ -172,7 +180,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                     : 'bg-muted'
                 )}
               >
-                <p>{message.content}</p>
+                <p className="whitespace-pre-wrap">{message.content}</p>
               </div>
                {message.role === 'user' && (
                 <Avatar className="h-8 w-8 border">
@@ -212,3 +220,4 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     </div>
   );
 }
+
