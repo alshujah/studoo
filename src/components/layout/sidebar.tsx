@@ -70,8 +70,11 @@ export function Sidebar() {
                     ) : user ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-auto w-full justify-start gap-3 p-2 text-left">
-                                     <Avatar className="h-10 w-10 border">
+                                <Button
+                                    variant="ghost"
+                                    className="h-auto w-full justify-start gap-3 p-2 text-left"
+                                >
+                                    <Avatar className="h-10 w-10 border">
                                         {user.photoURL && <AvatarImage src={user.photoURL} alt={user.displayName || ''} />}
                                         <AvatarFallback className="text-lg">{user.displayName?.charAt(0)}</AvatarFallback>
                                     </Avatar>
