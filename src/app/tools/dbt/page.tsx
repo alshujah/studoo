@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const dbtTools = [
-    { href: "#", title: "Distress Tolerance Skills", description: "Survive crisis situations." },
+    { href: "/tools/dbt/distress-tolerance", title: "Distress Tolerance Skills", description: "Survive crisis situations." },
     { href: "#", title: "Emotion Regulation Strategies", description: "Manage and change intense emotions." },
     { href: "#", title: "Interpersonal Effectiveness", description: "Maintain relationships and self-respect." },
     { href: "#", title: "Radical Acceptance Exercises", description: "Accept reality as it is." },
