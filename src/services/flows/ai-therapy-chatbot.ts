@@ -12,8 +12,8 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { getRecentJournalEntries, getRecentMoodLogs } from '@/ai/tools/user-data';
-import { runInUserContext } from '@/ai/user-context';
+import { getRecentJournalEntries, getRecentMoodLogs } from '@/services/tools/user-data';
+import { runInUserContext } from '@/services/user-context';
 import { AIMessage, HumanMessage, SystemMessage, ToolMessage, type BaseMessage, Message, Part } from 'genkit';
 
 const AiTherapyChatbotInputSchema = z.object({

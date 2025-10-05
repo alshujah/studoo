@@ -1,12 +1,12 @@
 
 'use server';
 
-import { aiTherapyChatbot } from '@/ai/flows/ai-therapy-chatbot';
-import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/analyze-journal-entry';
-import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/ai/flows/analyze-thought-record';
-import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
+import { aiTherapyChatbot } from '@/services/flows/ai-therapy-chatbot';
+import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
+import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
+import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 import type { ChatMessage } from '@/lib/types';
-import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/ai/flows/identify-mood-triggers';
+import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 

@@ -38,12 +38,14 @@ const mainNavItems = [
 ];
 
 
-export function SidebarNav() {
+function SidebarNavComponent() {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
     if (href === '/dashboard' || href === '/') return pathname === href;
-    return pathname.startsWith(href);
+    const currentPath = pathname.split('/')[1];
+    const targetPath = href.split('/')[1];
+    return currentPath === targetPath;
   };
 
   return (
@@ -87,7 +89,7 @@ export function SidebarNav() {
                         <AccordionTrigger
                            className={cn(
                             "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline",
-                            subItems.some(sub => isActive(sub.href)) && 'text-primary'
+                            isActive(item.href) && 'text-primary'
                            )}
                         >
                             <div className="flex items-center gap-3">
@@ -103,7 +105,7 @@ export function SidebarNav() {
                                     href={subItem.href}
                                     className={cn(
                                         'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-                                        isActive(subItem.href) && 'bg-muted text-primary'
+                                        pathname.startsWith(subItem.href) && 'bg-muted text-primary'
                                     )}
                                 >
                                     {subItem.label}
@@ -133,3 +135,5 @@ export function SidebarNav() {
     </nav>
   );
 }
+
+export const SidebarNav = React.memo(SidebarNavComponent);

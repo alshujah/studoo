@@ -16,8 +16,8 @@ import { useRouter } from 'next/navigation';
 import { Loader, Sparkles, ArrowRight } from 'lucide-react';
 import { cognitiveDistortions } from '@/lib/cbt-data';
 import { Checkbox } from '@/components/ui/checkbox';
-import { analyzeThoughtRecord as analyzeThoughtRecordAction } from '@/app/(main)/chatbot/actions';
-import type { AnalyzeThoughtRecordOutput } from '@/ai/flows/analyze-thought-record';
+import { analyzeThoughtRecord } from '@/services/actions';
+import type { AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
@@ -54,7 +54,7 @@ export function ThoughtRecordForm() {
   async function handleAnalyze(data: FormValues) {
     setAnalysisResult(null);
     startAnalysisTransition(async () => {
-      const result = await analyzeThoughtRecordAction(data);
+      const result = await analyzeThoughtRecord(data);
       if (result.success && result.data) {
         setAnalysisResult(result.data);
       } else {

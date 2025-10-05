@@ -1,10 +1,11 @@
+
 'use server';
 /**
  * @fileoverview Genkit tools for securely accessing user data from Firestore.
  */
 
 import { ai } from '@/ai/genkit';
-import { getCurrentUserId } from '@/ai/user-context';
+import { getCurrentUserId } from '@/services/user-context';
 import { firebaseConfig } from '@/firebase/config';
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, query, where, orderBy, limit, getDocs, Timestamp } from 'firebase/firestore';

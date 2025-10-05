@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { getAiResponse } from './actions';
+import { getAiResponse } from '@/services/actions';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
