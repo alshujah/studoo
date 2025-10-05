@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 
 const sfbtTools = [
     { href: "/tools/solution-focused/miracle-question", title: "Miracle Question", description: "Imagine your problem is solved and explore what's different." },
-    { title: "Scaling Questions", description: "Rate your progress towards your goals on a scale of 1-10." },
-    { title: "Exception Finding", description: "Identify times when the problem was less severe." },
-    { title: "Coping Questions", description: "Discover the strengths you're already using to cope." },
+    { href: "#", title: "Scaling Questions", description: "Rate your progress towards your goals on a scale of 1-10." },
+    { href: "#", title: "Exception Finding", description: "Identify times when the problem was less severe." },
+    { href: "#", title: "Coping Questions", description: "Discover the strengths you're already using to cope." },
 ];
 
 export default function SFBTPage() {
