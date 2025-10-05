@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Lightbulb, Scan } from 'lucide-react';
+import { Lightbulb, Scan, Footprints } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -47,7 +47,7 @@ export default function MbsrWeek1Page() {
 
          <Card>
             <CardHeader>
-                <CardTitle className="text-2xl font-headline flex items-center gap-3"><Lightbulb className="size-6 text-primary" />Informal Practice: Mindful Routine Activity</CardTitle>
+                <CardTitle className="text-2xl font-headline flex items-center gap-3"><Footprints className="size-6 text-primary" />Informal Practice: Mindful Routine Activity</CardTitle>
                 <CardDescription>The informal practice is about bringing mindfulness to everyday life.</CardDescription>
             </CardHeader>
             <CardContent className="prose prose-sm max-w-none text-foreground">

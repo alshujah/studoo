@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Lightbulb, HeartHandshake } from 'lucide-react';
+import { Lightbulb, HeartHandshake, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -47,11 +47,13 @@ export default function MbsrWeek5Page() {
 
          <Card>
             <CardHeader>
-                <CardTitle className="text-2xl font-headline flex items-center gap-3"><Lightbulb className="size-6 text-primary" />Informal Practice: Mindful Communication</CardTitle>
+                <CardTitle className="text-2xl font-headline flex items-center gap-3"><MessageSquare className="size-6 text-primary" />Informal Practice: Mindful Communication</CardTitle>
                 <CardDescription>Practice bringing mindfulness into your conversations.</CardDescription>
             </Header>
             <CardContent className="prose prose-sm max-w-none text-foreground">
                <p>In your next conversation, try to listen with your full attention. Notice the other person's words, tone, and body language. Also notice your own internal reactions (thoughts, feelings, judgments) without having to act on them. Just listen, fully.</p>
+               <p>This is related to the 'Interested' part of the GIVE skill.</p>
+                <Link href="/tools/dbt/interpersonal-effectiveness" className="text-primary underline">Learn more about the GIVE skill</Link>
             </CardContent>
         </Card>
 
