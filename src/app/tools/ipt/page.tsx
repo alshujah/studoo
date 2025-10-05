@@ -8,10 +8,10 @@ export const metadata: Metadata = {
 
 const iptTools = [
     { href: "/tools/ipt/social-skills-assessment", title: "Social Skills Assessment", description: "Evaluate your skills in key social domains." },
-    { href: "#", title: "Communication Analysis", description: "Analyze and improve your communication patterns." },
-    { href: "#", title: "Interpersonal Inventory", description: "Identify key relationships and their impact." },
-    { href: "#", title: "Role-Playing", description: "Practice difficult conversations in a safe space." },
-    { href: "#", title: "Social Rhythm Tracking", description: "Monitor daily routines and social interactions." },
+    { href: "/tools/ipt/communication-analysis", title: "Communication Analysis", description: "Analyze and improve your communication patterns." },
+    { href: "/tools/ipt/interpersonal-inventory", title: "Interpersonal Inventory", description: "Identify key relationships and their impact." },
+    { href: "/tools/ipt/role-playing", title: "Role-Playing", description: "Practice difficult conversations in a safe space." },
+    { href: "/tools/ipt/social-rhythm-tracking", title: "Social Rhythm Tracking", description: "Monitor daily routines and social interactions." },
 ];
 
 export default function IPTPage() {
