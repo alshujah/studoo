@@ -12,7 +12,7 @@ const actTools = [
     { href: "/tools/act/decentering", title: "Decentering/Defusion Techniques", description: "Create distance from thoughts." },
     { href: "/tools/dbt/radical-acceptance", title: "Acceptance Training", description: "Promote tolerance of distressing emotions." },
     { href: "/tools/cbt/attention-training", title: "Attention Training", description: "Focus redirection techniques." },
-    { href: "#", title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
+    { href: "/tools/act/psychological-flexibility", title: "Psychological Flexibility Training", description: "Embrace thoughts and feelings." },
     { href: "#", title: "Metaphor-Based Learning", description: "Understand concepts through stories." },
     { href: "#", title: "Self-as-Context Exercises", description: "Observe your thoughts without attachment." },
 ];
