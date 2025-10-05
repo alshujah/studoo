@@ -1,15 +1,16 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Schema Therapy | Rejoyn',
 };
 
 const schemaTherapyTools = [
-    { title: "Schema Identification", description: "Discover your core self-defeating patterns." },
-    { title: "Schema Diary", description: "Track when your schemas are activated." },
-    { title: "Imagery Rescripting", description: "Heal past wounds by rewriting memories." },
-    { title: "Mode Work", description: "Understand and manage your different emotional states." },
+    { href: "/tools/schema-therapy/identification", title: "Schema Identification", description: "Discover your core self-defeating patterns." },
+    { href: "#", title: "Schema Diary", description: "Track when your schemas are activated." },
+    { href: "#", title: "Imagery Rescripting", description: "Heal past wounds by rewriting memories." },
+    { href: "#", title: "Mode Work", description: "Understand and manage your different emotional states." },
 ];
 
 export default function SchemaTherapyPage() {
@@ -20,12 +21,14 @@ export default function SchemaTherapyPage() {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {schemaTherapyTools.map((tool) => (
-            <Card key={tool.title}>
-                <CardHeader>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>{tool.description}</CardDescription>
-                </CardHeader>
-            </Card>
+            <Link href={tool.href || '#'} key={tool.title} className="block hover:bg-muted/50 rounded-lg">
+                <Card className="h-full">
+                    <CardHeader>
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                    </CardHeader>
+                </Card>
+            </Link>
         ))}
       </div>
     </main>
