@@ -15,7 +15,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Rejoyn',
+  title: 'Zenith Wellness',
   description: 'Your partner in mental wellbeing.',
 };
 

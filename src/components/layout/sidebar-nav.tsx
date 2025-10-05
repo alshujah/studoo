@@ -17,16 +17,18 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 
 const navItems = [
   { href: '/dashboard', icon: LayoutGrid, label: 'Dashboard' },
   { href: '/chatbot', icon: Bot, label: 'AI Coach' },
 ];
-
-const trackingItems = [
-    { href: '/track/mood', icon: HeartPulse, label: 'Mood Check-in' },
-    { href: '/track/journal', icon: Brain, label: 'Journal' },
-]
 
 const mainNavItems = [
   { href: '/track', icon: ClipboardList, label: 'Track' },
@@ -40,50 +42,94 @@ export function SidebarNav() {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    if (href === '/dashboard') return pathname === href;
+    if (href === '/dashboard' || href === '/') return pathname === href;
     return pathname.startsWith(href);
   };
 
   return (
-    <nav className="grid items-start gap-1 p-2 text-sm font-medium">
+    <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
       {navItems.map((item) => (
         <Link
           key={item.href}
           href={item.href}
           className={cn(
-            'flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary',
-            isActive(item.href) && 'bg-muted text-primary font-semibold'
+            'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+            isActive(item.href) && 'bg-muted text-primary'
           )}
         >
-          <item.icon className="h-5 w-5" />
+          <item.icon className="h-4 w-4" />
           {item.label}
         </Link>
       ))}
-      <p className="px-3 pt-2 text-xs font-semibold text-muted-foreground/80 tracking-wider uppercase">Explore</p>
-       {mainNavItems.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={cn(
-            'flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary',
-            isActive(item.href) && 'bg-muted text-primary font-semibold'
-          )}
-        >
-          <item.icon className="h-5 w-5" />
-          {item.label}
-        </Link>
-      ))}
-       <p className="px-3 pt-2 text-xs font-semibold text-muted-foreground/80 tracking-wider uppercase">Settings</p>
-        <Link
-          href="/profile"
-          className={cn(
-            'flex items-center gap-3 rounded-md px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary',
-            isActive('/profile') && 'bg-muted text-primary font-semibold'
-          )}
-        >
-          <User className="h-5 w-5" />
-          Profile
-        </Link>
+
+        <Accordion type="multiple" className="w-full" >
+             {mainNavItems.map(item => {
+                let subItems: {href: string, label: string}[] = [];
+                if (item.href === '/tools') {
+                    subItems = [
+                        { href: '/tools/cbt', label: 'CBT' },
+                        { href: '/tools/dbt', label: 'DBT' },
+                        { href: '/tools/act', label: 'ACT' },
+                        { href: '/tools/mindfulness', label: 'Mindfulness' },
+                    ]
+                }
+                 if (item.href === '/track') {
+                    subItems = [
+                        { href: '/track/mood', label: 'Mood' },
+                        { href: '/track/journal', label: 'Journal' },
+                        { href: '/track/sleep-quality', label: 'Sleep' },
+                    ]
+                }
+
+                if (subItems.length > 0) {
+                   return (
+                     <AccordionItem value={item.label} key={item.label} className="border-b-0">
+                        <AccordionTrigger
+                           className={cn(
+                            "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline",
+                            subItems.some(sub => isActive(sub.href)) && 'text-primary'
+                           )}
+                        >
+                            <div className="flex items-center gap-3">
+                               <item.icon className="h-4 w-4" />
+                               {item.label}
+                            </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="pl-8">
+                           <nav className="grid gap-1">
+                             {subItems.map(subItem => (
+                                 <Link
+                                    key={subItem.href}
+                                    href={subItem.href}
+                                    className={cn(
+                                        'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+                                        isActive(subItem.href) && 'bg-muted text-primary'
+                                    )}
+                                >
+                                    {subItem.label}
+                                 </Link>
+                             ))}
+                           </nav>
+                        </AccordionContent>
+                    </AccordionItem>
+                   )
+                }
+
+                 return (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                            'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+                            isActive(item.href) && 'bg-muted text-primary'
+                        )}
+                        >
+                        <item.icon className="h-4 w-4" />
+                        {item.label}
+                    </Link>
+                 )
+             })}
+        </Accordion>
     </nav>
   );
 }

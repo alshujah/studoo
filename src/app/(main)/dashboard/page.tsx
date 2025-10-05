@@ -4,7 +4,7 @@ import { DashboardClient } from '@/components/dashboard-client';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: 'Dashboard | Rejoyn',
+  title: 'Dashboard | Zenith Wellness',
 };
 
 export default function DashboardPage() {

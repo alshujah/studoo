@@ -6,9 +6,9 @@ import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/ai/flows/
 import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/ai/flows/analyze-thought-record';
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/ai/flows/triage-user-issue';
 import type { ChatMessage } from '@/lib/types';
+import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/ai/flows/identify-mood-triggers';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/ai/flows/identify-mood-triggers';
 
 
 // Initialize Firebase Admin SDK

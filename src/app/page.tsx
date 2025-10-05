@@ -115,112 +115,105 @@ export default function LoginPage() {
     }
 
     return (
-       <div className="flex min-h-screen w-full bg-background">
-            <div className="hidden lg:flex lg:w-1/2 relative">
+       <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+            <div className="hidden bg-muted lg:block">
                 {image && (
                     <Image
                         src={image.imageUrl}
                         alt={image.description}
-                        fill
-                        className="object-cover"
+                        width="1920"
+                        height="1080"
+                        className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                         data-ai-hint={image.imageHint}
                         priority
                     />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="relative flex flex-col justify-end p-12 text-white">
-                    <h2 className="text-3xl font-bold tracking-tight">A quiet place for your mind.</h2>
-                    <p className="mt-2 max-w-lg text-lg text-white/80">
-                        Rejoyn is your personal companion for navigating the ups and downs of mental wellness.
-                    </p>
-                </div>
             </div>
-            <div className="flex w-full lg:w-1/2 items-center justify-center p-4">
-                <Card className="w-full max-w-md border-0 shadow-none lg:border lg:shadow-sm">
-                    <CardHeader className="text-center">
-                         <div className="mx-auto mb-4">
-                            <Logo className="h-10 w-10 text-primary" />
-                        </div>
-                        <CardTitle className="text-3xl font-headline">Welcome to Rejoyn</CardTitle>
-                        <CardDescription>Your partner in mental wellbeing.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-6">
-                            <Button onClick={handleGoogleSignIn} disabled={isSubmitting} variant="outline" className="w-full">
-                                {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 21.2 172.4 56.7L368.4 128C338.8 102.3 298.4 88 248 88c-86.6 0-157.2 70.6-157.2 157.2s70.6 157.2 157.2 157.2c94.8 0 135.7-75.3 140.9-114.3H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path></svg>}
-                                Sign In with Google
-                            </Button>
-                            <div className="flex items-center">
-                                <Separator className="flex-1" />
-                                <span className="px-4 text-xs text-muted-foreground">OR</span>
-                                <Separator className="flex-1" />
-                            </div>
-                            
-                            {authMode === 'login' ? (
-                                <Form {...loginForm}>
-                                    <form onSubmit={loginForm.handleSubmit(handleLoginSubmit)} className="space-y-4">
-                                        <FormField control={loginForm.control} name="email" render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Email</FormLabel>
-                                                <FormControl><Input placeholder="you@example.com" {...field} /></FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}/>
-                                        <FormField control={loginForm.control} name="password" render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Password</FormLabel>
-                                                <FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}/>
-                                        <Button type="submit" disabled={isSubmitting} className="w-full">
-                                            {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
-                                            Sign In with Email
-                                        </Button>
-                                    </form>
-                                </Form>
-                            ) : (
-                                <Form {...signupForm}>
-                                    <form onSubmit={signupForm.handleSubmit(handleSignupSubmit)} className="space-y-4">
-                                        <FormField control={signupForm.control} name="displayName" render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Display Name</FormLabel>
-                                                <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}/>
-                                        <FormField control={signupForm.control} name="email" render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Email</FormLabel>
-                                                <FormControl><Input placeholder="you@example.com" {...field} /></FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}/>
-                                        <FormField control={signupForm.control} name="password" render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Password</FormLabel>
-                                                <FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}/>
-                                        <Button type="submit" disabled={isSubmitting} className="w-full">
-                                            {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
-                                            Create Account
-                                        </Button>
-                                    </form>
-                                </Form>
-                            )}
+            <div className="flex items-center justify-center py-12">
+                 <div className="mx-auto grid w-[350px] gap-6">
+                    <div className="grid gap-2 text-center">
+                        <Logo className="h-10 w-10 text-primary mx-auto" />
+                        <h1 className="text-3xl font-headline font-bold">Welcome to Zenith</h1>
+                        <p className="text-balance text-muted-foreground">
+                            Your partner in mental wellbeing.
+                        </p>
+                    </div>
 
-                            <div className="text-center text-sm">
-                                <Button variant="link" onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')} className="p-0 h-auto">
-                                    {authMode === 'login' 
-                                        ? "Don't have an account? Sign up" 
-                                        : "Already have an account? Sign in"}
-                                </Button>
-                            </div>
+                    <div className="grid gap-4">
+                         <Button onClick={handleGoogleSignIn} disabled={isSubmitting} variant="outline" className="w-full">
+                            {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 21.2 172.4 56.7L368.4 128C338.8 102.3 298.4 88 248 88c-86.6 0-157.2 70.6-157.2 157.2s70.6 157.2 157.2 157.2c94.8 0 135.7-75.3 140.9-114.3H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path></svg>}
+                            Sign In with Google
+                        </Button>
+                        <div className="flex items-center">
+                            <Separator className="flex-1" />
+                            <span className="px-4 text-xs text-muted-foreground">OR</span>
+                            <Separator className="flex-1" />
                         </div>
-                    </CardContent>
-                </Card>
+                        
+                        {authMode === 'login' ? (
+                            <Form {...loginForm}>
+                                <form onSubmit={loginForm.handleSubmit(handleLoginSubmit)} className="space-y-4">
+                                    <FormField control={loginForm.control} name="email" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl><Input placeholder="you@example.com" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}/>
+                                    <FormField control={loginForm.control} name="password" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Password</FormLabel>
+                                            <FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}/>
+                                    <Button type="submit" disabled={isSubmitting} className="w-full">
+                                        {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
+                                        Sign In with Email
+                                    </Button>
+                                </form>
+                            </Form>
+                        ) : (
+                            <Form {...signupForm}>
+                                <form onSubmit={signupForm.handleSubmit(handleSignupSubmit)} className="space-y-4">
+                                    <FormField control={signupForm.control} name="displayName" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Display Name</FormLabel>
+                                            <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}/>
+                                    <FormField control={signupForm.control} name="email" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl><Input placeholder="you@example.com" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}/>
+                                    <FormField control={signupForm.control} name="password" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Password</FormLabel>
+                                            <FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}/>
+                                    <Button type="submit" disabled={isSubmitting} className="w-full">
+                                        {isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
+                                        Create Account
+                                    </Button>
+                                </form>
+                            </Form>
+                        )}
+
+                        <div className="mt-4 text-center text-sm">
+                            <Button variant="link" onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')} className="p-0 h-auto">
+                                {authMode === 'login' 
+                                    ? "Don't have an account? Sign up" 
+                                    : "Already have an account? Sign in"}
+                            </Button>
+                        </div>
+                    </div>
+                 </div>
             </div>
        </div>
     );
