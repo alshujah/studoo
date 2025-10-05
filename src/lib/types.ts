@@ -68,5 +68,3 @@ export interface ProblemSolvingSession {
     outcome: string;
     createdAt: Timestamp;
 }
-
-    

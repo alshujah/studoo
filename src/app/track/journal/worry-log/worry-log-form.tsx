@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,6 +29,7 @@ import type { WorryLog } from '@/lib/types';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 const formSchema = z.object({
   worry: z.string().min(5, { message: "Please describe your worry in a bit more detail." }),
