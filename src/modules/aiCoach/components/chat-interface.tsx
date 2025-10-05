@@ -168,18 +168,18 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         return <Loader className="animate-spin size-4" />;
     }
     
-    // Basic markdown for unordered lists
-    const lines = content.split('\n');
-    const contentWithLists = lines.map((line, i) => {
-        const trimmedLine = line.trim();
-        if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
-            return <li key={i} className="ml-4">{trimmedLine.substring(2)}</li>;
-        }
-        return <p key={i} className="inline">{line}{i < lines.length - 1 ? <br/> : ''}</p>;
+    const contentWithLists = content.split('\n').map((line, i, arr) => {
+      const trimmedLine = line.trim();
+      if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+        // Return as a list item element
+        return <li key={i} className="ml-4 list-disc">{trimmedLine.substring(2)}</li>;
+      }
+      // Return as a standard text node within a span
+      return <span key={i}>{line}{i < arr.length - 1 && <br />}</span>;
     });
     
     return (
-        <div className="prose prose-sm max-w-none text-current">
+        <div className="prose prose-sm max-w-none text-current dark:prose-invert prose-p:my-0">
             {contentWithLists}
             {isStreaming && <span className="inline-block w-2 h-4 bg-current animate-pulse ml-1" />}
         </div>
