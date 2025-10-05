@@ -18,7 +18,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Skeleton } from '../ui/skeleton';
 import { Button } from '../ui/button';
 import { signInWithGoogle } from '@/firebase/auth/google-provider';
-import { LogOut } from 'lucide-react';
 import Link from 'next/link';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {

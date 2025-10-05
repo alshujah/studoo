@@ -4,7 +4,7 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User, PenSquare, BrainCircuit, Smile, Rocket } from 'lucide-react';
+import { BookOpen, Bot, ClipboardList, LayoutGrid, Sprout, User } from 'lucide-react';
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -27,8 +27,19 @@ const navItems = [
       { href: '/track/gad-7', label: 'GAD-7 Assessment' },
     ]
   },
-  { href: '/tools', icon: Sprout, label: 'Tools' },
-  { href: '/programs', icon: Rocket, label: 'Programs' },
+  { 
+    href: '/tools', 
+    icon: Sprout, 
+    label: 'Tools',
+    subItems: [
+        { href: '/tools/cbt', label: 'CBT' },
+        { href: '/tools/dbt', label: 'DBT' },
+        { href: '/tools/act', label: 'ACT' },
+        { href: '/tools/mindfulness', label: 'Mindfulness' },
+        { href: '/tools/positive-psychology', label: 'Positive Psychology' },
+    ]
+  },
+  { href: '/programs', icon: BookOpen, label: 'Programs' },
   { href: '/chatbot', icon: Bot, label: 'AI Coach' },
   { href: '/learn', icon: BookOpen, label: 'Learn' },
   { href: '/profile', icon: User, label: 'Profile' },
@@ -37,8 +48,7 @@ const navItems = [
 export function SidebarNav() {
   const pathname = usePathname();
 
-  const isActive = (href: string, isSubItem: boolean = false) => {
-    // Exact match for dashboard, otherwise prefix match
+  const isActive = (href: string) => {
     if (href === '/dashboard') return pathname === href;
     return pathname.startsWith(href);
   };
