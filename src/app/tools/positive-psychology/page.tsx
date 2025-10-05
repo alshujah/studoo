@@ -14,8 +14,8 @@ const positivePsychologyTools = [
     { href: "/tools/positive-psychology/meaning-and-purpose", title: "Meaning and Purpose", description: "Explore your personal sense of purpose." },
     { href: "/track/journal/gratitude", title: "Gratitude Journaling", description: "Daily positive reflections." },
     { href: "/tools/positive-psychology/self-esteem", title: "Self-Esteem Building", description: "Exercises to build healthy self-esteem." },
-    { href: "#", title: "Optimism Training", description: "Cultivate a more positive outlook." },
-    { href: "#", title: "Life Satisfaction Assessments", description: "Evaluate your overall well-being." },
+    { href: "/tools/positive-psychology/optimism-training", title: "Optimism Training", description: "Cultivate a more positive outlook." },
+    { href: "/tools/positive-psychology/life-satisfaction", title: "Life Satisfaction Assessments", description: "Evaluate your overall well-being." },
 ];
 
 export default function PositivePsychologyPage() {
