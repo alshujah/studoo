@@ -32,7 +32,7 @@ const hexaflexPillars = [
         name: 'Self-as-Context',
         description: 'Accessing a transcendent sense of self; a continuous and secure "you" that is a safe and secure observer of your experiences.',
         icon: Telescope,
-        href: '#'
+        href: '/tools/act/self-as-context'
     },
     {
         name: 'Values',
