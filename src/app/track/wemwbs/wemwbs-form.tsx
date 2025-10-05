@@ -22,7 +22,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Loader } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { wemwbsQuestions, wemwbsScale } from '@/lib/wemwbs-data';
+import { wemwbsQuestions, wemwbsScale } from '@/lib/data/wemwbs-data';
 
 const createFormSchema = () => {
     const schemaObject: { [key: string]: any } = {};

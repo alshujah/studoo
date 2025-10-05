@@ -14,7 +14,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Loader, Sparkles, ArrowRight } from 'lucide-react';
-import { cognitiveDistortions } from '@/lib/cbt-data';
+import { cognitiveDistortions } from '@/lib/data/cbt-data';
 import { Checkbox } from '@/components/ui/checkbox';
 import { analyzeThoughtRecord } from '@/services/actions';
 import type { AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
