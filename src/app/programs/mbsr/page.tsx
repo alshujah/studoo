@@ -13,11 +13,11 @@ const programSchedule = [
     { week: 1, title: "Waking Up from Automatic Pilot", focus: "The Body Scan Meditation", unlocked: true, href: "/programs/mbsr/week-1" },
     { week: 2, title: "Living in Our Heads", focus: "Mindful Breathing & Pleasant Events", unlocked: true, href: "/programs/mbsr/week-2" },
     { week: 3, title: "Gathering the Scattered Mind", focus: "Mindful Movement & Difficult Events", unlocked: true, href: "/programs/mbsr/week-3" },
-    { week: 4, title: "The Power of Presence", focus: "Responding vs. Reacting to Stress", unlocked: false },
-    { week: 5, title: "Acceptance and Willingness", focus: "Allowing things to be as they are", unlocked: false },
-    { week: 6, title: "Thoughts Are Not Facts", focus: "Relating to thoughts differently", unlocked: false },
-    { week: 7, title: "How Can I Best Take Care of Myself?", focus: "Integrating mindfulness into daily life", unlocked: false },
-    { week: 8, title: "A Mindful Life", focus: "Reviewing progress and future practice", unlocked: false },
+    { week: 4, title: "The Power of Presence", focus: "Responding vs. Reacting to Stress", unlocked: true, href: "/programs/mbsr/week-4" },
+    { week: 5, title: "Acceptance and Willingness", focus: "Allowing things to be as they are", unlocked: true, href: "/programs/mbsr/week-5" },
+    { week: 6, title: "Thoughts Are Not Facts", focus: "Relating to thoughts differently", unlocked: true, href: "/programs/mbsr/week-6" },
+    { week: 7, title: "How Can I Best Take Care of Myself?", focus: "Integrating mindfulness into daily life", unlocked: true, href: "/programs/mbsr/week-7" },
+    { week: 8, title: "A Mindful Life", focus: "Reviewing progress and future practice", unlocked: true, href: "/programs/mbsr/week-8" },
 ];
 
 export default function MBSRProgramPage() {
