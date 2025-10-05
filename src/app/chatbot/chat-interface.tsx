@@ -77,7 +77,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isPending]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,16 +95,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         updatedAt: serverTimestamp(),
       }, { merge: true });
       
-      const idToken = await user.getIdToken();
-      
-      const result = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${idToken}`
-          },
-          body: JSON.stringify({ messages: newMessages })
-      }).then(res => res.json());
+      const result = await getAiResponse(newMessages, user.uid);
 
       if (result.success && result.data) {
         const finalMessages = [...newMessages, result.data];

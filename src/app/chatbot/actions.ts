@@ -8,8 +8,11 @@ import { auth } from 'firebase-admin';
 import { getApps, initializeApp, type App } from 'firebase-admin/app';
 import { headers } from 'next/headers';
 
-// This is a workaround to get the user ID on the server.
-// In a real app, you would have a more robust way to get the user.
+// Initialize Firebase Admin SDK
+if (!getApps().length) {
+  initializeApp();
+}
+
 async function getUserId(): Promise<string | null> {
     const authorization = headers().get('Authorization');
     if (!authorization?.startsWith('Bearer ')) {
@@ -19,8 +22,6 @@ async function getUserId(): Promise<string | null> {
     if (!idToken) return null;
 
     try {
-        // Use the Firebase Admin SDK to verify the token on the server.
-        // This is more secure than using the client SDK for verification.
         const decodedToken = await auth().verifyIdToken(idToken);
         return decodedToken.uid;
     } catch (e) {
@@ -31,17 +32,13 @@ async function getUserId(): Promise<string | null> {
 
 
 export async function getAiResponse(
-  messages: ChatMessage[]
+  messages: ChatMessage[],
+  userId: string
 ): Promise<{ success: boolean; data?: ChatMessage; error?: string }> {
   try {
     const userMessage = messages[messages.length - 1];
     if (userMessage.role !== 'user') {
       return { success: false, error: 'Invalid message sequence.' };
-    }
-    
-    const userId = await getUserId();
-    if (!userId) {
-        return { success: false, error: 'User not authenticated.' };
     }
     
     const chatHistory = messages.slice(0, -1).map(msg => ({
