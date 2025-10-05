@@ -51,17 +51,12 @@ const trackingModules = [
     { href: "/tools/thought-record", title: "Thought Stopping Techniques", description: "Learn to stop unwanted thoughts." },
     { href: "/track/journal/worry-log", title: "Worry Time Scheduling", description: "Set aside a specific time to worry." },
     { href: "/tools/act/values-clarification", title: "Values Card Sort", description: "Sort values to clarify what's important." },
-    { href: "#", title: "Life Balance Wheel", description: "Assess and balance different life areas." },
-    { href: "#", title: "Well-being Assessments", description: "Warwick-Edinburgh Mental Well-Being Scale." },
-    { href: "#", title: "Personality Assessments", description: "Understand your personality traits." },
-    { href: "/tools", title: "Coping Style Evaluation", description: "Evaluate your coping self-efficacy." },
+    { href: "/tools/gad-7", title: "Coping Style Evaluation", description: "Evaluate your coping self-efficacy." },
     { href: "/tools/ptsd", title: "PTSD Assessments", description: "Assessments for post-traumatic stress." },
     { href: "/track/substance-use", title: "Sobriety Tracking", description: "Track your journey in addiction recovery." },
     { href: "/track/activity-log", title: "Chronic Pain Management", description: "Tools for managing chronic pain." },
     { href: "/track/mood", title: "Bipolar Disorder Mood Stabilization", description: "Tools for mood stabilization." },
     { href: "/track/activity-log", title: "Schizophrenia Symptom Management", description: "Tools to help manage symptoms." },
-    { href: "#", title: "Biometric Integration", description: "Sync with heart rate and step counters." },
-    { href: "#", title: "Wearable Device Sync", description: "Connect your favorite wearable." }
 ];
 
 export default function TrackPage() {
