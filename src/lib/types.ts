@@ -220,3 +220,17 @@ export interface CheckTheFactsLog {
     justification: string;
     createdAt: Timestamp;
 }
+
+export interface DearManScript {
+    id: string;
+    userId: string;
+    situation: string;
+    describe: string;
+    express: string;
+    assert: string;
+    reinforce: string;
+    mindful: string;
+    appearConfident: string;
+    negotiate: string;
+    createdAt: Timestamp;
+}
