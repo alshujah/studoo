@@ -2,7 +2,7 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth, useFirestore } from "@/lib/firebase";
+import { useAuth, useFirestore } from "@/firebase";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from 'firebase/firestore';
 import { Flame, Star, Loader, BookOpen, Smile } from "lucide-react";
