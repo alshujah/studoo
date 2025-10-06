@@ -1,15 +1,15 @@
 
 'use client';
 
-import React, { useState, useTransition, useMemo } from 'react';
+import React, { useState, useTransition, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import type { User } from 'firebase/auth';
-import { ArrowRight, Pen, Wind, Loader, Sparkles, AlertCircle, MessageSquare } from 'lucide-react';
+import { ArrowRight, Pen, Wind, Loader, Sparkles, AlertCircle, MessageSquare, BrainCircuit, Calendar, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { MoodChart } from './mood-chart';
-import { triageIssue } from '@/services/actions';
+import { triageIssue } from '@/dashboard/actions';
 import type { TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
@@ -29,9 +29,21 @@ interface DashboardAuthenticatedProps {
 export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
   const [isTriagePending, startTriageTransition] = useTransition();
   const [issue, setIssue] = useState('');
+  const [greeting, setGreeting] = useState('');
   const [triageResult, setTriageResult] = useState<TriageUserIssueOutput | null>(null);
   const { toast } = useToast();
   const firestore = useFirestore();
+
+  useEffect(() => {
+    const hours = new Date().getHours();
+    if (hours < 12) {
+      setGreeting('Good morning');
+    } else if (hours < 18) {
+      setGreeting('Good afternoon');
+    } else {
+      setGreeting('Good evening');
+    }
+  }, []);
 
   const {
     triggers,
@@ -56,7 +68,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
     return query(
       collection(firestore, 'users', user.uid, 'journalEntries'),
       orderBy('timestamp', 'desc'),
-      limit(10)
+      limit(5)
     );
   }, [user, firestore]);
 
@@ -137,19 +149,19 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6">
-       <Card className="col-span-1 md:col-span-2 xl:col-span-4">
-        <CardHeader>
-          <CardTitle className="font-headline text-3xl">Welcome back, {user.displayName?.split(' ')[0] || 'friend'}!</CardTitle>
+       <Card className="col-span-1 md:col-span-2 xl:col-span-4 bg-transparent border-none shadow-none">
+        <CardHeader className="p-0">
+          <CardTitle className="font-headline text-4xl">{greeting}, {user.displayName?.split(' ')[0] || 'friend'}.</CardTitle>
           <CardDescription>How can we support you today?</CardDescription>
         </CardHeader>
       </Card>
       
-      <Card className="col-span-1 md:col-span-2 xl:col-span-2">
+      <Card className="col-span-1 md:col-span-2 xl:col-span-2 flex flex-col">
         <CardHeader>
-          <CardTitle className="font-headline">What's on your mind?</CardTitle>
+          <CardTitle className="font-headline">Triage with AI</CardTitle>
           <CardDescription>Tell me what's bothering you, and I'll suggest a tool that might help.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 flex-grow">
             <Textarea 
               placeholder="e.g., 'I keep thinking I'm going to fail my big presentation.' or 'I'm feeling really anxious and can't calm down.'"
               className="min-h-24"
@@ -181,7 +193,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
               </div>
             )}
         </CardContent>
-        <CardFooter className="justify-between">
+        <CardFooter className="justify-start">
             <Button onClick={handleTriageSubmit} disabled={!issue.trim() || isTriagePending}>
               {isTriagePending ? 'Analyzing...' : 'Get Suggestion'}
             </Button>
@@ -190,11 +202,17 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
 
       <Card className="col-span-1 flex flex-col">
         <CardHeader>
-          <CardTitle className="font-headline">Start Here</CardTitle>
-          <CardDescription>Begin your journey with these core tools.</CardDescription>
+          <CardTitle className="font-headline">Quick Actions</CardTitle>
+          <CardDescription>Your most-used tools.</CardDescription>
         </CardHeader>
         <CardContent className="flex-grow">
           <div className="flex flex-col gap-4">
+             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
+              <Link href="/chatbot">
+                <MessageSquare className="size-5 text-primary" />
+                <span>Chat with AI Coach</span>
+              </Link>
+            </Button>
             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
               <Link href="/track/mood">
                 <Wind className="size-5 text-primary" />
@@ -205,12 +223,6 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
               <Link href="/track/journal/freeform">
                 <Pen className="size-5 text-primary" />
                 <span>Write in Journal</span>
-              </Link>
-            </Button>
-             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/chatbot">
-                <MessageSquare className="size-5 text-primary" />
-                <span>Talk to AI Coach</span>
               </Link>
             </Button>
           </div>
@@ -235,13 +247,19 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
       </Card>
 
       <Card className="col-span-1 md:col-span-2 xl:col-span-2">
-        <CardHeader>
-          <CardTitle className="font-headline">Insights</CardTitle>
-          <CardDescription>Discover patterns in your well-being.</CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+                <CardTitle className="font-headline">Insights</CardTitle>
+                <CardDescription>Discover patterns in your well-being.</CardDescription>
+            </div>
+             <Button onClick={findTriggers} disabled={isLoadingTriggers} size="sm">
+                {isLoadingTriggers ? <Loader className="mr-2 animate-spin" /> : <Sparkles className="mr-2" />}
+                Analyze
+            </Button>
         </CardHeader>
         <CardContent className="space-y-4">
             {isLoadingTriggers && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground p-4 justify-center">
                     <Loader className="size-4 animate-spin" />
                     <span>Analyzing your mood logs...</span>
                 </div>
@@ -271,21 +289,15 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                 </div>
             )}
              {triggers && triggers.length === 0 && !isLoadingTriggers && (
-                <p className="text-sm text-muted-foreground">Not enough data to identify triggers. Keep logging your mood to see insights here.</p>
+                <p className="text-sm text-muted-foreground text-center p-4">Not enough data to identify triggers. Keep logging your mood to see insights here.</p>
             )}
 
             {!triggers && !isLoadingTriggers && !triggersError && (
-                 <p className="text-sm text-muted-foreground">Click the button to analyze your recent mood logs and identify potential triggers.</p>
+                 <p className="text-sm text-muted-foreground text-center p-4">Click "Analyze" to analyze your recent mood logs and identify potential triggers.</p>
             )}
 
 
         </CardContent>
-        <CardFooter>
-             <Button onClick={findTriggers} disabled={isLoadingTriggers}>
-                {isLoadingTriggers ? <Loader className="mr-2 animate-spin" /> : <Sparkles className="mr-2" />}
-                Find My Triggers
-            </Button>
-        </CardFooter>
       </Card>
       
       <Card className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-2">
@@ -294,9 +306,9 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
             <CardDescription>Review and reflect on your past entries.</CardDescription>
         </CardHeader>
         <CardContent>
-            {loadingJournalEntries && <Loader className="mx-auto animate-spin" />}
+            {loadingJournalEntries && <div className="flex justify-center p-4"><Loader className="mx-auto animate-spin" /></div>}
             {!loadingJournalEntries && journalEntriesSnapshot?.empty && (
-              <p className="text-sm text-muted-foreground">You have no journal entries yet.</p>
+              <p className="text-sm text-muted-foreground p-4 text-center">You have no journal entries yet.</p>
             )}
             <ScrollArea className="h-72">
                 <div className="space-y-4">

@@ -13,7 +13,8 @@ import {
   User,
   HeartPulse,
   Brain,
-  MessageSquare
+  MessageSquare,
+  BarChart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -31,21 +32,49 @@ const navItems = [
 ];
 
 const mainNavItems = [
-  { href: '/track', icon: ClipboardList, label: 'Track' },
-  { href: '/tools', icon: Sprout, label: 'Tools' },
-  { href: '/programs', icon: BookOpen, label: 'Programs' },
-  { href: '/learn', icon: BookOpen, label: 'Learn' },
+  {
+    href: '/track',
+    icon: BarChart,
+    label: 'Track',
+    subItems: [
+        { href: '/track/mood', label: 'Mood Check-in' },
+        { href: '/track/journal', label: 'Journaling' },
+        { href: '/track/sleep-quality', label: 'Sleep Quality' },
+        { href: '/track/gad-7', label: 'GAD-7 Anxiety' },
+        { href: '/track/phq-9', label: 'PHQ-9 Depression' },
+    ]
+  },
+  { 
+    href: '/tools', 
+    icon: Sprout, 
+    label: 'Tools',
+    subItems: [
+        { href: '/tools/cbt', label: 'CBT' },
+        { href: '/tools/dbt', label: 'DBT' },
+        { href: '/tools/act', label: 'ACT' },
+        { href: '/tools/mindfulness', label: 'Mindfulness' },
+        { href: '/tools/relaxation', label: 'Relaxation' },
+        { href: '/tools/positive-psychology', label: 'Positive Psychology' },
+    ]
+  },
+  { href: '/programs', icon: BookOpen, label: 'Programs', subItems: [] },
+  { href: '/learn', icon: BookOpen, label: 'Learn', subItems: [] },
 ];
 
 
 function SidebarNavComponent() {
   const pathname = usePathname();
 
-  const isActive = (href: string) => {
-    if (href === '/dashboard' || href === '/') return pathname === href;
-    const currentPath = pathname.split('/')[1];
-    const targetPath = href.split('/')[1];
-    return currentPath === targetPath;
+  const getActiveAccordionItem = () => {
+    const activeMainItem = mainNavItems.find(item => pathname.startsWith(item.href) && item.subItems.length > 0);
+    return activeMainItem ? [activeMainItem.label] : [];
+  }
+
+  const isActive = (href: string, isMain: boolean) => {
+    if (isMain) {
+        return pathname.startsWith(href);
+    }
+    return pathname === href;
   };
 
   return (
@@ -56,7 +85,7 @@ function SidebarNavComponent() {
           href={item.href}
           className={cn(
             'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-            isActive(item.href) && 'bg-muted text-primary'
+            isActive(item.href, false) && 'bg-muted text-primary'
           )}
         >
           <item.icon className="h-4 w-4" />
@@ -64,32 +93,15 @@ function SidebarNavComponent() {
         </Link>
       ))}
 
-        <Accordion type="multiple" className="w-full" >
+        <Accordion type="multiple" className="w-full" defaultValue={getActiveAccordionItem()}>
              {mainNavItems.map(item => {
-                let subItems: {href: string, label: string}[] = [];
-                if (item.href === '/tools') {
-                    subItems = [
-                        { href: '/tools/cbt', label: 'CBT' },
-                        { href: '/tools/dbt', label: 'DBT' },
-                        { href: '/tools/act', label: 'ACT' },
-                        { href: '/tools/mindfulness', label: 'Mindfulness' },
-                    ]
-                }
-                 if (item.href === '/track') {
-                    subItems = [
-                        { href: '/track/mood', label: 'Mood' },
-                        { href: '/track/journal', label: 'Journal' },
-                        { href: '/track/sleep-quality', label: 'Sleep' },
-                    ]
-                }
-
-                if (subItems.length > 0) {
+                if (item.subItems.length > 0) {
                    return (
                      <AccordionItem value={item.label} key={item.label} className="border-b-0">
                         <AccordionTrigger
                            className={cn(
                             "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:no-underline",
-                            isActive(item.href) && 'text-primary'
+                            isActive(item.href, true) && 'text-primary'
                            )}
                         >
                             <div className="flex items-center gap-3">
@@ -99,7 +111,7 @@ function SidebarNavComponent() {
                         </AccordionTrigger>
                         <AccordionContent className="pl-8">
                            <nav className="grid gap-1">
-                             {subItems.map(subItem => (
+                             {item.subItems.map(subItem => (
                                  <Link
                                     key={subItem.href}
                                     href={subItem.href}
@@ -123,7 +135,7 @@ function SidebarNavComponent() {
                         href={item.href}
                         className={cn(
                             'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-                            isActive(item.href) && 'bg-muted text-primary'
+                            isActive(item.href, true) && 'bg-muted text-primary'
                         )}
                         >
                         <item.icon className="h-4 w-4" />

@@ -182,7 +182,17 @@ export async function aiTherapyChatbot(input: AiTherapyChatbotInput): Promise<Re
   // Use runInUserContext to make the userId available to the tools
   return runInUserContext(input.userId, async () => {
     
-    const systemPrompt = `You are AuraCoach, a compassionate, adaptive, and emotionally intelligent AI mentor. Your purpose is to help the user improve their mental clarity, motivation, and self-understanding in real time. You are not a replacement for a human therapist.
+    const hours = new Date().getHours();
+    let greeting = "Hello";
+    if (hours < 12) {
+      greeting = "Good morning";
+    } else if (hours < 18) {
+      greeting = "Good afternoon";
+    } else {
+      greeting = "Good evening";
+    }
+    
+    const systemPrompt = `You are AuraCoach, a compassionate, adaptive, and emotionally intelligent AI mentor. Your purpose is to help the user improve their mental clarity, motivation, and self-understanding in real time. You are not a replacement for a human therapist. Your opening greeting should be appropriate for the time of day, which is currently: ${greeting}.
 
     Your primary goal is to develop a "Theory of Mind" about the user by synthesizing information from the current conversation, your chat history, and by using the tools available to you to access the user's personal data (mood logs, journal entries, and assessment scores).
     
@@ -228,5 +238,3 @@ export async function aiTherapyChatbot(input: AiTherapyChatbotInput): Promise<Re
     return outputStream;
   });
 }
-
-    
