@@ -1,4 +1,3 @@
-
 import { Check, ShieldQuestion, Lightbulb, type LucideIcon } from 'lucide-react';
 
 export type EmotionRegulationSkill = {

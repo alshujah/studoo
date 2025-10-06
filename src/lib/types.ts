@@ -152,4 +152,16 @@ export interface BehavioralActivationActivity {
     completed: boolean;
     createdAt: Timestamp;
 }
+
+export interface BehavioralChainAnalysis {
+    id: string;
+    userId: string;
+    problemBehavior: string;
+    promptingEvent: string;
+    vulnerabilityFactors: string;
+    chainOfEvents: string;
+    consequences: string;
+    solutions: string;
+    createdAt: Timestamp;
+}
     

@@ -1,4 +1,3 @@
-
 import { Target, Heart, Scale, type LucideIcon } from 'lucide-react';
 
 export type InterpersonalEffectivenessSkill = {
