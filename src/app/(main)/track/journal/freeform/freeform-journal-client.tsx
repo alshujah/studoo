@@ -6,7 +6,7 @@ import { useForm, zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { useAuth, useFirestore } from '@/firebase';
+import { useAuth, useFirestore } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
@@ -16,8 +16,8 @@ import type { AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { FirestorePermissionError } from '@/firebase/errors';
-import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/lib/firebase/errors';
+import { errorEmitter } from '@/lib/firebase/error-emitter';
 import { useStreak } from '@/hooks/use-streak';
 
 const formSchema = z.object({

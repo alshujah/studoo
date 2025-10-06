@@ -19,7 +19,7 @@ if (!getApps().length) {
             credential: cert(serviceAccount)
         });
     } else {
-        console.warn("Firebase Admin SDK not initialized. FIREBASE_SERVICE_ACCOUNT_KEY is not set.");
+        console.warn("Firebase Admin SDK not initialized. FIREBASE_SERVICE_ACCOUNT_KEY is not set. This is normal for client-side rendering, but required for server-side auth checks.");
     }
   } catch (e) {
     console.error("Failed to initialize Firebase Admin SDK. Service account key might be missing or invalid.", e);

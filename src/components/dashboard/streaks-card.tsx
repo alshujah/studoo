@@ -2,7 +2,7 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth, useFirestore, useMemoFirebase } from "@/firebase";
+import { useAuth, useFirestore } from "@/lib/firebase";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from 'firebase/firestore';
 import { Flame, Star, Loader, BookOpen, Smile } from "lucide-react";
@@ -10,13 +10,14 @@ import type { UserStreak } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { isToday } from "date-fns";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useMemo } from "react";
 
 function StreakDisplay({ habitId, icon: Icon, label }: { habitId: string; icon: React.ElementType, label: string; }) {
     const auth = useAuth();
     const [user] = useAuthState(auth);
     const firestore = useFirestore();
 
-    const streakDocRef = useMemoFirebase(() => {
+    const streakDocRef = useMemo(() => {
         if (!user || !firestore) return null;
         return doc(firestore, 'users', user.uid, 'streaks', habitId);
     }, [user, firestore, habitId]);
