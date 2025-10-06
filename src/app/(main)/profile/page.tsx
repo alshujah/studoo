@@ -118,8 +118,8 @@ export default function ProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" disabled>
-                Export Data
+              <Button asChild variant="outline">
+                <Link href="/profile/export">Export Data</Link>
               </Button>
             </CardContent>
           </Card>
