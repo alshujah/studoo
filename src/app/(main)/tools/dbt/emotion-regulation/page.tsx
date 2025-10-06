@@ -1,10 +1,12 @@
 
+
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { emotionRegulationSkills } from '@/lib/data/dbt-emotion-regulation-data';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SlidersHorizontal } from 'lucide-react';
 import { PageLayout } from '@/components/layout/page-layout';
+import Link from 'next/link';
 
 
 export const metadata: Metadata = {
@@ -22,6 +24,20 @@ export default function EmotionRegulationPage() {
                     These skills help you understand what emotions do for you, reduce your emotional vulnerability, and decrease emotional suffering.
                 </AlertDescription>
             </Alert>
+            
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Interactive Tool: Opposite Action</CardTitle>
+                    <CardDescription>
+                        Practice acting opposite to your unjustified or ineffective emotional urges.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Link href="/tools/dbt/emotion-regulation/opposite-action" className="text-primary font-semibold hover:underline">
+                        Start Opposite Action Exercise &rarr;
+                    </Link>
+                </CardContent>
+            </Card>
 
             {emotionRegulationSkills.map(skill => (
                 <Card key={skill.title}>

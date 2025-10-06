@@ -198,3 +198,14 @@ export interface BehavioralExperiment {
     outcome: string;
     whatILearned: string;
 }
+
+export interface OppositeActionLog {
+    id: string;
+    userId: string;
+    emotion: string;
+    intensity: number;
+    actionUrge: string;
+    oppositeAction: string;
+    outcome: string;
+    createdAt: Timestamp;
+}

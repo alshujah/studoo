@@ -391,6 +391,21 @@
             "whatILearned": { "type": "string" }
         },
         "required": ["userId", "createdAt", "beliefToTest", "experiment", "prediction", "outcome", "whatILearned"]
+    },
+    "oppositeActionLog": {
+        "title": "Opposite Action Log",
+        "description": "A record of practicing the DBT skill of Opposite Action.",
+        "type": "object",
+        "properties": {
+            "userId": { "type": "string" },
+            "emotion": { "type": "string" },
+            "intensity": { "type": "number" },
+            "actionUrge": { "type": "string" },
+            "oppositeAction": { "type": "string" },
+            "outcome": { "type": "string" },
+            "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["userId", "emotion", "intensity", "actionUrge", "oppositeAction", "outcome", "createdAt"]
     }
   },
   "auth": {
@@ -496,6 +511,10 @@
     "/users/{userId}/behavioralExperiments/{experimentId}": {
         "schema": { "$ref": "#/entities/behavioralExperiment" },
         "description": "Stores a user's CBT behavioral experiments."
+    },
+    "/users/{userId}/oppositeActionLogs/{logId}": {
+        "schema": { "$ref": "#/entities/oppositeActionLog" },
+        "description": "Stores a user's Opposite Action logs."
     }
   }
 }
