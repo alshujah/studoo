@@ -1,33 +1,18 @@
 
 'use server';
 
-import { analyzeJournalEntry, type AnalyzeJournalEntryInput, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
-import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
-import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
-import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
-import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
-import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/services/flows/score-gad7-flow';
-import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/services/flows/score-phq-9-flow';
+import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/app/api/ai/flows/analyze-thought-record';
+import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/app/api/ai/flows/generate-meditation-flow';
+import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/app/api/ai/flows/miracle-question-flow';
+import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/app/api/ai/flows/score-gad7-flow';
+import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/app/api/ai/flows/score-phq-9-flow';
 import { getMoodTriggers } from './actions/get-mood-triggers';
 import { generateReportAction } from './actions/generate-report-action';
-export { getMoodTriggers, generateReportAction };
+import { getJournalAnalysis } from './actions/analyze-journal-entry';
+import { triageIssue } from './actions/triage-user-issue';
 
+export { getMoodTriggers, generateReportAction, getJournalAnalysis, triageIssue };
 
-export async function getJournalAnalysis(
-  input: AnalyzeJournalEntryInput
-): Promise<{ success: boolean; data?: AnalyzeJournalEntryOutput; error?: string }> {
-  try {
-    if (!input.journalEntry.trim()) {
-      return { success: false, error: 'Journal entry cannot be empty.' };
-    }
-    const result = await analyzeJournalEntry(input);
-    return { success: true, data: result };
-  } catch (error)
- {
-    console.error('Error getting journal analysis:', error);
-    return { success: false, error: 'Failed to get analysis from the AI coach.' };
-  }
-}
 
 export async function analyzeThoughtRecord(
     input: AnalyzeThoughtRecordInput
@@ -39,21 +24,6 @@ export async function analyzeThoughtRecord(
         console.error('Error analyzing thought record:', error);
         return { success: false, error: 'Failed to get analysis from the AI coach.' };
     }
-}
-
-export async function triageIssue(
-  input: TriageUserIssueInput
-): Promise<{ success: boolean; data?: TriageUserIssueOutput; error?: string }> {
-  try {
-    if (!input.issue.trim()) {
-      return { success: false, error: 'Issue description cannot be empty.' };
-    }
-    const result = await triageUserIssueFlow(input);
-    return { success: true, data: result };
-  } catch (error) {
-    console.error('Error getting triage recommendation:', error);
-    return { success: false, error: 'Failed to get a recommendation.' };
-  }
 }
 
 export async function generateMeditationScriptAction(
