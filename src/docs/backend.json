@@ -376,6 +376,51 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "problemBehavior", "promptingEvent", "vulnerabilityFactors", "chainOfEvents", "consequences", "solutions", "createdAt"]
+    },
+    "behavioralExperiment": {
+        "title": "Behavioral Experiment",
+        "description": "A record of a CBT behavioral experiment.",
+        "type": "object",
+        "properties": {
+            "userId": { "type": "string" },
+            "createdAt": { "type": "string", "format": "date-time" },
+            "beliefToTest": { "type": "string" },
+            "experiment": { "type": "string" },
+            "prediction": { "type": "string" },
+            "outcome": { "type": "string" },
+            "whatILearned": { "type": "string" }
+        },
+        "required": ["userId", "createdAt", "beliefToTest", "experiment", "prediction", "outcome", "whatILearned"]
+    },
+    "oppositeActionLog": {
+        "title": "Opposite Action Log",
+        "description": "A record of practicing the DBT skill of Opposite Action.",
+        "type": "object",
+        "properties": {
+            "userId": { "type": "string" },
+            "emotion": { "type": "string" },
+            "intensity": { "type": "number" },
+            "actionUrge": { "type": "string" },
+            "oppositeAction": { "type": "string" },
+            "outcome": { "type": "string" },
+            "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["userId", "emotion", "intensity", "actionUrge", "oppositeAction", "outcome", "createdAt"]
+    },
+    "checkTheFactsLog": {
+      "title": "Check The Facts Log",
+      "description": "A record of practicing the DBT skill of Checking the Facts.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "emotion": { "type": "string" },
+        "promptingEvent": { "type": "string" },
+        "interpretations": { "type": "string" },
+        "isJustified": { "type": "boolean" },
+        "justification": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "emotion", "promptingEvent", "interpretations", "isJustified", "createdAt"]
     }
   },
   "auth": {
@@ -477,6 +522,18 @@
     "/users/{userId}/behavioralChainAnalyses/{analysisId}": {
         "schema": { "$ref": "#/entities/behavioralChainAnalysis" },
         "description": "Stores a user's DBT behavioral chain analyses."
+    },
+    "/users/{userId}/behavioralExperiments/{experimentId}": {
+        "schema": { "$ref": "#/entities/behavioralExperiment" },
+        "description": "Stores a user's CBT behavioral experiments."
+    },
+    "/users/{userId}/oppositeActionLogs/{logId}": {
+        "schema": { "$ref": "#/entities/oppositeActionLog" },
+        "description": "Stores a user's Opposite Action logs."
+    },
+    "/users/{userId}/checkTheFactsLogs/{logId}": {
+        "schema": { "$ref": "#/entities/checkTheFactsLog" },
+        "description": "Stores a user's Check the Facts logs."
     }
   }
 }

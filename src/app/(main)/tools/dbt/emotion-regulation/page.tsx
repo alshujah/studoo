@@ -13,6 +13,19 @@ export const metadata: Metadata = {
   title: 'Emotion Regulation Skills | Rejoyn',
 };
 
+const interactiveTools = [
+    { 
+        href: "/tools/dbt/emotion-regulation/check-the-facts", 
+        title: "Check the Facts", 
+        description: "Practice checking if your emotional reaction fits the facts of a situation." 
+    },
+    { 
+        href: "/tools/dbt/emotion-regulation/opposite-action", 
+        title: "Opposite Action", 
+        description: "Practice acting opposite to your unjustified or ineffective emotional urges." 
+    },
+];
+
 export default function EmotionRegulationPage() {
   return (
     <PageLayout title="Emotion Regulation Skills">
@@ -25,19 +38,23 @@ export default function EmotionRegulationPage() {
                 </AlertDescription>
             </Alert>
             
-            <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline">Interactive Tool: Opposite Action</CardTitle>
-                    <CardDescription>
-                        Practice acting opposite to your unjustified or ineffective emotional urges.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Link href="/tools/dbt/emotion-regulation/opposite-action" className="text-primary font-semibold hover:underline">
-                        Start Opposite Action Exercise &rarr;
-                    </Link>
-                </CardContent>
-            </Card>
+            <div className="grid md:grid-cols-2 gap-4">
+                {interactiveTools.map(tool => (
+                    <Card key={tool.href}>
+                        <CardHeader>
+                            <CardTitle className="font-headline">{tool.title}</CardTitle>
+                            <CardDescription>
+                                {tool.description}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Link href={tool.href} className="text-primary font-semibold hover:underline">
+                                Start Exercise &rarr;
+                            </Link>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
 
             {emotionRegulationSkills.map(skill => (
                 <Card key={skill.title}>

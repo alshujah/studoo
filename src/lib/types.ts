@@ -209,3 +209,14 @@ export interface OppositeActionLog {
     outcome: string;
     createdAt: Timestamp;
 }
+
+export interface CheckTheFactsLog {
+    id: string;
+    userId: string;
+    emotion: string;
+    promptingEvent: string;
+    interpretations: string;
+    isJustified: boolean;
+    justification: string;
+    createdAt: Timestamp;
+}
