@@ -39,12 +39,10 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-       <Card className="col-span-1 md:col-span-2 lg:col-span-4 bg-transparent border-none shadow-none">
-        <CardHeader className="p-0">
-          <CardTitle className="font-headline text-4xl">{greeting}, {user.displayName?.split(' ')[0] || 'friend'}.</CardTitle>
-          <CardDescription className="text-lg">How can we support you today?</CardDescription>
-        </CardHeader>
-      </Card>
+       <div className="col-span-1 md:col-span-2 lg:col-span-4">
+        <h1 className="font-headline text-4xl">{greeting}, {user.displayName?.split(' ')[0] || 'friend'}.</h1>
+        <p className="text-lg text-muted-foreground mt-1">How can we support you today?</p>
+      </div>
       
       <Card className="col-span-1 md:col-span-2 lg:col-span-2 flex flex-col bg-gradient-to-br from-primary/10 via-background to-background">
         <CardHeader>
@@ -186,5 +184,3 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
     </div>
   );
 }
-
-    
