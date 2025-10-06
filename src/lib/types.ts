@@ -164,4 +164,3 @@ export interface BehavioralChainAnalysis {
     solutions: string;
     createdAt: Timestamp;
 }
-    

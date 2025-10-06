@@ -231,5 +231,3 @@ export function DailyLogForm() {
     </Form>
   );
 }
-
-    

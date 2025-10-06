@@ -140,5 +140,3 @@ export function MedicationLogForm() {
     </Form>
   );
 }
-
-    
