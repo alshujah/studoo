@@ -20,11 +20,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { CalendarIcon, Check, Loader, Trash2, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, add } from 'date-fns';
-import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase';
+import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase/provider';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp, query, where, orderBy, updateDoc, doc, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { WorryLog } from '@/types';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,7 +48,7 @@ export function WorryLogForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingWorry, setEditingWorry] = useState<WorryLog | null>(null);
 
-  const worryLogsQuery = useMemoFirebase(() => {
+  const worryLogsQuery = useMemo(() => {
     if (!user) return null;
     return query(
       collection(firestore, 'users', user.uid, 'worryLogs'),

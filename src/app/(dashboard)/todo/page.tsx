@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase';
+import { useAuth, useFirestore } from '@/lib/firebase/provider';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import {
@@ -35,7 +35,7 @@ export default function TodoPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const tasksQuery = useMemoFirebase(() => {
+  const tasksQuery = useMemo(() => {
     if (!user) return null;
     return query(
       collection(firestore, 'users', user.uid, 'todos'),
