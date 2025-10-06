@@ -4,10 +4,9 @@
 import { useState, useEffect, useTransition } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Loader, FileText, Clipboard, Check } from 'lucide-react';
-import { generateReportAction } from '@/services/actions/generate-report-action';
+import { Loader, Clipboard, Check } from 'lucide-react';
+import { generateReportAction } from '@/services/actions';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ExportDataPage() {

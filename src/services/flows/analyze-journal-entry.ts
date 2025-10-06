@@ -9,7 +9,7 @@
  * - AnalyzeJournalEntryOutput - The return type for the analyzeJournalEntry function.
  */
 
-import {ai} from '@/services/ai/genkit';
+import {ai} from '@/lib/genkit';
 import {z} from 'genkit';
 
 const AnalyzeJournalEntryInputSchema = z.object({

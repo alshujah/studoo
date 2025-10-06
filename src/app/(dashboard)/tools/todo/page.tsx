@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { useAuth, useFirestore } from '@/lib/firebase';
+import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import {
@@ -14,7 +14,6 @@ import {
   query,
   orderBy,
   updateDoc,
-  type Timestamp,
 } from 'firebase/firestore';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,7 +25,7 @@ import { useToast } from '@/hooks/use-toast';
 import type { Todo } from '@/types';
 import { cn } from '@/lib/utils';
 import { errorEmitter } from '@/lib/firebase/error-emitter';
-import { FirestorePermissionError, type SecurityRuleContext } from '@/lib/firebase/errors';
+import { FirestorePermissionError } from '@/lib/firebase/errors';
 
 export default function TodoPage() {
   const auth = useAuth();
@@ -36,7 +35,7 @@ export default function TodoPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const tasksQuery = useMemo(() => {
+  const tasksQuery = useMemoFirebase(() => {
     if (!user) return null;
     return query(
       collection(firestore, 'users', user.uid, 'todos'),

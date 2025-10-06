@@ -4,7 +4,7 @@
 import { useState, useTransition, useCallback, useEffect } from 'react';
 import { useFirestore } from '@/lib/firebase';
 import { collection, getDocs, query, where, orderBy, Timestamp, limit } from 'firebase/firestore';
-import { getMoodTriggers } from '@/services/actions/get-mood-triggers';
+import { getMoodTriggers } from '@/services/actions';
 import { subDays } from 'date-fns';
 import type { MoodLog } from '@/types';
 

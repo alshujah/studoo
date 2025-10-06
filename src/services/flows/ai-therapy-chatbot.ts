@@ -9,7 +9,7 @@
  * - AiTherapyChatbotInput - The input type for the aiTherapyChatbot function.
  */
 
-import { ai } from '@/ai/genkit';
+import { ai } from '@/lib/genkit';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
 import { getApps, initializeApp } from 'firebase-admin/app';

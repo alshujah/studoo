@@ -14,9 +14,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { useAuth } from '@/lib/firebase';
+import { useAuth, useFirestore } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useFirestore } from '@/lib/firebase/provider';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';

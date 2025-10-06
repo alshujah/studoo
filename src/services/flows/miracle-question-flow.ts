@@ -9,7 +9,7 @@
  * - MiracleQuestionOutput - The return type for the miracleQuestion function.
  */
 
-import { ai } from '@/services/ai/genkit';
+import { ai } from '@/lib/genkit';
 import { z } from 'genkit';
 
 export const MiracleQuestionInputSchema = z.object({
