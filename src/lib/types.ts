@@ -18,6 +18,13 @@ export interface JournalEntry {
   suggestedToolHref?: string;
 }
 
+export interface GratitudeEntry {
+    id: string;
+    userId: string;
+    entries: string[];
+    timestamp: Timestamp;
+}
+
 export interface ThoughtRecord {
     id: string;
     userId: string;
@@ -127,6 +134,22 @@ export interface Todo {
   completed: boolean;
   createdAt: Timestamp;
   userId: string;
+}
+
+export interface Gad7Score {
+    id: string;
+    userId: string;
+    score: number;
+    answers: Record<string, string>;
+    timestamp: Timestamp;
+}
+
+export interface Phq9Score {
+    id: string;
+    userId: string;
+    score: number;
+    answers: Record<string, string>;
+    timestamp: Timestamp;
 }
 
 export interface WemwbsScore {

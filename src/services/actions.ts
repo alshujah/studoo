@@ -7,6 +7,8 @@ import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type
 import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
 import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
 import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
+import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/services/flows/score-gad7-flow';
+import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/services/flows/score-phq9-flow';
 
 
 export async function getJournalAnalysis(
@@ -101,4 +103,28 @@ export async function miracleQuestionAction(
     console.error('Error in miracle question flow:', error);
     return { success: false, error: 'Failed to get a response from the AI coach.' };
   }
+}
+
+export async function scoreGad7Action(
+    input: ScoreGad7Input
+): Promise<{ success: boolean; data?: ScoreGad7Output; error?: string }> {
+    try {
+        const result = await scoreGad7(input);
+        return { success: true, data: result };
+    } catch (error: any) {
+        console.error('Error scoring GAD-7:', error);
+        return { success: false, error: 'Failed to score the assessment.' };
+    }
+}
+
+export async function scorePhq9Action(
+    input: ScorePhq9Input
+): Promise<{ success: boolean; data?: ScorePhq9Output; error?: string }> {
+    try {
+        const result = await scorePhq9(input);
+        return { success: true, data: result };
+    } catch (error: any) {
+        console.error('Error scoring PHQ-9:', error);
+        return { success: false, error: 'Failed to score the assessment.' };
+    }
 }
