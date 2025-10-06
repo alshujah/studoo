@@ -20,7 +20,7 @@ const categories = [
             { title: "Neuroscience Basics", description: "How your brain works." },
             { title: "Stress Response Education", description: "Understand the fight-or-flight response." },
             { title: "Mental Health Myths Debunking", description: "Separating fact from fiction." },
-            { title: "Cognitive Biases Education", description: "Learn about common thinking traps." },
+            { title: "Cognitive Biases Education", description: "Learn about common thinking traps.", href: "/learn/cognitive-biases" },
             { title: "Research Article Summaries", description: "Digestible summaries of new research." },
         ]
     },

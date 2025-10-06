@@ -1,3 +1,4 @@
+
 export const cognitiveDistortions = [
     {
       name: "All-or-Nothing Thinking",

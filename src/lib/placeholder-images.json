@@ -127,6 +127,12 @@
       "imageHint": "therapy session"
     },
     {
+      "id": "abstract-thought",
+      "description": "An abstract representation of thoughts and the mind.",
+      "imageUrl": "https://images.unsplash.com/photo-1530982512154-5a687c959f99?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YWJzdHJhY3QlMjB0aG91Z2h0fGVufDB8fHx8MTc1OTgwNzY3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract thought"
+    },
+    {
       "id": "face-joy",
       "imageUrl": "https://images.unsplash.com/photo-1691378543041-50da655e7f0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxqb3lmdWwlMjBmYWNlfGVufDB8fHx8MTc1OTczNDUxMXww&ixlib=rb-4.1.0&q=80&w=1080",
       "description": "A joyful face",
