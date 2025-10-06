@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 };
 
 const programSchedule = [
-    { week: 1, title: "Identifying Basic Emotions", focus: "Accuracy and speed in recognizing joy, sadness, anger, fear, surprise, and disgust.", exercise: "Emotional Faces Memory Task (Level 1)", unlocked: true, href: "/tools/ipt/social-skills-assessment" },
-    { week: 2, title: "Emotional Intensity", focus: "Distinguishing between subtle, moderate, and intense expressions of the same emotion.", exercise: "EFMT (Level 2)", unlocked: true, href: "/tools/ipt/social-skills-assessment" },
+    { week: 1, title: "Identifying Basic Emotions", focus: "Accuracy and speed in recognizing joy, sadness, anger, fear, surprise, and disgust.", exercise: "Emotional Faces Memory Task (Level 1)", unlocked: true, href: "/tools/ipt/efmt" },
+    { week: 2, title: "Emotional Intensity", focus: "Distinguishing between subtle, moderate, and intense expressions of the same emotion.", exercise: "EFMT (Level 2)", unlocked: false, href: "" },
     { week: 3, title: "Microexpressions", focus: "Detecting fleeting emotional expressions that last less than a second.", exercise: "EFMT (Level 3)", unlocked: false },
     { week: 4, title: "Complex & Mixed Emotions", focus: "Recognizing blended emotions (e.g., bittersweet joy, anxious excitement).", exercise: "EFMT (Level 4)", unlocked: false },
     { week: 5, title: "Contextual Understanding", focus: "Using situational context to better interpret ambiguous emotional cues.", exercise: "Scenario-Based EFMT", unlocked: false },

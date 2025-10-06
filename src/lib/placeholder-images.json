@@ -9,7 +9,7 @@
     {
       "id": "forest-path",
       "description": "A path winding through a sunlit forest.",
-      "imageUrl": "https://images.unsplash.com/photo-1429743305873-d4065c15f93e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8MTc1OTU4MTk4Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1429743305873-d4065c15f93e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8fDE3NTk1ODE5ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "forest path"
     },
     {
@@ -33,13 +33,13 @@
     {
       "id": "person-meditating",
       "description": "A person meditating peacefully outdoors.",
-      "imageUrl": "https://images.unsplash.com/photo-1618425977996-bebc5afe88f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBtZWRpdGF0aW5nfGVufDB8fHx8MTc1OTUzNzcwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1618425977996-bebc5afe88f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBtZWRpdGF0aW5nfGVufDB8fHx8fDE3NTk1MzcwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "person meditating"
     },
     {
       "id": "supportive-friends",
       "description": "A diverse group of friends laughing together.",
-      "imageUrl": "https://images.unsplash.com/photo-1709116451864-5f2b742bd83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZnJpZW5kcyUyMGxhdWdoaW5nfGVufDB8fHx8MTc1OTYwMjQ4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1709116451864-5f2b742bd83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZnJpZW5kcyUyMGxhdWdoaW5nfGVufDB8fHx8fDE3NTk2MDI0ODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "friends laughing"
     },
     {
@@ -81,7 +81,7 @@
     {
       "id": "abstract-light",
       "description": "Abstract and soft light patterns.",
-      "imageUrl": "https://images.unsplash.com/photo-1519750783826-e2420f4d687f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxhYnN0cmFjdCUyMGxpZ2h0fGVufDB8fHx8MTc1OTU0MzYxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1519750783826-e2420f4d687f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxhYnN0cmFjdCUyMGxpZ2h0fGVufDB8fHx8fDE3NTk1NDM2MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "abstract light"
     },
     {
@@ -125,6 +125,42 @@
       "description": "A calm and professional therapy session.",
       "imageUrl": "https://images.unsplash.com/photo-1549490121-39e1a49f5383?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0aGVyYXB5JTIwc2Vzc2lvbnxlbnwwfHx8fDE3NTk2MjI0ODB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "therapy session"
+    },
+    {
+      "id": "face-joy",
+      "imageUrl": "https://images.unsplash.com/photo-1691378543041-50da655e7f0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxqb3lmdWwlMjBmYWNlfGVufDB8fHx8MTc1OTczNDUxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A joyful face",
+      "imageHint": "joyful face"
+    },
+    {
+      "id": "face-sadness",
+      "imageUrl": "https://images.unsplash.com/photo-1633549446051-82a0599e9e02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzYWQlMjBmYWNlfGVufDB8fHx8MTc1OTczNDUxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A sad face",
+      "imageHint": "sad face"
+    },
+    {
+      "id": "face-anger",
+      "imageUrl": "https://images.unsplash.com/photo-1704958719629-eb8f9e7e9cb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxhbmdyeSUyMGZhY2V8ZW58MHx8fHwxNzU5NzM0NTExfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "An angry face",
+      "imageHint": "angry face"
+    },
+    {
+      "id": "face-fear",
+      "imageUrl": "https://images.unsplash.com/photo-1657988071311-6fb12aee2384?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmZWFyZnVsJTIwZmFjZXxlbnwwfHx8fDE3NTk3MzQ1MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A fearful face",
+      "imageHint": "fearful face"
+    },
+    {
+      "id": "face-surprise",
+      "imageUrl": "https://images.unsplash.com/photo-1689143947647-062e1a24bf2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzdXJwcmlzZWQlMjBmYWNlfGVufDB8fHx8MTc1OTY5NDg1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A surprised face",
+      "imageHint": "surprised face"
+    },
+    {
+      "id": "face-disgust",
+      "imageUrl": "https://images.unsplash.com/photo-1654583022645-8eaf552bf2a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkaXNndXN0ZWQlMjBmYWNlfGVufDB8fHx8MTc1OTczNDUxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A disgusted face",
+      "imageHint": "disgusted face"
     }
   ]
 }
