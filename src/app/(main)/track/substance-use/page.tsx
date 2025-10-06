@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { SubstanceUseForm } from './substance-use-form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { FlaskConical } from 'lucide-react';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: 'Substance Use Log | Rejoyn',
@@ -11,11 +12,7 @@ export const metadata: Metadata = {
 
 export default function SubstanceUsePage() {
   return (
-    <main className="flex flex-1 flex-col">
-      <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
-         <h1 className="font-headline text-xl font-semibold">Substance Use Log</h1>
-      </div>
-      <div className="flex-1 p-4 md:p-6">
+    <PageLayout title="Substance Use Log">
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline">Log Substance Use</CardTitle>
@@ -34,7 +31,6 @@ export default function SubstanceUsePage() {
                 <SubstanceUseForm />
             </CardContent>
         </Card>
-      </div>
-    </main>
+    </PageLayout>
   );
 }
