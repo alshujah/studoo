@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Zap } from 'lucide-react';
 import Link from 'next/link';
+import { Breathing478Animator } from './breathing-4-7-8-animator';
 
 export default function Breathing478Page() {
     return (
@@ -13,7 +14,8 @@ export default function Breathing478Page() {
                     <CardTitle className="font-headline">The 4-7-8 Breathing Technique</CardTitle>
                     <CardDescription>A simple but powerful breathing exercise, also known as "relaxing breath," that promotes calm and can help you fall asleep.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-8">
+                    <Breathing478Animator />
                     <Alert>
                         <Zap className="h-4 w-4" />
                         <AlertTitle>Goal: Activate the Relaxation Response</AlertTitle>
@@ -32,16 +34,16 @@ export default function Breathing478Page() {
                                 <strong>Exhale Completely:</strong> Exhale completely through your mouth, making a whoosh sound.
                             </li>
                             <li>
-                                <strong>Inhale (4 seconds):</strong> Close your mouth and inhale quietly through your nose to a mental count of <strong>four</strong>.
+                                <strong>Inhale (4 seconds):</strong> Close your mouth and inhale quietly through your nose for a count of <strong>four</strong> as the circle expands.
                             </li>
                             <li>
-                                <strong>Hold Your Breath (7 seconds):</strong> Hold your breath for a count of <strong>seven</strong>.
+                                <strong>Hold Your Breath (7 seconds):</strong> Hold your breath for a count of <strong>seven</strong> while the circle is full.
                             </li>
                             <li>
-                                <strong>Exhale (8 seconds):</strong> Exhale completely through your mouth, making a whoosh sound to a count of <strong>eight</strong>.
+                                <strong>Exhale (8 seconds):</strong> Exhale completely through your mouth, making a whoosh sound for a count of <strong>eight</strong> as the circle shrinks.
                             </li>
                              <li>
-                                <strong>Repeat:</strong> This is one breath. Now inhale again and repeat the cycle three more times for a total of four breaths.
+                                <strong>Repeat:</strong> This is one breath. Repeat the cycle until you feel a sense of calm.
                             </li>
                         </ol>
                         <p>Practice this at least twice a day, but you can do it more often if you like. Do not do more than four breaths at one time for the first month of practice. You can gradually increase it to eight breaths after a month.</p>
