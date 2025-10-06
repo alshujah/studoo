@@ -65,3 +65,5 @@ export function MoodChart({ data, loading }: MoodChartProps) {
     </ChartContainer>
   );
 }
+
+    

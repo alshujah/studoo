@@ -6,7 +6,7 @@ import { Bell } from 'lucide-react';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: 'Mindfulness Tools | Rejoyn',
+  title: 'Mindfulness Tools | Zenith Wellness',
 };
 
 const mindfulnessTools = [
@@ -40,3 +40,5 @@ export default function MindfulnessPage() {
     </PageLayout>
   );
 }
+
+    

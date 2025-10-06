@@ -1,5 +1,4 @@
 
-
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { emotionRegulationSkills } from '@/lib/data/dbt-emotion-regulation-data';
@@ -10,7 +9,7 @@ import Link from 'next/link';
 
 
 export const metadata: Metadata = {
-  title: 'Emotion Regulation Skills | Rejoyn',
+  title: 'Emotion Regulation Skills | Zenith Wellness',
 };
 
 const interactiveTools = [

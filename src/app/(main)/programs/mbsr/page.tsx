@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: '8-Week MBSR Program | Rejoyn',
+  title: '8-Week MBSR Program | Zenith Wellness',
 };
 
 const programSchedule = [
@@ -60,3 +60,5 @@ export default function MBSRProgramPage() {
     </PageLayout>
   );
 }
+
+    

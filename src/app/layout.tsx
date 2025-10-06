@@ -1,8 +1,9 @@
+
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
-import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { FirebaseClientProvider } from '@/lib/firebase/client-provider';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -35,3 +36,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+    

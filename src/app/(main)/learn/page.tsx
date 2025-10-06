@@ -7,7 +7,7 @@ import { PageLayout } from '@/components/layout/page-layout';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Learn | Rejoyn',
+  title: 'Learn | Zenith Wellness',
 };
 
 const categories = [
@@ -134,3 +134,5 @@ export default function LearnPage() {
     </PageLayout>
   );
 }
+
+    

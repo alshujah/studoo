@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: 'Positive Psychology Tools | Rejoyn',
+  title: 'Positive Psychology Tools | Zenith Wellness',
 };
 
 const positivePsychologyTools = [
@@ -13,7 +13,7 @@ const positivePsychologyTools = [
     { title: "Acts of Kindness", description: "Track and plan acts of kindness." },
     { title: "Savoring Exercises", description: "Mindfully appreciate positive experiences." },
     { title: "Meaning and Purpose", description: "Explore your personal sense of purpose." },
-    { href: "/track/journal/gratitude", title: "Gratitude Journaling", description: "Daily positive reflections." },
+    { href: "/track/journal?tab=gratitude", title: "Gratitude Journaling", description: "Daily positive reflections." },
     { title: "Self-Esteem Building", description: "Exercises to build healthy self-esteem." },
     { title: "Optimism Training", description: "Cultivate a more positive outlook." },
     { title: "Life Satisfaction Assessments", description: "Evaluate your overall well-being." },
@@ -45,3 +45,5 @@ export default function PositivePsychologyPage() {
     </PageLayout>
   );
 }
+
+    

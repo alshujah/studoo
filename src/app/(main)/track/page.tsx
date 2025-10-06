@@ -1,5 +1,4 @@
 
-
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
@@ -8,7 +7,7 @@ import { PageLayout } from '@/components/layout/page-layout';
 
 
 export const metadata: Metadata = {
-  title: 'Track | Rejoyn',
+  title: 'Track | Zenith Wellness',
 };
 
 const trackingModules = [
@@ -47,3 +46,5 @@ export default function TrackPage() {
     </PageLayout>
   );
 }
+
+    

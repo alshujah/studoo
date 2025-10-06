@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: 'Programs | Rejoyn',
+  title: 'Programs | Zenith Wellness',
 };
 
 const programs = [
@@ -31,3 +31,5 @@ export default function ProgramsPage() {
     </PageLayout>
   );
 }
+
+    

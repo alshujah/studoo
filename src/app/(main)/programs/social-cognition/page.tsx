@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: '6-Week Social Cognition Training | Rejoyn',
+  title: '6-Week Social Cognition Training | Zenith Wellness',
 };
 
 const programSchedule = [
@@ -55,3 +55,5 @@ export default function SocialCognitionProgramPage() {
     </PageLayout>
   );
 }
+
+    

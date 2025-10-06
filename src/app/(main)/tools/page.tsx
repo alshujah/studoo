@@ -1,5 +1,4 @@
 
-
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Brain, Sprout, Shield, Heart, Smile, Moon, Wind, Paintbrush, PersonStanding, Drama, ShieldAlert, Waves, Users, Puzzle, Target, BookText } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -7,7 +6,7 @@ import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: 'Tools | Rejoyn',
+  title: 'Tools | Zenith Wellness',
 };
 
 const toolCategories = [
@@ -60,3 +59,5 @@ export default function ToolsPage() {
     </PageLayout>
   );
 }
+
+    

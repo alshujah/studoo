@@ -2,7 +2,6 @@
 'use client';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import type { Metadata } from 'next';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FreeformJournalClient } from './freeform/freeform-journal-client';
@@ -12,7 +11,7 @@ import { useSearchParams } from 'next/navigation';
 
 // Note: Metadata is not used in client components, but kept for potential future server-side rendering.
 // export const metadata: Metadata = {
-//   title: 'Journal | Rejoyn',
+//   title: 'Journal | Zenith Wellness',
 // };
 
 export default function JournalPage() {
@@ -28,7 +27,7 @@ export default function JournalPage() {
                 <TabsTrigger value="thought-record">Thought Record</TabsTrigger>
             </TabsList>
             <TabsContent value="freeform">
-                <Card>
+                 <Card>
                     <CardHeader>
                         <CardTitle className="font-headline">Your Space to Write</CardTitle>
                         <CardDescription>
@@ -50,3 +49,5 @@ export default function JournalPage() {
     </PageLayout>
   );
 }
+
+    

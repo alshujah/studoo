@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { errorEmitter } from '@/firebase/error-emitter';
+import { errorEmitter } from '@/lib/firebase/error-emitter';
 
 // This is an invisible component that listens for permission errors
 // and throws them so that the Next.js development error overlay can catch
@@ -24,3 +24,5 @@ export function FirebaseErrorListener() {
 
   return null;
 }
+
+    

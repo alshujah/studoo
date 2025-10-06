@@ -1,3 +1,4 @@
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import { BrainCircuit, HeartPulse, Shield, Bot, Languages, MessageSquare, Mic, AlertTriangle, UserCheck, Activity, Droplets, Bed, Leaf, Bike, Zap, Brain, Smile, GitCommitHorizontal, Group, FolderKanban, Users, HandHeart, Eye, Wind, Sparkles } from 'lucide-react';
@@ -5,7 +6,7 @@ import React from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: 'AI Features | Rejoyn',
+  title: 'AI Features | Zenith Wellness',
 };
 
 const categories = [
@@ -98,3 +99,5 @@ export default function AIFeaturesPage() {
     </PageLayout>
   );
 }
+
+    

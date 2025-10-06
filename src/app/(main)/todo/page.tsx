@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
+import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import {
@@ -25,8 +25,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import type { Todo } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
+import { errorEmitter } from '@/lib/firebase/error-emitter';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/lib/firebase/errors';
 
 export default function TodoPage() {
   const auth = useAuth();
@@ -196,3 +196,5 @@ export default function TodoPage() {
     </PageLayout>
   );
 }
+
+    
