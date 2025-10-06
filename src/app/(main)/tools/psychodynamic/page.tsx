@@ -6,7 +6,7 @@ import { CircleUser, HeartHandshake, Armchair, UsersRound, Anchor } from 'lucide
 import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
-  title: 'Psychodynamic Therapy | Rejoyn',
+  title: 'Psychodynamic Approaches | Rejoyn',
 };
 
 const psychodynamicTools = [
