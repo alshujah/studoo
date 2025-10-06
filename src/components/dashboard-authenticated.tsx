@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { MoodChart } from './mood-chart';
-import { triageIssue } from '@/dashboard/actions';
+import { triageIssue } from '@/app/dashboard/actions';
 import type { TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from './ui/badge';
