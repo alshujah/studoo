@@ -8,6 +8,9 @@ import { generateMeditationScript, generateMeditationAudio, type GenerateMeditat
 import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
 import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/services/flows/score-gad7-flow';
 import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/services/flows/score-phq-9-flow';
+import { getMoodTriggers } from './actions/get-mood-triggers';
+import { generateReportAction } from './actions/generate-report-action';
+export { getMoodTriggers, generateReportAction };
 
 
 export async function getJournalAnalysis(
@@ -113,3 +116,5 @@ export async function scorePhq9Action(
         return { success: false, error: 'Failed to score the assessment.' };
     }
 }
+
+    

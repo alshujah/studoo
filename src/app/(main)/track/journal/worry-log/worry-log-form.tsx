@@ -20,7 +20,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { CalendarIcon, Check, Loader, Trash2, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, add } from 'date-fns';
-import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
+import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp, query, where, orderBy, updateDoc, doc, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
@@ -30,8 +30,8 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { FirestorePermissionError } from '@/firebase/errors';
-import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/lib/firebase/errors';
+import { errorEmitter } from '@/lib/firebase/error-emitter';
 
 const formSchema = z.object({
   worry: z.string().min(5, { message: "Please describe your worry in a bit more detail." }),
@@ -262,3 +262,5 @@ function WorryOutcomeEditor({ worry, onSave, onCancel }: { worry: WorryLog, onSa
         </div>
     )
 }
+
+    

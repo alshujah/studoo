@@ -9,13 +9,13 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { PageLayout } from '@/components/layout/page-layout';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
-import { useAuth, useFirestore } from '@/firebase';
+import { useAuth, useFirestore } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { Loader } from 'lucide-react';
-import { FirestorePermissionError } from '@/firebase/errors';
-import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/lib/firebase/errors';
+import { errorEmitter } from '@/lib/firebase/error-emitter';
 
 const initialDomains = [
     { name: "Career / Work", satisfaction: 5 },
@@ -125,3 +125,5 @@ export default function LifeBalanceWheelPage() {
     </PageLayout>
   );
 }
+
+    

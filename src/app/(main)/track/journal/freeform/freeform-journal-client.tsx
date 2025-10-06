@@ -11,7 +11,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { Loader, Sparkles, Save, ArrowRight } from 'lucide-react';
-import { getJournalAnalysis } from '@/services/actions';
+import { getJournalAnalysis } from '@/services/actions/analyze-journal-entry';
 import type { AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -184,3 +184,5 @@ export function FreeformJournalClient() {
     </div>
   );
 }
+
+    

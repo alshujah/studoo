@@ -12,16 +12,16 @@ import { useAuth, useFirestore } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
-import { Loader, Smile } from 'lucide-react';
-import type { WemwbsScore } from '@/lib/types';
+import { Loader } from 'lucide-react';
+import { socialSkillsAssessment } from '@/lib/data/social-skills-assessment-data';
+import type { SocialSkillAssessment } from '@/lib/types';
 import { FirestorePermissionError } from '@/lib/firebase/errors';
 import { errorEmitter } from '@/lib/firebase/error-emitter';
-import { wemwbsQuestions, wemwbsScale } from '@/lib/data/wemwbs-data';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 
 const createFormSchema = () => {
     const schemaObject: { [key: string]: any } = {};
-    wemwbsQuestions.forEach((_, index) => {
+    socialSkillsAssessment.forEach((_, index) => {
         schemaObject[`q${index}`] = z.string({ required_error: "Please select an answer." });
     });
     return z.object(schemaObject);
@@ -30,100 +30,114 @@ const createFormSchema = () => {
 const formSchema = createFormSchema();
 type FormValues = z.infer<typeof formSchema>;
 
-export function WemwbsForm() {
+interface SocialSkillsAssessmentFormProps {
+    setAssessmentResult: (result: SocialSkillAssessment) => void;
+}
+
+export function SocialSkillsAssessmentForm({ setAssessmentResult }: SocialSkillsAssessmentFormProps) {
   const auth = useAuth();
   const [user] = useAuthState(auth);
   const firestore = useFirestore();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [result, setResult] = useState<{ score: number; interpretation: string } | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
+  const calculateScores = (data: FormValues) => {
+    const scores = {
+        'Listening': 0,
+        'Small Talk': 0,
+        'Empathy': 0,
+        'Nonverbal': 0,
+        'Assertiveness': 0,
+    };
+    const maxScores = { ...scores };
+
+    socialSkillsAssessment.forEach((item, index) => {
+        const answerValue = parseInt(data[`q${index}` as keyof FormValues]);
+        const maxScoreForItem = item.scale[item.scale.length -1].value;
+        maxScores[item.domain] += maxScoreForItem;
+
+        if (item.scoring === 'direct') {
+            scores[item.domain] += answerValue;
+        } else {
+            scores[item.domain] += maxScoreForItem - answerValue;
+        }
+    });
+    
+    // Normalize scores to a 0-10 scale for consistency
+    for (const domain in scores) {
+        const key = domain as keyof typeof scores;
+        if(maxScores[key] > 0) {
+           scores[key] = Math.round((scores[key] / maxScores[key]) * 10);
+        } else {
+           scores[key] = 0;
+        }
+    }
+
+    return scores;
+  }
+
   async function onSubmit(data: FormValues) {
-    if (!user || !firestore) {
-        toast({ variant: 'destructive', title: 'Not signed in' });
-        return;
+    if (!user) {
+      toast({ variant: 'destructive', title: 'Not signed in' });
+      return;
     }
     setIsSubmitting(true);
-    
-    const score = Object.values(data).reduce((sum, value) => sum + parseInt(value, 10), 0);
-    
-    let interpretation = '';
-    if (score < 40) {
-        interpretation = 'Your score suggests low mental well-being. It could be helpful to explore some tools in this app or speak with a professional.';
-    } else if (score >= 40 && score <= 59) {
-        interpretation = 'Your score suggests average mental well-being. There may be areas for growth to enhance your sense of wellness.';
-    } else {
-        interpretation = 'Your score suggests high mental well-being. This is a great sign that you are feeling good and functioning well.';
-    }
-
-    setResult({ score, interpretation });
-    
-    const assessmentData: Omit<WemwbsScore, 'id'> = {
+    const scores = calculateScores(data);
+    const assessmentData = {
         userId: user.uid,
-        score: score,
+        scores,
         answers: data,
-        timestamp: serverTimestamp() as Timestamp,
+        timestamp: serverTimestamp(),
     };
-    const assessmentCollection = collection(firestore, 'users', user.uid, 'wemwbsScores');
-    
-    addDoc(assessmentCollection, assessmentData).catch(err => {
-        const permissionError = new FirestorePermissionError({
-            path: assessmentCollection.path,
-            operation: 'create',
-            requestResourceData: assessmentData,
+    const assessmentCollection = collection(firestore, 'users', user.uid, 'socialSkillAssessments');
+
+    addDoc(assessmentCollection, assessmentData)
+        .then(docRef => {
+            toast({ title: 'Assessment Complete', description: 'Your results have been calculated.' });
+            
+            setAssessmentResult({
+                id: docRef.id,
+                userId: user.uid,
+                scores: scores,
+                answers: data,
+                timestamp: Timestamp.now(),
+            });
+        })
+        .catch(err => {
+            const permissionError = new FirestorePermissionError({
+                path: assessmentCollection.path,
+                operation: 'create',
+                requestResourceData: assessmentData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        })
+        .finally(() => {
+            setIsSubmitting(false);
         });
-        errorEmitter.emit('permission-error', permissionError);
-    }).finally(() => {
-        setIsSubmitting(false);
-    });
-  }
-
-  const handleReset = () => {
-    setResult(null);
-    form.reset();
-  }
-
-  if (result) {
-    return (
-        <div className="space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 font-headline">
-                        <Smile /> Your Well-being Score
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <p className="text-2xl font-bold">Total Score: {result.score} / 70</p>
-                    <p className="text-muted-foreground">{result.interpretation}</p>
-                </CardContent>
-            </Card>
-            <Button onClick={handleReset} variant="outline">Take Again</Button>
-        </div>
-    );
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {wemwbsQuestions.map((item, index) => (
+        {socialSkillsAssessment.map((item, index) => (
           <FormField
             key={index}
             control={form.control}
             name={`q${index}` as keyof FormValues}
             render={({ field }) => (
               <FormItem className="space-y-3 p-4 rounded-md border bg-muted/20">
-                <FormLabel>{index + 1}. {item}</FormLabel>
+                <FormLabel>{index + 1}. {item.text}</FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     className="flex flex-col sm:flex-row flex-wrap gap-x-6 gap-y-2"
                   >
-                    {wemwbsScale.map(option => (
+                    {item.scale.map(option => (
                       <FormItem key={option.value} className="flex items-center space-x-2 space-y-0">
                         <FormControl>
                           <RadioGroupItem value={String(option.value)} />
