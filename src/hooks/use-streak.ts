@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useAuth, useFirestore } from "@/firebase";
-import type { UserStreak } from "@/lib/types";
+import { useAuth, useFirestore } from "@/lib/firebase";
+import type { UserStreak } from "@/types";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { format, isToday, isYesterday } from "date-fns";
 import { useAuthState } from "react-firebase-hooks/auth";

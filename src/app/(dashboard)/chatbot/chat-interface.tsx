@@ -4,7 +4,7 @@
 import React, { useState, useRef, useEffect, useTransition, useMemo } from 'react';
 import { Bot, Send, User, Loader, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { ChatMessage } from '@/lib/types';
+import type { ChatMessage } from '@/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';

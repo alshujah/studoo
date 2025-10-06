@@ -6,7 +6,7 @@ import { useAuth, useFirestore } from "@/lib/firebase";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc } from 'firebase/firestore';
 import { Flame, Star, Loader, BookOpen, Smile } from "lucide-react";
-import type { UserStreak } from "@/lib/types";
+import type { UserStreak } from "@/types";
 import { cn } from "@/lib/utils";
 import { isToday } from "date-fns";
 import { useAuthState } from "react-firebase-hooks/auth";

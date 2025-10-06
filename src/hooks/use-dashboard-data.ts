@@ -10,7 +10,7 @@ import { useFirestore, useMemoFirebase } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, query, orderBy, where, Timestamp, limit } from 'firebase/firestore';
 import { subDays, format } from 'date-fns';
-import type { MoodLog } from '@/lib/types';
+import type { MoodLog } from '@/types';
 import { useMoodTriggers } from '@/hooks/use-mood-triggers';
 
 
@@ -35,7 +35,7 @@ export function useDashboardData(user: User) {
         error: triggersError,
     } = useMoodTriggers(user.uid);
 
-    const moodLogQuery = useMemo(() => {
+    const moodLogQuery = useMemoFirebase(() => {
         if (!user || !firestore) return null;
         const sevenDaysAgo = subDays(new Date(), 7);
         return query(
@@ -45,7 +45,7 @@ export function useDashboardData(user: User) {
         );
     }, [user, firestore]);
     
-    const journalQuery = useMemo(() => {
+    const journalQuery = useMemoFirebase(() => {
         if (!user || !firestore) return null;
         return query(
         collection(firestore, 'users', user.uid, 'journalEntries'),
