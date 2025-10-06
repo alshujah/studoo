@@ -20,7 +20,7 @@ import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, Trash2, Loader, Check, CalendarIcon, PartyPopper } from 'lucide-react';
+import { PlusIcon, Trash2, Loader, CalendarIcon, PartyPopper } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import type { BehavioralActivationActivity } from '@/lib/types';
