@@ -1,5 +1,5 @@
 
-import { aiTherapyChatbot } from '@/services/flows/ai-therapy-chatbot';
+import { aiTherapyChatbot } from '@/app/api/ai/flows/ai-therapy-chatbot';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -27,5 +27,3 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500 });
   }
 }
-
-    

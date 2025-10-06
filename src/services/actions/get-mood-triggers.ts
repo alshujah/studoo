@@ -1,7 +1,7 @@
 
 'use server';
 
-import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
+import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/app/api/ai/flows/identify-mood-triggers';
 
 export async function getMoodTriggers(
     input: IdentifyMoodTriggersInput

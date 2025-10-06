@@ -1,13 +1,13 @@
 
 'use server';
 
-import { analyzeJournalEntry, type AnalyzeJournalEntryInput, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
-import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
-import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
-import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
-import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
-import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/services/flows/score-gad7-flow';
-import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/services/flows/score-phq-9-flow';
+import { analyzeJournalEntry, type AnalyzeJournalEntryInput, type AnalyzeJournalEntryOutput } from '@/app/api/ai/flows/analyze-journal-entry';
+import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/app/api/ai/flows/analyze-thought-record';
+import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/app/api/ai/flows/triage-user-issue';
+import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/app/api/ai/flows/generate-meditation-flow';
+import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/app/api/ai/flows/miracle-question-flow';
+import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/app/api/ai/flows/score-gad7-flow';
+import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/app/api/ai/flows/score-phq-9-flow';
 import { getMoodTriggers } from './get-mood-triggers';
 import { generateReportAction } from './generate-report-action';
 export { getMoodTriggers, generateReportAction };

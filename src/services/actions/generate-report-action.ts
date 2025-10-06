@@ -1,7 +1,7 @@
 
 'use server';
 
-import { generateProgressReport, type GenerateProgressReportInput, type GenerateProgressReportOutput } from '@/services/flows/generate-progress-report';
+import { generateProgressReport, type GenerateProgressReportInput, type GenerateProgressReportOutput } from '@/app/api/ai/flows/generate-progress-report';
 
 export async function generateReportAction(): Promise<{ success: boolean; data?: GenerateProgressReportOutput; error?: string }> {
     try {
