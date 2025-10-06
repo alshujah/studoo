@@ -116,5 +116,3 @@ export async function scorePhq9Action(
         return { success: false, error: 'Failed to score the assessment.' };
     }
 }
-
-    

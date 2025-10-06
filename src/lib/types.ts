@@ -250,9 +250,3 @@ export interface UserStreak {
     longestStreak: number;
     lastLogDate: string; // YYYY-MM-DD
 }
-
-    
-
-    
-
-    
