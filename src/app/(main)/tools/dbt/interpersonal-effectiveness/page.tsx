@@ -17,7 +17,7 @@ const interactiveTools = [
     {
         href: "/tools/dbt/interpersonal-effectiveness/dear-man",
         title: "DEAR MAN Script Builder",
-        description: "Practice getting what you want effectively.",
+        description: "Prepare for a difficult conversation and practice getting what you want effectively.",
         icon: Target
     }
 ]
@@ -36,9 +36,9 @@ export default function InterpersonalEffectivenessPage() {
             
             <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline">Interactive Tools</CardTitle>
+                    <CardTitle className="font-headline">Interactive Tool</CardTitle>
                 </CardHeader>
-                <CardContent className="grid md:grid-cols-2 gap-4">
+                <CardContent>
                      {interactiveTools.map(tool => (
                         <Link href={tool.href} key={tool.href} className="block hover:bg-muted/20 p-4 border rounded-lg">
                             <div className="flex items-center gap-4 mb-2">

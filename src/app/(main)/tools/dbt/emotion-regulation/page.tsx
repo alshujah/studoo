@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { emotionRegulationSkills } from '@/lib/data/dbt-emotion-regulation-data';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal, ArrowRight } from 'lucide-react';
 import { PageLayout } from '@/components/layout/page-layout';
 import Link from 'next/link';
 
@@ -38,23 +38,23 @@ export default function EmotionRegulationPage() {
                 </AlertDescription>
             </Alert>
             
-            <div className="grid md:grid-cols-2 gap-4">
-                {interactiveTools.map(tool => (
-                    <Card key={tool.href}>
-                        <CardHeader>
-                            <CardTitle className="font-headline">{tool.title}</CardTitle>
-                            <CardDescription>
-                                {tool.description}
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <Link href={tool.href} className="text-primary font-semibold hover:underline">
-                                Start Exercise &rarr;
-                            </Link>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Interactive Exercises</CardTitle>
+                </CardHeader>
+                <CardContent className="grid md:grid-cols-2 gap-4">
+                    {interactiveTools.map(tool => (
+                         <Link href={tool.href} key={tool.href} className="block hover:bg-muted/20 p-4 border rounded-lg">
+                            <h3 className="font-semibold">{tool.title}</h3>
+                            <p className="text-sm text-muted-foreground mb-2">{tool.description}</p>
+                             <div className="flex items-center text-primary text-sm font-semibold mt-4">
+                                <span>Start Exercise</span>
+                                <ArrowRight className="size-4 ml-2" />
+                            </div>
+                        </Link>
+                    ))}
+                </CardContent>
+            </Card>
 
             {emotionRegulationSkills.map(skill => (
                 <Card key={skill.title}>
