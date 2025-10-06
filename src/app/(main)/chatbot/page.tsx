@@ -7,7 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, query, orderBy, addDoc, serverTimestamp, type Timestamp } from 'firebase/firestore';
 import { format } from 'date-fns';
-import { ChatInterface } from '@/modules/aiCoach/components/chat-interface';
+import { ChatInterface } from './chat-interface';
 import { Button } from '@/components/ui/button';
 import { Loader, MessageSquare, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';

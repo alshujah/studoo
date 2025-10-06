@@ -1,6 +1,6 @@
 
 import { aiTherapyChatbot } from '@/modules/aiCoach/services/ai-therapy-chatbot';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const { messages, userId } = await req.json();
 
     if (!messages || !userId) {
-      return new Response(JSON.stringify({ error: 'Missing messages or userId' }), { status: 400 });
+      return new NextResponse(JSON.stringify({ error: 'Missing messages or userId' }), { status: 400 });
     }
 
     // Call the Genkit flow which returns a ReadableStream
@@ -24,8 +24,6 @@ export async function POST(req: NextRequest) {
 
   } catch (error: any) {
     console.error('Error in chat API route:', error);
-    return new Response(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500 });
+    return new NextResponse(JSON.stringify({ error: error.message || 'An internal server error occurred.' }), { status: 500 });
   }
 }
-
-    

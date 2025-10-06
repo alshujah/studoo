@@ -9,7 +9,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { getAiResponse } from '@/services/actions';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore, useMemoFirebase } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -49,14 +48,14 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
             if (doc.exists()) {
                 const data = doc.data();
                  if (data.messages && data.messages.length > 0) {
-                    setMessages(data.messages);
+                    // Don't update if a stream is in progress
+                    if (!isPending) {
+                       setMessages(data.messages);
+                    }
                 } else {
-                    // This handles a new chat document that might be created but not yet populated
                     setMessages(initialMessages);
                 }
             } else {
-                // Document doesn't exist, which might happen if a new chat is being created.
-                // We'll show initial messages until the doc is created and the listener fires.
                 setMessages(initialMessages);
             }
         }, async (error) => {
@@ -69,10 +68,10 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         });
         return () => unsubscribe();
     } else {
-        // No chat ID, so reset to initial state.
         setMessages(initialMessages);
     }
-  }, [chatDocRef]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatDocRef, isPending]);
 
 
   const scrollToBottom = () => {
@@ -86,7 +85,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isPending]);
+  }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,55 +93,82 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
 
     const userMessage: ChatMessage = { role: 'user', content: input };
     const newMessages: ChatMessage[] = [...messages, userMessage];
-    setMessages(newMessages);
     const optimisticInput = input;
+    
+    // Optimistically update the UI with the user's message
+    setMessages(newMessages);
     setInput('');
-
+    
     startTransition(async () => {
-      const optimisticUpdate = {
-        messages: newMessages,
-        updatedAt: serverTimestamp(),
-      };
-      
-      setDoc(chatDocRef, optimisticUpdate, { merge: true }).catch(err => {
-         const permissionError = new FirestorePermissionError({
-            path: chatDocRef.path,
-            operation: 'update',
-            requestResourceData: optimisticUpdate,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-      });
-      
-      const result = await getAiResponse(newMessages, user.uid);
+        // Add a placeholder for the streaming response
+        setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
-      if (result.success && result.data) {
-        const finalMessages = [...newMessages, result.data];
-        const finalUpdate = {
-            messages: finalMessages,
-            updatedAt: serverTimestamp(),
-        };
-
-        setMessages(finalMessages);
-        
-        setDoc(chatDocRef, finalUpdate, { merge: true }).catch(err => {
-            const permissionError = new FirestorePermissionError({
-                path: chatDocRef.path,
-                operation: 'update',
-                requestResourceData: finalUpdate,
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                body: JSON.stringify({
+                    messages: newMessages,
+                    userId: user.uid,
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
-            errorEmitter.emit('permission-error', permissionError);
-        });
 
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: result.error || "An unknown error occurred.",
-        });
-        // Restore previous messages on error
-        setMessages(messages);
-        setInput(optimisticInput); // Restore user input
-      }
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "API request failed");
+            }
+            
+            if (!response.body) {
+                throw new Error("No response body");
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let streamedResponse = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                streamedResponse += chunk;
+
+                setMessages(prev => {
+                    const updatedMessages = [...prev];
+                    updatedMessages[updatedMessages.length - 1] = { role: 'assistant', content: streamedResponse };
+                    return updatedMessages;
+                });
+            }
+
+            const finalMessages = [...newMessages, { role: 'assistant', content: streamedResponse }];
+            const finalUpdate = {
+                messages: finalMessages,
+                updatedAt: serverTimestamp(),
+            };
+            
+            // Final update to Firestore, no need to await this for UI purposes
+            setDoc(chatDocRef, finalUpdate, { merge: true }).catch(err => {
+                 const permissionError = new FirestorePermissionError({
+                    path: chatDocRef.path,
+                    operation: 'update',
+                    requestResourceData: finalUpdate,
+                });
+                errorEmitter.emit('permission-error', permissionError);
+            });
+
+        } catch (error: any) {
+            console.error('Error with streaming response:', error);
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: error.message || "An unknown error occurred.",
+            });
+            // Restore previous messages on error
+            setMessages(messages);
+            setInput(optimisticInput); // Restore user input
+        }
     });
   };
   
@@ -177,10 +203,15 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                   'max-w-md rounded-lg p-3 text-sm',
                   message.role === 'user'
                     ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                    : 'bg-muted',
+                  isPending && index === messages.length - 1 && 'flex items-center' // Add loader style for the last message during pending
                 )}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+               {isPending && index === messages.length - 1 && !message.content ? (
+                  <Loader className="animate-spin size-4" />
+               ) : (
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+               )}
               </div>
                {message.role === 'user' && (
                 <Avatar className="h-8 w-8 border">
@@ -189,16 +220,6 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
               )}
             </div>
           ))}
-           {isPending && (
-            <div className="flex items-start gap-4 mb-6 justify-start">
-              <Avatar className="h-8 w-8 border">
-                <AvatarFallback><Bot size={16}/></AvatarFallback>
-              </Avatar>
-              <div className="max-w-md rounded-lg p-3 bg-muted flex items-center">
-                <Loader className="animate-spin size-4" />
-              </div>
-            </div>
-          )}
         </div>
       </ScrollArea>
       <div className="border-t p-4 md:px-6 md:py-4">
@@ -220,4 +241,3 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     </div>
   );
 }
-

@@ -48,14 +48,14 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
             if (doc.exists()) {
                 const data = doc.data();
                  if (data.messages && data.messages.length > 0) {
-                    setMessages(data.messages);
+                    // Don't update if a stream is in progress
+                    if (!isPending) {
+                       setMessages(data.messages);
+                    }
                 } else {
-                    // This handles a new chat document that might be created but not yet populated
                     setMessages(initialMessages);
                 }
             } else {
-                // Document doesn't exist, which might happen if a new chat is being created.
-                // We'll show initial messages until the doc is created and the listener fires.
                 setMessages(initialMessages);
             }
         }, async (error) => {
@@ -68,10 +68,10 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
         });
         return () => unsubscribe();
     } else {
-        // No chat ID, so reset to initial state.
         setMessages(initialMessages);
     }
-  }, [chatDocRef]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatDocRef, isPending]);
 
 
   const scrollToBottom = () => {
@@ -85,7 +85,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isPending]);
+  }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,8 +116,8 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText || "API request failed");
+                const errorData = await response.json();
+                throw new Error(errorData.error || "API request failed");
             }
             
             if (!response.body) {
@@ -148,7 +148,15 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                 updatedAt: serverTimestamp(),
             };
             
-            await setDoc(chatDocRef, finalUpdate, { merge: true });
+            // Final update to Firestore, no need to await this for UI purposes
+            setDoc(chatDocRef, finalUpdate, { merge: true }).catch(err => {
+                 const permissionError = new FirestorePermissionError({
+                    path: chatDocRef.path,
+                    operation: 'update',
+                    requestResourceData: finalUpdate,
+                });
+                errorEmitter.emit('permission-error', permissionError);
+            });
 
         } catch (error: any) {
             console.error('Error with streaming response:', error);
@@ -195,10 +203,15 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
                   'max-w-md rounded-lg p-3 text-sm',
                   message.role === 'user'
                     ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                    : 'bg-muted',
+                  isPending && index === messages.length - 1 && 'flex items-center' // Add loader style for the last message during pending
                 )}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+               {isPending && index === messages.length - 1 && !message.content ? (
+                  <Loader className="animate-spin size-4" />
+               ) : (
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+               )}
               </div>
                {message.role === 'user' && (
                 <Avatar className="h-8 w-8 border">
@@ -207,16 +220,6 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
               )}
             </div>
           ))}
-           {isPending && (
-            <div className="flex items-start gap-4 mb-6 justify-start">
-              <Avatar className="h-8 w-8 border">
-                <AvatarFallback><Bot size={16}/></AvatarFallback>
-              </Avatar>
-              <div className="max-w-md rounded-lg p-3 bg-muted flex items-center">
-                <Loader className="animate-spin size-4" />
-              </div>
-            </div>
-          )}
         </div>
       </ScrollArea>
       <div className="border-t p-4 md:px-6 md:py-4">
@@ -238,5 +241,3 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
     </div>
   );
 }
-
-    
