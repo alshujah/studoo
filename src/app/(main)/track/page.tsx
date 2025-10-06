@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
-import { Activity, BedDouble, FlaskConical, Pill, Siren, BarChart, Book, Brain, Calendar, CheckSquare, Clock, Edit, ListChecks, Sun, TrendingUp, Users, Smile } from 'lucide-react';
+import { Activity, BedDouble, FlaskConical, Pill, Siren, BarChart, Book, Smile, TrendingUp, Sun, Brain } from 'lucide-react';
 import { PageLayout } from '@/components/layout/page-layout';
 
 
@@ -32,9 +32,12 @@ export default function TrackPage() {
        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {trackingModules.map((module) => (
             <Link href={module.href} key={module.title} className="block hover:bg-muted/50 rounded-lg">
-              <Card className="h-full">
+              <Card className="h-full flex flex-col">
                   <CardHeader>
-                      <CardTitle>{module.title}</CardTitle>
+                      <div className="flex items-center gap-4 mb-2">
+                        <module.icon className="size-6 text-primary" />
+                        <CardTitle className="text-lg">{module.title}</CardTitle>
+                      </div>
                       <CardDescription>{module.description}</CardDescription>
                   </CardHeader>
               </Card>
