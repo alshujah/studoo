@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
+import { useStreak } from '@/hooks/use-streak';
 
 const formSchema = z.object({
   content: z.string().min(20, { message: "Please write a bit more to get a helpful analysis." }),
@@ -34,6 +35,8 @@ export function FreeformJournalClient() {
   const [user] = useAuthState(auth);
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { updateStreak } = useStreak('journaling');
+
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -45,7 +48,7 @@ export function FreeformJournalClient() {
   const handleAnalyze = (data: FormValues) => {
     setAnalysisResult(null);
     startAnalysisTransition(async () => {
-      const result = await getJournalAnalysis(data.content);
+      const result = await getJournalAnalysis({ journalEntry: data.content });
       if (result.success && result.data) {
         setAnalysisResult(result.data);
       } else {
@@ -77,7 +80,8 @@ export function FreeformJournalClient() {
     
     const journalCollection = collection(firestore, 'users', user.uid, 'journalEntries');
 
-    addDoc(journalCollection, journalData).then(() => {
+    addDoc(journalCollection, journalData).then(async () => {
+        await updateStreak();
         toast({
           title: "Journal Entry Saved",
           description: "Your reflections have been saved successfully.",
