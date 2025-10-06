@@ -9,7 +9,7 @@
  * - IdentifyMoodTriggersOutput - The return type for the identifyMoodTriggers function.
  */
 
-import {ai} from '@genkit-ai/next';
+import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const IdentifyMoodTriggersInputSchema = z.object({
