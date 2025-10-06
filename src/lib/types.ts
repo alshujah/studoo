@@ -241,3 +241,14 @@ export interface ProblemSolvingWorksheet {
     actionPlan: string;
     createdAt: Timestamp;
 }
+
+export interface UserStreak {
+    id: string;
+    userId: string;
+    habitId: string;
+    currentStreak: number;
+    longestStreak: number;
+    lastLogDate: string; // YYYY-MM-DD
+}
+
+    

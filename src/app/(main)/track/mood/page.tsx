@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useFirestore } from '@/firebase/provider';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -28,6 +28,8 @@ import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
+import { isToday, isYesterday, format } from 'date-fns';
+import type { UserStreak } from '@/lib/types';
 
 
 const coreEmotions = [
@@ -68,6 +70,50 @@ export default function MoodLogPage() {
     },
   });
 
+    const handleStreak = async () => {
+        if (!user || !firestore) return;
+
+        const streakRef = doc(firestore, 'users', user.uid, 'streaks', 'moodCheckin');
+        const streakDoc = await getDoc(streakRef);
+        const today = format(new Date(), 'yyyy-MM-dd');
+        
+        let streakData: Omit<UserStreak, 'id'>;
+
+        if (streakDoc.exists()) {
+            const data = streakDoc.data() as Omit<UserStreak, 'id'>;
+            const lastLogDate = new Date(data.lastLogDate);
+
+            if (data.lastLogDate === today) {
+                // Already logged today, do nothing
+                return;
+            }
+
+            if (isYesterday(lastLogDate)) {
+                // Continue streak
+                const newStreak = data.currentStreak + 1;
+                streakData = {
+                    ...data,
+                    currentStreak: newStreak,
+                    longestStreak: Math.max(newStreak, data.longestStreak),
+                    lastLogDate: today,
+                };
+            } else {
+                // Reset streak
+                streakData = { ...data, currentStreak: 1, lastLogDate: today };
+            }
+        } else {
+            // First time logging
+            streakData = {
+                userId: user.uid,
+                habitId: 'moodCheckin',
+                currentStreak: 1,
+                longestStreak: 1,
+                lastLogDate: today,
+            };
+        }
+        await setDoc(streakRef, streakData, { merge: true });
+    };
+
   async function onSubmit(data: MoodLogFormValues) {
     if (!user) {
       toast({
@@ -85,7 +131,8 @@ export default function MoodLogPage() {
     };
     const moodLogCollection = collection(firestore, 'users', user.uid, 'moodLogs');
 
-    addDoc(moodLogCollection, moodLogData).then(() => {
+    addDoc(moodLogCollection, moodLogData).then(async () => {
+        await handleStreak();
         toast({
             title: 'Mood Logged',
             description: 'Your mood has been successfully recorded.',
@@ -210,3 +257,5 @@ export default function MoodLogPage() {
     </PageLayout>
   );
 }
+
+    

@@ -21,6 +21,7 @@ import type { MoodLog, JournalEntry } from '@/lib/types';
 import { subDays, format } from 'date-fns';
 import { useMoodTriggers } from '@/hooks/use-mood-triggers';
 import { ScrollArea } from './ui/scroll-area';
+import { StreaksCard } from './dashboard/streaks-card';
 
 interface DashboardAuthenticatedProps {
     user: User;
@@ -198,42 +199,8 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
             </Button>
         </CardFooter>
       </Card>
-
-      <Card className="col-span-1 flex flex-col">
-        <CardHeader>
-          <CardTitle className="font-headline">Quick Actions</CardTitle>
-          <CardDescription>Your most-used tools.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex-grow">
-          <div className="flex flex-col gap-4">
-             <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/chatbot">
-                <MessageSquare className="size-5 text-primary" />
-                <span>Chat with AI Coach</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/track/mood">
-                <Wind className="size-5 text-primary" />
-                <span>Check-in Mood</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="justify-start gap-4">
-              <Link href="/track/journal/freeform">
-                <Pen className="size-5 text-primary" />
-                <span>Write in Journal</span>
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button asChild variant="ghost" className="w-full">
-            <Link href="/tools">
-              See all tools <ArrowRight className="ml-2 size-4" />
-            </Link>
-          </Button>
-        </CardFooter>
-      </Card>
+      
+      <StreaksCard />
 
       <Card className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-1">
         <CardHeader>
@@ -325,3 +292,5 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
     </div>
   );
 }
+
+    
