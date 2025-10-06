@@ -9,7 +9,7 @@ import { cookies } from 'next/headers';
 // This is a server component, so it can safely check for the session cookie.
 
 // Initialize Firebase Admin SDK if not already initialized
-if (!getApps().length) {
+if (getApps().length === 0) {
   try {
     // Attempt to use service account from environment variables if available
     const serviceAccountEnv = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;

@@ -6,7 +6,7 @@ import type { User } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { triageIssue } from '@/services/actions';
 import type { TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
-import { useFirestore } from '@/lib/firebase';
+import { useFirestore, useMemoFirebase } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, query, orderBy, where, Timestamp, limit } from 'firebase/firestore';
 import { subDays, format } from 'date-fns';
