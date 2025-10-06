@@ -2,9 +2,10 @@
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Zap } from 'lucide-react';
+import { Zap, Mic } from 'lucide-react';
 import Link from 'next/link';
 import { Breathing478Animator } from './breathing-4-7-8-animator';
+import { Button } from '@/components/ui/button';
 
 export default function Breathing478Page() {
     return (
@@ -47,7 +48,21 @@ export default function Breathing478Page() {
                             </li>
                         </ol>
                         <p>Practice this at least twice a day, but you can do it more often if you like. Do not do more than four breaths at one time for the first month of practice. You can gradually increase it to eight breaths after a month.</p>
-                        <p>For more guided exercises, use the <strong>AI Guided Meditation</strong> tool and ask for a "4-7-8 breathing exercise."</p>
+                        
+                        <Card className="bg-primary/5 border-primary/20">
+                            <CardHeader>
+                                <CardTitle className="font-headline text-lg">Want a Guided Experience?</CardTitle>
+                                <CardDescription>Use the AI Meditation Generator to create a voiced version of this exercise.</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Button asChild>
+                                    <Link href="/tools/mindfulness/guided-meditation?topic=4-7-8+breathing+exercise">
+                                        <Mic className="mr-2" />
+                                        Start AI Guided Version
+                                    </Link>
+                                </Button>
+                            </CardContent>
+                        </Card>
                     </div>
 
                 </CardContent>

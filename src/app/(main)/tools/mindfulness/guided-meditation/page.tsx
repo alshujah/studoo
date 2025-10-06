@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,24 +10,36 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Sparkles, Loader, Wand, Mic, Play } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { generateMeditationScriptAction, generateMeditationAudioAction } from '@/services/actions';
+import { useSearchParams } from 'next/navigation';
 
 export default function GuidedMeditationPage() {
-  const [topic, setTopic] = useState('');
+  const searchParams = useSearchParams();
+  const initialTopic = searchParams.get('topic') || '';
+
+  const [topic, setTopic] = useState(initialTopic);
   const [script, setScript] = useState('');
   const [audioDataUri, setAudioDataUri] = useState('');
   const [isScriptPending, startScriptTransition] = useTransition();
   const [isAudioPending, startAudioTransition] = useTransition();
   const { toast } = useToast();
 
-  const handleGenerateScript = () => {
-    if (!topic.trim()) {
+  useEffect(() => {
+    if (initialTopic) {
+        handleGenerateScript(initialTopic);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialTopic]);
+
+
+  const handleGenerateScript = (currentTopic: string) => {
+    if (!currentTopic.trim()) {
       toast({ variant: 'destructive', title: 'Topic is required' });
       return;
     }
     setScript('');
     setAudioDataUri('');
     startScriptTransition(async () => {
-      const result = await generateMeditationScriptAction({ topic });
+      const result = await generateMeditationScriptAction({ topic: currentTopic });
       if (result.success && result.data) {
         setScript(result.data.script);
         toast({ title: 'Script Generated', description: 'Now you can generate the audio.' });
@@ -75,7 +87,7 @@ export default function GuidedMeditationPage() {
                 onChange={(e) => setTopic(e.target.value)}
                 disabled={isPending}
               />
-              <Button onClick={handleGenerateScript} disabled={isPending || !topic.trim()}>
+              <Button onClick={() => handleGenerateScript(topic)} disabled={isPending || !topic.trim()}>
                 {isScriptPending ? <Loader className="animate-spin" /> : <Wand />}
                 <span className="sr-only sm:not-sr-only sm:ml-2">Generate Script</span>
               </Button>

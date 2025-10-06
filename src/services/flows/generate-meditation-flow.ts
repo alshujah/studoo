@@ -38,9 +38,13 @@ const generateMeditationScriptFlow = ai.defineFlow(
   },
   async ({ topic }) => {
     const llmResponse = await ai.generate({
-      prompt: `Create a short, calming, 2-minute guided meditation script focused on the following topic: "${topic}". The script should be gentle, reassuring, and use simple language. Start with a brief instruction to get comfortable and end by gently bringing the user back to the present moment.`,
+      prompt: `Create a short, calming, 2-minute guided meditation script focused on the following topic: "${topic}".
+      
+      The script should be gentle, reassuring, and use simple language. Start with a brief instruction to get comfortable and end by gently bringing the user back to the present moment.
+
+      IMPORTANT: If the topic is a specific, named breathing exercise like "4-7-8 breathing" or "box breathing", you MUST provide the script for that exact, correct technique, including the specific timings (e.g., in for 4, hold for 7, out for 8). Do not create a general meditation about the topic.`,
       config: {
-        temperature: 0.8,
+        temperature: 0.7,
       },
     });
 
