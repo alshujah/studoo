@@ -4,5 +4,5 @@
 import { redirect } from 'next/navigation';
 
 export function DashboardUnauthenticated() {
-    redirect('/login');
+    redirect('/');
 }
