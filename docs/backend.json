@@ -406,6 +406,39 @@
             "createdAt": { "type": "string", "format": "date-time" }
         },
         "required": ["userId", "emotion", "intensity", "actionUrge", "oppositeAction", "outcome", "createdAt"]
+    },
+    "checkTheFactsLog": {
+      "title": "Check The Facts Log",
+      "description": "A record of practicing the DBT skill of Checking the Facts.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "emotion": { "type": "string" },
+        "promptingEvent": { "type": "string" },
+        "interpretations": { "type": "string" },
+        "isJustified": { "type": "boolean" },
+        "justification": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "emotion", "promptingEvent", "interpretations", "isJustified", "createdAt"]
+    },
+    "dearManScript": {
+        "title": "DEAR MAN Script",
+        "description": "A script for practicing the DBT skill of DEAR MAN.",
+        "type": "object",
+        "properties": {
+            "userId": { "type": "string" },
+            "situation": { "type": "string" },
+            "describe": { "type": "string" },
+            "express": { "type": "string" },
+            "assert": { "type": "string" },
+            "reinforce": { "type": "string" },
+            "mindful": { "type": "string" },
+            "appearConfident": { "type": "string" },
+            "negotiate": { "type": "string" },
+            "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["userId", "situation", "describe", "express", "assert", "reinforce", "createdAt"]
     }
   },
   "auth": {
@@ -515,6 +548,14 @@
     "/users/{userId}/oppositeActionLogs/{logId}": {
         "schema": { "$ref": "#/entities/oppositeActionLog" },
         "description": "Stores a user's Opposite Action logs."
+    },
+    "/users/{userId}/checkTheFactsLogs/{logId}": {
+        "schema": { "$ref": "#/entities/checkTheFactsLog" },
+        "description": "Stores a user's Check the Facts logs."
+    },
+    "/users/{userId}/dearManScripts/{scriptId}": {
+        "schema": { "$ref": "#/entities/dearManScript" },
+        "description": "Stores a user's DEAR MAN scripts."
     }
   }
 }
