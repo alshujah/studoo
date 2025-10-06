@@ -7,7 +7,7 @@ import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type
 import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
 import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
 import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/services/flows/score-gad7-flow';
-import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/services/flows/score-phq9-flow';
+import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/services/flows/score-phq-9-flow';
 
 
 export async function getJournalAnalysis(
