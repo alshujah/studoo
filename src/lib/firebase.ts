@@ -3,11 +3,11 @@ import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 
-import { firebaseConfig } from './config';
+import { firebaseConfig } from './firebase/config';
 
-export * from './provider';
-export * from './auth/google-provider';
-export * from './auth/email-password';
+export * from './firebase/provider';
+export * from './firebase/auth/google-provider';
+export * from './firebase/auth/email-password';
 
 
 // This function is used to initialize Firebase.

@@ -14,7 +14,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { StreaksCard } from './streaks-card';
 import { useDashboardData } from '@/hooks/use-dashboard-data';
 import { format } from 'date-fns';
-import type { JournalEntry } from '@/types';
+import type { JournalEntry } from '@/lib/types';
 
 interface DashboardAuthenticatedProps {
     user: User;

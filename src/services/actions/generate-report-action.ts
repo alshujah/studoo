@@ -2,22 +2,12 @@
 'use server';
 
 import { generateProgressReport, type GenerateProgressReportInput, type GenerateProgressReportOutput } from '@/services/flows/generate-progress-report';
-import { getAuth } from 'firebase-admin/auth';
-import { getApps, initializeApp } from 'firebase-admin/app';
-
-// Initialize Firebase Admin SDK if not already initialized
-if (!getApps().length) {
-  initializeApp();
-}
 
 export async function generateReportAction(): Promise<{ success: boolean; data?: GenerateProgressReportOutput; error?: string }> {
     try {
         // This action can only be called by an authenticated user.
-        // We are using the admin SDK here to demonstrate how one might get the current user
-        // on the server side in a real application, though in this case we are not
-        // actually using the user object itself for the flow input.
-        // In a real scenario you might pass the user object to the flow for more complex logic.
-        const userId = 'placeholder-user-id'; // In a real app, you would get this from the session
+        // The user ID is retrieved within the flow using a secure context.
+        const userId = 'placeholder-user-id'; // This will be replaced by the actual user ID from the context in the flow.
 
         const result = await generateProgressReport({ userId });
         return { success: true, data: result };

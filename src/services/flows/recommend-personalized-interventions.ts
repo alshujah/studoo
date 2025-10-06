@@ -9,7 +9,7 @@
  * - RecommendPersonalizedInterventionsOutput - The return type for the recommendPersonalizedInterventions function.
  */
 
-import {ai} from '@/services/ai/genkit';
+import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const RecommendPersonalizedInterventionsInputSchema = z.object({
