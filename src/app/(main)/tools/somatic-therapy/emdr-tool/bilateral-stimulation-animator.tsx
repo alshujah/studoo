@@ -31,7 +31,7 @@ export function BilateralStimulationAnimator() {
                         animation: isActive ? `move-across ${duration}s ease-in-out infinite` : 'none'
                     }}
                 ></div>
-                <style jsx>{`
+                <style jsx>{\`
                     @keyframes move-across {
                         0%, 100% {
                             left: 5%;
@@ -41,7 +41,7 @@ export function BilateralStimulationAnimator() {
                             transform: translate(-100%, -50%);
                         }
                     }
-                `}</style>
+                \`}</style>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-6 w-full max-w-sm">
                 <Button onClick={handleToggle} variant="outline" size="lg" className="w-full sm:w-auto">
