@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { Brain, Heart, Sprout } from 'lucide-react';
+import { Brain, Sprout, Waves } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -21,14 +21,14 @@ const therapies = [
   },
   {
     name: 'Dialectical Behavior Therapy (DBT)',
-    icon: Sprout,
+    icon: Waves,
     description: 'A type of CBT that focuses on teaching skills in four key areas: mindfulness, distress tolerance, emotion regulation, and interpersonal effectiveness.',
     bestFor: ['Borderline Personality Disorder', 'Chronic Suicidal Thoughts', 'Self-Harm', 'PTSD', 'Eating Disorders'],
     link: '/tools/dbt'
   },
   {
     name: 'Acceptance and Commitment Therapy (ACT)',
-    icon: Heart,
+    icon: Sprout,
     description: 'Focuses on accepting difficult thoughts and feelings rather than fighting them, and committing to actions that align with your personal values.',
     bestFor: ['Anxiety', 'Depression', 'Chronic Pain', 'Workplace Stress'],
     link: '/tools/act'
