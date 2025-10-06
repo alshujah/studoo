@@ -33,7 +33,7 @@ const signupSchema = z.object({
 });
 
 
-export default function LoginPage() {
+export default function RootPage() {
     const auth = useAuth();
     const [user, loading] = useAuthState(auth);
     const router = useRouter();
@@ -53,10 +53,10 @@ export default function LoginPage() {
     });
 
     useEffect(() => {
-        if (user) {
+        if (!loading && user) {
             router.replace('/dashboard');
         }
-    }, [user, router]);
+    }, [user, loading, router]);
     
     const handleGoogleSignIn = async () => {
         setIsSubmitting(true);
@@ -78,7 +78,6 @@ export default function LoginPage() {
         setIsSubmitting(true);
         try {
             await signInWithEmail(auth, values.email, values.password);
-            // On success, the useEffect will redirect to /dashboard
         } catch (error) {
             const firebaseError = error as FirebaseError;
             let description = 'An unexpected error occurred. Please try again.';
@@ -113,7 +112,6 @@ export default function LoginPage() {
                 title: 'Welcome!',
                 description: 'Your account has been created successfully.',
             });
-             // On success, the useEffect will redirect to /dashboard
         } catch (error) {
             const firebaseError = error as FirebaseError;
             let description = 'An unexpected error occurred. Please try again.';
@@ -149,7 +147,7 @@ export default function LoginPage() {
     }
 
     return (
-       <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+       <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
             <div className="hidden bg-muted lg:block">
                 {image && (
                     <Image
