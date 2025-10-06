@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth, useFirestore } from '@/lib/firebase';
+import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, setDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { errorEmitter } from '@/lib/firebase/error-emitter';
@@ -37,7 +37,7 @@ export function ChatInterface({ className, chatId }: ChatInterfaceProps) {
   const firestore = useFirestore();
 
 
-  const chatDocRef = useMemo(() => {
+  const chatDocRef = useMemoFirebase(() => {
     if (!user || !firestore || !chatId) return null;
     return doc(firestore, 'users', user.uid, 'chats', chatId);
   }, [user, firestore, chatId]);
