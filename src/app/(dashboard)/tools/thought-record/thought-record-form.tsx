@@ -8,7 +8,7 @@ import React, { useState, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { useAuth, useFirestore } from '@/lib/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
@@ -19,8 +19,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { analyzeThoughtRecord } from '@/services/actions';
 import type { AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { FirestorePermissionError } from '@/lib/firebase/errors';
-import { errorEmitter } from '@/lib/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   situation: z.string().min(10, { message: "Please describe the situation in a bit more detail." }),
