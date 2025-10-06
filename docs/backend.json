@@ -269,12 +269,9 @@
         "moodBefore": { "type": "string" },
         "moodAfter": { "type": "string" },
         "energyLevel": { "type": "number", "description": "A rating from 1 to 5 for energy level." },
-        "physicalSymptoms": { "type": "string", "description": "A description of any physical symptoms." },
-        "screenTimeHours": { "type": "number", "description": "Hours of screen time." },
-        "eatingHabits": { "type": "string", "description": "A brief note on eating habits for the day." },
         "notes": { "type": "string" }
       },
-      "required": ["userId", "timestamp"]
+      "required": ["userId", "timestamp", "activity", "durationInMinutes"]
     },
     "medicationLog": {
       "title": "Medication Log",

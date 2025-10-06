@@ -83,14 +83,11 @@ export interface ActivityLog {
   id: string;
   userId: string;
   timestamp: Timestamp;
-  activity?: string;
-  durationInMinutes?: number;
+  activity: string;
+  durationInMinutes: number;
   moodBefore?: string;
   moodAfter?: string;
   energyLevel?: number;
-  physicalSymptoms?: string;
-  screenTimeHours?: number;
-  eatingHabits?: string;
   notes?: string;
 }
 
