@@ -10,7 +10,7 @@
  * - SuggestPersonalizedActivitiesOutput: The output type for the suggestPersonalizedActivities function.
  */
 
-import {ai} from '@/lib/genkit';
+import {ai} from '@genkit-ai/next';
 import {z} from 'genkit';
 
 const SuggestPersonalizedActivitiesInputSchema = z.object({

@@ -7,7 +7,6 @@
  * and provides a brief interpretation of the results.
  */
 
-import { ai } from '@/lib/genkit';
 import { z } from 'genkit';
 
 export const ScoreGad7InputSchema = z.object({

@@ -9,19 +9,12 @@
  * - AiTherapyChatbotInput - The input type for the aiTherapyChatbot function.
  */
 
-import { ai } from '@/lib/genkit';
+import { ai } from '@genkit-ai/next';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
-import { getApps, initializeApp } from 'firebase-admin/app';
-import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { db } from '@/lib/firebase/admin';
+import type { Timestamp } from 'firebase-admin/firestore';
 import { subDays } from 'date-fns';
-
-// Initialize Firebase Admin SDK if not already initialized
-if (!getApps().length) {
-  initializeApp();
-}
-const db = getFirestore();
-
 
 // ----------------- Tool Definitions -----------------
 

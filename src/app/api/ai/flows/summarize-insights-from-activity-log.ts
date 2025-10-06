@@ -9,7 +9,7 @@
  * - SummarizeInsightsFromActivityLogOutput - The return type for the summarizeInsightsFromActivityLog function.
  */
 
-import {ai} from '@/lib/genkit';
+import {ai} from '@genkit-ai/next';
 import {z} from 'genkit';
 
 const SummarizeInsightsFromActivityLogInputSchema = z.object({

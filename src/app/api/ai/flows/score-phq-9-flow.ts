@@ -26,7 +26,7 @@ export type ScorePhq9Output = z.infer<typeof ScorePhq9OutputSchema>;
 export async function scorePhq9(input: ScorePhq9Input): Promise<ScorePhq9Output> {
   // PHQ-9 scoring is deterministic, so we calculate it directly.
   const score = Object.values(input.answers).slice(0, 9).reduce((sum, value) => sum + parseInt(value, 10), 0);
-  const hasSuicidalIdeation = parseInt(input.answers['q9'], 10) > 0;
+  const hasSuicidalIdeation = parseInt(input.answers['q8'], 10) > 0;
 
   let severity = '';
   let interpretation = '';

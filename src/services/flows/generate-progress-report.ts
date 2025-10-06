@@ -4,23 +4,17 @@
 /**
  * @fileOverview An AI agent that generates a comprehensive progress report for a user.
  *
- * - generateProgressReport: A function that generates the report.
+ * - generateProgressReport - A function that generates the report.
  * - GenerateProgressReportInput - The input type for the generateProgressReport function.
  * - GenerateProgressReportOutput - The return type for the generateProgressReport function.
  */
 
-import { ai } from '@/ai/genkit';
+import { ai } from '@genkit-ai/next';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
-import { getApps, initializeApp } from 'firebase-admin/app';
-import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { db } from '@/lib/firebase/admin';
+import type { Timestamp } from 'firebase-admin/firestore';
 import { subDays } from 'date-fns';
-
-// Initialize Firebase Admin SDK if not already initialized
-if (!getApps().length) {
-  initializeApp();
-}
-const db = getFirestore();
 
 // --- Tool Definitions ---
 
