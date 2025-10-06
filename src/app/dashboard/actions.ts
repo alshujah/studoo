@@ -1,21 +1,7 @@
 
 'use server';
 
-import { identifyMoodTriggers, type IdentifyMoodTriggersOutput, type IdentifyMoodTriggersInput } from "@/services/flows/identify-mood-triggers";
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
-
-
-export async function getMoodTriggers(
-    input: IdentifyMoodTriggersInput
-): Promise<{ success: boolean; data?: IdentifyMoodTriggersOutput; error?: string }> {
-    try {
-        const result = await identifyMoodTriggers(input);
-        return { success: true, data: result };
-    } catch (error: any) {
-        console.error('Error getting mood triggers:', error);
-        return { success: false, error: 'Failed to get insights from the AI coach.' };
-    }
-}
 
 
 export async function triageIssue(

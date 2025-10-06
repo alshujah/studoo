@@ -1,9 +1,10 @@
+
 'use client';
 
-import { useState, useTransition, useCallback } from 'react';
+import { useState, useTransition, useCallback, useEffect } from 'react';
 import { useFirestore } from '@/firebase';
-import { collection, getDocs, query, where, orderBy, Timestamp } from 'firebase/firestore';
-import { getMoodTriggers } from '@/app/dashboard/actions';
+import { collection, getDocs, query, where, orderBy, Timestamp, limit } from 'firebase/firestore';
+import { getMoodTriggers } from '@/services/actions/get-mood-triggers';
 import { subDays } from 'date-fns';
 import type { MoodLog } from '@/lib/types';
 
@@ -35,13 +36,15 @@ export function useMoodTriggers(userId: string) {
                 const moodLogsQuery = query(
                     collection(firestore, 'users', userId, 'moodLogs'),
                     where('timestamp', '>=', thirtyDaysAgo),
-                    orderBy('timestamp', 'desc')
+                    orderBy('timestamp', 'desc'),
+                    limit(100) // Limit to a reasonable number for analysis
                 );
 
                 const snapshot = await getDocs(moodLogsQuery);
                 if (snapshot.docs.length < 5) {
                     setTriggers([]);
-                    setError("Not enough mood logs in the last 30 days to identify triggers. Please add at least 5 logs.");
+                    // This is not an error, but a state of insufficient data.
+                    setError("Not enough mood logs in the last 30 days to identify triggers. Keep logging your mood to see insights here.");
                     return;
                 }
                 
@@ -58,7 +61,7 @@ export function useMoodTriggers(userId: string) {
                 if (result.success && result.data?.triggers) {
                     setTriggers(result.data.triggers);
                     if (result.data.triggers.length === 0) {
-                        setError("No significant triggers were identified from your recent mood logs.");
+                       setError("No significant triggers were identified from your recent mood logs.");
                     }
                 } else {
                     setError(result.error || "An unknown error occurred during analysis.");
@@ -73,8 +76,11 @@ export function useMoodTriggers(userId: string) {
         });
     }, [userId, firestore]);
 
+    useEffect(() => {
+        findTriggers();
+    }, [findTriggers]);
+
     return {
-        findTriggers,
         triggers,
         isLoading: isPending,
         error

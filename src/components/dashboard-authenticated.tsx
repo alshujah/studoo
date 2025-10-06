@@ -49,7 +49,6 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
     triggers,
     isLoading: isLoadingTriggers,
     error: triggersError,
-    findTriggers,
   } = useMoodTriggers(user.uid);
 
 
@@ -247,15 +246,9 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
       </Card>
 
       <Card className="col-span-1 md:col-span-2 xl:col-span-2">
-        <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-                <CardTitle className="font-headline">Insights</CardTitle>
-                <CardDescription>Discover patterns in your well-being.</CardDescription>
-            </div>
-             <Button onClick={findTriggers} disabled={isLoadingTriggers} size="sm">
-                {isLoadingTriggers ? <Loader className="mr-2 animate-spin" /> : <Sparkles className="mr-2" />}
-                Analyze
-            </Button>
+        <CardHeader>
+          <CardTitle className="font-headline">Insights</CardTitle>
+          <CardDescription>Discover patterns in your well-being.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
             {isLoadingTriggers && (
@@ -267,7 +260,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
             {triggersError && (
                  <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Analysis Failed</AlertTitle>
+                    <AlertTitle>Insight Status</AlertTitle>
                     <AlertDescription>
                        {triggersError}
                     </AlertDescription>
@@ -288,15 +281,9 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
                     ))}
                 </div>
             )}
-             {triggers && triggers.length === 0 && !isLoadingTriggers && (
-                <p className="text-sm text-muted-foreground text-center p-4">Not enough data to identify triggers. Keep logging your mood to see insights here.</p>
+             {triggers && triggers.length === 0 && !isLoadingTriggers && !triggersError && (
+                 <p className="text-sm text-muted-foreground text-center p-4">Not enough data to identify triggers. Keep logging your mood to see insights here.</p>
             )}
-
-            {!triggers && !isLoadingTriggers && !triggersError && (
-                 <p className="text-sm text-muted-foreground text-center p-4">Click "Analyze" to analyze your recent mood logs and identify potential triggers.</p>
-            )}
-
-
         </CardContent>
       </Card>
       

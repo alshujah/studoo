@@ -4,7 +4,6 @@
 import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
 import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
-import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
 import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
 import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
 import { scoreGad7, type ScoreGad7Input, type ScoreGad7Output } from '@/services/flows/score-gad7-flow';
@@ -38,20 +37,6 @@ export async function analyzeThoughtRecord(
         return { success: false, error: 'Failed to get analysis from the AI coach.' };
     }
 }
-
-
-export async function getMoodTriggers(
-    input: IdentifyMoodTriggersInput
-): Promise<{ success: boolean; data?: IdentifyMoodTriggersOutput; error?: string }> {
-    try {
-        const result = await identifyMoodTriggers(input);
-        return { success: true, data: result };
-    } catch (error: any) {
-        console.error('Error getting mood triggers:', error);
-        return { success: false, error: 'Failed to get insights from the AI coach.' };
-    }
-}
-
 
 export async function triageIssue(
   input: TriageUserIssueInput
