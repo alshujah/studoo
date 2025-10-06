@@ -7,7 +7,7 @@
  * - generateMeditationAudio: Converts a script into voiced audio.
  */
 
-import { ai } from '@/ai/genkit';
+import { ai } from '@/services/ai/genkit';
 import { z } from 'genkit';
 import wav from 'wav';
 import { googleAI } from '@genkit-ai/google-genai';

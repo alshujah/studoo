@@ -1,3 +1,4 @@
+
 'use server';
 
 import { analyzeJournalEntry, type AnalyzeJournalEntryInput, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';

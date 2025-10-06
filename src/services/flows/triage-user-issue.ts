@@ -9,7 +9,7 @@
  * - TriageUserIssueOutput - The return type for the triageUserIssue function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai} from '@/services/ai/genkit';
 import {z} from 'genkit';
 
 const TriageUserIssueInputSchema = z.object({
