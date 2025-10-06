@@ -1,38 +1,52 @@
 
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+'use client';
+
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FreeformJournalClient } from './freeform/freeform-journal-client';
+import GratitudeJournalPage from './gratitude/page';
+import ThoughtRecordPage from '../../tools/thought-record/page';
+import { useSearchParams } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'Journal | Rejoyn',
-};
-
-const journalModules = [
-    { href: "/track/journal/freeform", title: "Freeform Journal", description: "An open space for your thoughts and feelings." },
-    { href: "/track/journal/thought-record", title: "Thought Record", description: "A CBT tool to challenge negative thoughts." },
-    { href: "/track/journal/gratitude", title: "Gratitude Journal", description: "Daily positive reflections." },
-    { href: "/track/journal/photo", title: "Photo Journal", description: "Use images to capture your moments." },
-    { href: "/track/journal/voice", title: "Voice Journal", description: "Speak your thoughts instead of writing." },
-    { href: "/track/journal/worry-log", title: "Worry & Rumination Log", description: "Externalize and manage worries." },
-    { href: "/track/journal/dream", title: "Dream Journal", description: "Record and explore your dreams." },
-];
+// Note: Metadata is not used in client components, but kept for potential future server-side rendering.
+// export const metadata: Metadata = {
+//   title: 'Journal | Rejoyn',
+// };
 
 export default function JournalPage() {
+    const searchParams = useSearchParams();
+    const defaultTab = searchParams.get('tab') || 'freeform';
+
   return (
     <PageLayout title="Journaling Tools">
-       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {journalModules.map((module) => (
-            <Link href={module.href} key={module.title} className="block hover:bg-muted/50 rounded-lg">
-                <Card className="h-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="freeform">Freeform</TabsTrigger>
+                <TabsTrigger value="gratitude">Gratitude</TabsTrigger>
+                <TabsTrigger value="thought-record">Thought Record</TabsTrigger>
+            </TabsList>
+            <TabsContent value="freeform">
+                <Card>
                     <CardHeader>
-                        <CardTitle>{module.title}</CardTitle>
-                        <CardDescription>{module.description}</CardDescription>
+                        <CardTitle className="font-headline">Your Space to Write</CardTitle>
+                        <CardDescription>
+                            This is your private, open space. Write about your day, explore your feelings, or just get whatever is on your mind out onto the page. When you're done, you can get AI analysis on your entry.
+                        </CardDescription>
                     </CardHeader>
+                    <CardContent>
+                        <FreeformJournalClient />
+                    </CardContent>
                 </Card>
-            </Link>
-        ))}
-      </div>
+            </TabsContent>
+            <TabsContent value="gratitude">
+                <GratitudeJournalPage />
+            </TabsContent>
+            <TabsContent value="thought-record">
+                <ThoughtRecordPage />
+            </TabsContent>
+        </Tabs>
     </PageLayout>
   );
 }

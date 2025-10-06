@@ -75,65 +75,63 @@ export default function GratitudeJournalPage() {
   }
 
   return (
-    <PageLayout title="Gratitude Journal">
-        <Card>
-            <CardHeader>
-                <CardTitle className="font-headline">What are you grateful for today?</CardTitle>
-                <CardDescription>
-                    Taking a moment to acknowledge the good things in your life can have a powerful positive effect on your mood and outlook.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Alert className="mb-8">
-                    <Sparkles className="h-4 w-4" />
-                    <AlertTitle>Focus on the Small Things</AlertTitle>
-                    <AlertDescription>
-                        Gratitude doesn't have to be for big events. It can be for a warm cup of coffee, a sunny day, or a nice conversation.
-                    </AlertDescription>
-                </Alert>
-                <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="space-y-4">
-                        {fields.map((field, index) => (
-                        <FormField
-                            control={form.control}
-                            key={field.id}
-                            name={`entries.${index}.value`}
-                            render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className="sr-only">Gratitude Entry {index + 1}</FormLabel>
-                                <div className="flex items-center gap-2">
-                                <FormControl>
-                                    <Input placeholder={`Grateful for...`} {...field} />
-                                </FormControl>
-                                {fields.length > 3 && (
-                                    <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)} disabled={isSubmitting}>
-                                        <Trash2 className="h-4 w-4 text-muted-foreground" />
-                                    </Button>
-                                )}
-                                </div>
-                                <FormMessage />
-                            </FormItem>
+    <Card>
+        <CardHeader>
+            <CardTitle className="font-headline">What are you grateful for today?</CardTitle>
+            <CardDescription>
+                Taking a moment to acknowledge the good things in your life can have a powerful positive effect on your mood and outlook.
+            </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <Alert className="mb-8">
+                <Sparkles className="h-4 w-4" />
+                <AlertTitle>Focus on the Small Things</AlertTitle>
+                <AlertDescription>
+                    Gratitude doesn't have to be for big events. It can be for a warm cup of coffee, a sunny day, or a nice conversation.
+                </AlertDescription>
+            </Alert>
+            <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="space-y-4">
+                    {fields.map((field, index) => (
+                    <FormField
+                        control={form.control}
+                        key={field.id}
+                        name={`entries.${index}.value`}
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="sr-only">Gratitude Entry {index + 1}</FormLabel>
+                            <div className="flex items-center gap-2">
+                            <FormControl>
+                                <Input placeholder={`Grateful for...`} {...field} />
+                            </FormControl>
+                            {fields.length > 3 && (
+                                <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)} disabled={isSubmitting}>
+                                    <Trash2 className="h-4 w-4 text-muted-foreground" />
+                                </Button>
                             )}
-                        />
-                        ))}
-                    </div>
+                            </div>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                    ))}
+                </div>
 
-                    <div className="flex flex-wrap gap-4 items-center">
-                        <Button type="button" variant="outline" size="sm" onClick={() => append({ value: '' })} disabled={fields.length >= 7 || isSubmitting}>
-                            <Plus className="mr-2 h-4 w-4" />
-                            Add another
-                        </Button>
+                <div className="flex flex-wrap gap-4 items-center">
+                    <Button type="button" variant="outline" size="sm" onClick={() => append({ value: '' })} disabled={fields.length >= 7 || isSubmitting}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add another
+                    </Button>
 
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-                            Save Entry
-                        </Button>
-                    </div>
-                </form>
-                </Form>
-            </CardContent>
-        </Card>
-    </PageLayout>
+                    <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting && <Loader className="mr-2 h-4 w-4 animate-spin" />}
+                        Save Entry
+                    </Button>
+                </div>
+            </form>
+            </Form>
+        </CardContent>
+    </Card>
   );
 }
