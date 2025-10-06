@@ -1,216 +1,293 @@
-
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import React, { useState, useTransition } from 'react';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
-import { useAuth, useFirestore } from '@/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
-import { Loader, Sparkles, ArrowRight } from 'lucide-react';
-import { cognitiveDistortions } from '@/lib/data/cbt-data';
-import { Checkbox } from '@/components/ui/checkbox';
-import { analyzeThoughtRecord } from '@/services/actions';
-import type { AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useTransition, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { FirestorePermissionError } from '@/firebase/errors';
-import { errorEmitter } from '@/firebase/error-emitter';
+import type { User } from 'firebase/auth';
+import { ArrowRight, Pen, Wind, Loader, Sparkles, AlertCircle, MessageSquare, BrainCircuit, Calendar, BookOpen } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { MoodChart } from './mood-chart';
+import { triageIssue } from '@/services/actions';
+import type { TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
+import { useToast } from '@/hooks/use-toast';
+import { Badge } from './ui/badge';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { collection, query, orderBy, where, Timestamp, addDoc, serverTimestamp, limit } from 'firebase/firestore';
+import { useFirestore, useMemoFirebase } from '@/firebase/provider';
+import type { MoodLog, JournalEntry } from '@/lib/types';
+import { subDays, format } from 'date-fns';
+import { useMoodTriggers } from '@/hooks/use-mood-triggers';
+import { ScrollArea } from './ui/scroll-area';
+import { StreaksCard } from './dashboard/streaks-card';
 
-const formSchema = z.object({
-  situation: z.string().min(10, { message: "Please describe the situation in a bit more detail." }),
-  automaticThought: z.string().min(5, { message: "Please write down your automatic thought." }),
-  cognitiveDistortions: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'Please select at least one cognitive distortion you notice.',
-  }),
-});
+interface DashboardAuthenticatedProps {
+    user: User;
+}
 
-type FormValues = z.infer<typeof formSchema>;
-
-export function ThoughtRecordForm() {
-  const auth = useAuth();
-  const [user] = useAuthState(auth);
-  const firestore = useFirestore();
+export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
+  const [isTriagePending, startTriageTransition] = useTransition();
+  const [issue, setIssue] = useState('');
+  const [greeting, setGreeting] = useState('');
+  const [triageResult, setTriageResult] = useState<TriageUserIssueOutput | null>(null);
   const { toast } = useToast();
-  const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isAnalysisPending, startAnalysisTransition] = useTransition();
-  const [analysisResult, setAnalysisResult] = useState<AnalyzeThoughtRecordOutput | null>(null);
+  const firestore = useFirestore();
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-        situation: '',
-        automaticThought: '',
-        cognitiveDistortions: [],
-    },
-  });
+  useEffect(() => {
+    const hours = new Date().getHours();
+    if (hours < 12) {
+      setGreeting('Good morning');
+    } else if (hours < 18) {
+      setGreeting('Good afternoon');
+    } else {
+      setGreeting('Good evening');
+    }
+  }, []);
 
-  async function handleAnalyze(data: FormValues) {
-    setAnalysisResult(null);
-    startAnalysisTransition(async () => {
-      const result = await analyzeThoughtRecord(data);
+  const {
+    triggers,
+    isLoading: isLoadingTriggers,
+    error: triggersError,
+  } = useMoodTriggers(user.uid);
+
+
+  const moodLogQuery = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    const sevenDaysAgo = subDays(new Date(), 7);
+    return query(
+        collection(firestore, 'users', user.uid, 'moodLogs'),
+        where('timestamp', '>=', sevenDaysAgo),
+        orderBy('timestamp', 'desc')
+    );
+  }, [user, firestore]);
+  
+  const journalQuery = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return query(
+      collection(firestore, 'users', user.uid, 'journalEntries'),
+      orderBy('timestamp', 'desc'),
+      limit(5)
+    );
+  }, [user, firestore]);
+
+
+  const [moodLogsSnapshot, loadingMoodLogs] = useCollection(moodLogQuery);
+  const [journalEntriesSnapshot, loadingJournalEntries] = useCollection(journalQuery);
+
+  const moodChartData = useMemo(() => {
+    const last7Days = Array.from({ length: 7 }).map((_, i) => {
+        const d = subDays(new Date(), 6 - i);
+        return { day: format(d, 'EEE'), mood: 0, date: format(d, 'yyyy-MM-dd') };
+    });
+
+    if (!moodLogsSnapshot) {
+        return last7Days;
+    }
+
+    const moodMapping: { [key: string]: number } = {
+        'Joy': 5,
+        'Contentment': 4,
+        'Surprise': 3,
+        'Sadness': 2,
+        'Fear': 1,
+        'Anger': 1,
+        'Disgust': 1,
+    };
+    
+    const aggregatedData: { [key: string]: { total: number; count: number } } = {};
+
+    moodLogsSnapshot.docs.forEach(doc => {
+        const log = doc.data() as MoodLog;
+        if (log.timestamp) {
+             const date = (log.timestamp as Timestamp).toDate();
+             const day = format(date, 'yyyy-MM-dd');
+             const moodValue = moodMapping[log.coreEmotion] || (log.intensity / 25);
+             if (!aggregatedData[day]) {
+                 aggregatedData[day] = { total: 0, count: 0 };
+             }
+             aggregatedData[day].total += moodValue;
+             aggregatedData[day].count += 1;
+        }
+    });
+
+    return last7Days.map(day => {
+        const dayData = aggregatedData[day.date];
+        if (dayData) {
+            return { ...day, mood: Math.round(dayData.total / dayData.count) };
+        }
+        return day;
+    });
+
+  }, [moodLogsSnapshot]);
+
+  const handleTriageSubmit = () => {
+    if (!issue.trim() || !user) {
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Please describe what's on your mind."
+        })
+        return;
+    }
+    setTriageResult(null);
+    startTriageTransition(async () => {
+      const result = await triageIssue({ issue });
       if (result.success && result.data) {
-        setAnalysisResult(result.data);
+        setTriageResult(result.data);
       } else {
         toast({
           variant: "destructive",
           title: "Analysis Failed",
-          description: result.error || "Could not analyze the thought record.",
+          description: result.error || "Could not get a recommendation.",
         });
       }
     });
-  }
+  };
 
-  async function onSave(data: FormValues) {
-    if (!user) {
-      toast({ variant: 'destructive', title: 'Not signed in' });
-      return;
-    }
-    setIsSubmitting(true);
-    const thoughtRecordData = {
-        ...data,
-        userId: user.uid,
-        alternativeThought: analysisResult?.alternativeThought || '',
-        analysis: analysisResult?.analysis || '',
-        timestamp: serverTimestamp(),
-    };
-    const thoughtRecordCollection = collection(firestore, 'users', user.uid, 'thoughtRecords');
-
-    addDoc(thoughtRecordCollection, thoughtRecordData).then(() => {
-      toast({ title: 'Thought Record Saved', description: 'Your entry has been saved.' });
-      router.push('/dashboard');
-    }).catch(err => {
-        const permissionError = new FirestorePermissionError({
-            path: thoughtRecordCollection.path,
-            operation: 'create',
-            requestResourceData: thoughtRecordData,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-    }).finally(() => {
-        setIsSubmitting(false);
-    });
-  }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleAnalyze)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="situation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-lg font-semibold">1. Situation</FormLabel>
-              <FormControl>
-                <Textarea placeholder="What happened? Where were you? Who was with you?" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="automaticThought"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-lg font-semibold">2. Automatic Thought(s)</FormLabel>
-              <FormControl>
-                <Textarea placeholder="What thoughts went through your mind? What did you say to yourself?" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="cognitiveDistortions"
-          render={() => (
-            <FormItem>
-              <FormLabel className="text-lg font-semibold">3. Cognitive Distortions</FormLabel>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {cognitiveDistortions.map((item) => (
-                  <FormField
-                    key={item.name}
-                    control={form.control}
-                    name="cognitiveDistortions"
-                    render={({ field }) => (
-                      <FormItem key={item.name} className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 hover:bg-muted/50 transition-colors">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.name)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...(field.value || []), item.name])
-                                : field.onChange(field.value?.filter((value) => value !== item.name));
-                            }}
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                            <FormLabel className="font-normal">{item.name}</FormLabel>
-                            <p className="text-xs text-muted-foreground">{item.description}</p>
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                ))}
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" disabled={isAnalysisPending || isSubmitting}>
-          {isAnalysisPending ? (
-            <>
-              <Loader className="mr-2 h-4 w-4 animate-spin" />
-              Analyzing...
-            </>
-          ) : (
-            <>
-              <Sparkles className="mr-2 h-4 w-4" />
-              Analyze My Thought
-            </>
-          )}
-        </Button>
-      </form>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6">
+       <Card className="col-span-1 md:col-span-2 xl:col-span-4 bg-transparent border-none shadow-none">
+        <CardHeader className="p-0">
+          <CardTitle className="font-headline text-4xl">{greeting}, {user.displayName?.split(' ')[0] || 'friend'}.</CardTitle>
+          <CardDescription>How can we support you today?</CardDescription>
+        </CardHeader>
+      </Card>
       
-      {analysisResult && (
-        <div className="mt-8 space-y-6">
-            <Alert>
-                <Sparkles className="size-5" />
-                <AlertTitle className="font-headline">AI Feedback</AlertTitle>
-                <AlertDescription>
-                    Here is some feedback on your thought record and a suggestion for a more balanced alternative.
-                </AlertDescription>
-            </Alert>
-            <div className="p-6 rounded-lg border bg-muted/20 space-y-4">
-                <h3 className="font-semibold">AI Analysis</h3>
-                <p className="text-sm text-foreground/80">{analysisResult.analysis}</p>
-                <h3 className="font-semibold">Suggested Alternative Thought</h3>
-                <p className="text-sm text-foreground/80 font-medium p-4 bg-background rounded-md border border-primary/20">{analysisResult.alternativeThought}</p>
-            </div>
-
-            <Button onClick={() => onSave(form.getValues())} disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Save Thought Record"
-              )}
+      <Card className="col-span-1 md:col-span-2 xl:col-span-2 flex flex-col">
+        <CardHeader>
+          <CardTitle className="font-headline">Triage with AI</CardTitle>
+          <CardDescription>Tell me what's bothering you, and I'll suggest a tool that might help.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 flex-grow">
+            <Textarea 
+              placeholder="e.g., 'I keep thinking I'm going to fail my big presentation.' or 'I'm feeling really anxious and can't calm down.'"
+              className="min-h-24"
+              value={issue}
+              onChange={(e) => setIssue(e.target.value)}
+              disabled={isTriagePending}
+            />
+            {isTriagePending && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader className="size-4 animate-spin" />
+                <span>Finding the right tool...</span>
+              </div>
+            )}
+            {triageResult && (
+              <div className="space-y-4 rounded-md border bg-muted/20 p-4">
+                 <Alert>
+                     <Sparkles className="size-5" />
+                    <AlertTitle className="font-headline">AI Recommendation</AlertTitle>
+                    <AlertDescription>
+                       {triageResult.reason}
+                    </AlertDescription>
+                </Alert>
+                <Button asChild size="sm">
+                  <Link href={triageResult.toolHref}>
+                    Go to {triageResult.toolName}
+                    <ArrowRight className="ml-2 size-4" />
+                  </Link>
+                </Button>
+              </div>
+            )}
+        </CardContent>
+        <CardFooter className="justify-start">
+            <Button onClick={handleTriageSubmit} disabled={!issue.trim() || isTriagePending}>
+              {isTriagePending ? 'Analyzing...' : 'Get Suggestion'}
             </Button>
-        </div>
-      )}
-    </Form>
+        </CardFooter>
+      </Card>
+      
+      <StreaksCard />
+
+      <Card className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-1">
+        <CardHeader>
+          <CardTitle className="font-headline">Mood Patterns</CardTitle>
+          <CardDescription>Your mood trends over the last week.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <MoodChart data={moodChartData} loading={loadingMoodLogs} />
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-1 md:col-span-2 xl:col-span-2">
+        <CardHeader>
+          <CardTitle className="font-headline">Insights</CardTitle>
+          <CardDescription>Discover patterns in your well-being.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+            {isLoadingTriggers && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground p-4 justify-center">
+                    <Loader className="size-4 animate-spin" />
+                    <span>Analyzing your mood logs...</span>
+                </div>
+            )}
+            {triggersError && (
+                 <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Insight Status</AlertTitle>
+                    <AlertDescription>
+                       {triggersError}
+                    </AlertDescription>
+                </Alert>
+            )}
+            {triggers && triggers.length > 0 && (
+                <div className="space-y-3">
+                    {triggers.map((item, index) => (
+                        <div key={index} className="p-3 border rounded-md bg-muted/30">
+                            <h4 className="font-semibold text-primary">{item.trigger}</h4>
+                            <p className="text-sm text-muted-foreground mt-1">{item.pattern}</p>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                                {item.relatedEmotions.map(emotion => (
+                                    <Badge key={emotion} variant="secondary">{emotion}</Badge>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+             {triggers && triggers.length === 0 && !isLoadingTriggers && !triggersError && (
+                 <p className="text-sm text-muted-foreground text-center p-4">Not enough data to identify triggers. Keep logging your mood to see insights here.</p>
+            )}
+        </CardContent>
+      </Card>
+      
+      <Card className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-2">
+        <CardHeader>
+            <CardTitle className="font-headline">Recent Journal Entries</CardTitle>
+            <CardDescription>Review and reflect on your past entries.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            {loadingJournalEntries && <div className="flex justify-center p-4"><Loader className="mx-auto animate-spin" /></div>}
+            {!loadingJournalEntries && journalEntriesSnapshot?.empty && (
+              <p className="text-sm text-muted-foreground p-4 text-center">You have no journal entries yet.</p>
+            )}
+            <ScrollArea className="h-72">
+                <div className="space-y-4">
+                    {journalEntriesSnapshot?.docs.map(doc => {
+                        const entry = { id: doc.id, ...doc.data() } as JournalEntry;
+                        return (
+                            <button
+                                key={entry.id}
+                                className="block w-full text-left p-3 rounded-md border hover:bg-muted/50"
+                                onClick={() => {
+                                    setIssue(entry.content);
+                                    setTriageResult(null);
+                                    window.scrollTo({top: 0, behavior: 'smooth'});
+                                }}
+                            >
+                                <p className="text-sm font-medium truncate">{entry.content}</p>
+                                <p className="text-xs text-muted-foreground">
+                                    {entry.timestamp && format(entry.timestamp.toDate(), 'MMM d, yyyy - h:mm a')}
+                                </p>
+                            </button>
+                        );
+                    })}
+                </div>
+            </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
-
-    
