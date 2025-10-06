@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -69,7 +68,7 @@ export function ThoughtRecordForm() {
   }
 
   async function onSave(data: FormValues) {
-    if (!user) {
+    if (!user || !firestore) {
       toast({ variant: 'destructive', title: 'Not signed in' });
       return;
     }

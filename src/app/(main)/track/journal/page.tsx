@@ -9,11 +9,6 @@ import GratitudeJournalPage from './gratitude/page';
 import ThoughtRecordPage from '../../tools/thought-record/page';
 import { useSearchParams } from 'next/navigation';
 
-// Note: Metadata is not used in client components, but kept for potential future server-side rendering.
-// export const metadata: Metadata = {
-//   title: 'Journal | Zenith Wellness',
-// };
-
 export default function JournalPage() {
     const searchParams = useSearchParams();
     const defaultTab = searchParams.get('tab') || 'freeform';
@@ -49,5 +44,3 @@ export default function JournalPage() {
     </PageLayout>
   );
 }
-
-    

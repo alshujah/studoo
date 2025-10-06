@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useAuth } from '@/lib/firebase';
+import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DashboardAuthenticated } from '@/components/dashboard/dashboard-authenticated';
@@ -35,5 +35,3 @@ export default function DashboardPage() {
 
   return <DashboardAuthenticated user={user} />;
 }
-
-    

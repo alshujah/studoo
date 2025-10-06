@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Logo } from '../icons';
 import { SidebarNav } from './sidebar-nav';
-import { useAuth } from '@/lib/firebase';
+import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Skeleton } from '../ui/skeleton';
@@ -90,5 +90,3 @@ export function Sidebar() {
         </div>
     )
 }
-
-    

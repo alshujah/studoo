@@ -5,10 +5,11 @@ import { useAuth, useFirestore } from "@/firebase";
 import type { UserStreak } from "@/lib/types";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { format, isToday, isYesterday } from "date-fns";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export function useStreak(habitId: string) {
     const auth = useAuth();
-    const [user] = useAuth(auth);
+    const [user] = useAuthState(auth);
     const firestore = useFirestore();
 
     const updateStreak = async () => {

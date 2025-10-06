@@ -1,16 +1,13 @@
 
-
 import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThoughtRecordForm } from './thought-record-form';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { BrainCircuit } from 'lucide-react';
-import { PageLayout } from '@/components/layout/page-layout';
 
-
-// export const metadata: Metadata = {
-//   title: 'Thought Record | Rejoyn',
-// };
+export const metadata: Metadata = {
+  title: 'Thought Record | Zenith Wellness',
+};
 
 export default function ThoughtRecordPage() {
   return (
