@@ -535,10 +535,6 @@
       "schema": { "$ref": "#/entities/behavioralActivationActivity" },
       "description": "Stores a user's scheduled activities for Behavioral Activation."
     },
-    "/users/{userId}/behavioralChainAnalyses/{analysisId}": {
-        "schema": { "$ref": "#/entities/behavioralChainAnalysis" },
-        "description": "Stores a user's DBT behavioral chain analyses."
-    },
     "/users/{userId}/behavioralExperiments/{experimentId}": {
         "schema": { "$ref": "#/entities/behavioralExperiment" },
         "description": "Stores a user's CBT behavioral experiments."
@@ -557,3 +553,4 @@
     }
   }
 }
+
