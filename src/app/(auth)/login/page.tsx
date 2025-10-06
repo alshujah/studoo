@@ -3,8 +3,8 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { signInWithGoogle, signUpWithEmail, signInWithEmail } from '@/lib/firebase/auth';
-import { useAuth } from '@/lib/firebase/provider';
+import { signInWithGoogle, signUpWithEmail, signInWithEmail } from '@/firebase/auth/email-password';
+import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
 import { Loader, Mail, UserPlus } from 'lucide-react';

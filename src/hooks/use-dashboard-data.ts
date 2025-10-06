@@ -6,11 +6,11 @@ import type { User } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { triageIssue } from '@/services/actions';
 import type { TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
-import { useFirestore } from '@/lib/firebase';
+import { useFirestore } from '@/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { collection, query, orderBy, where, Timestamp, limit } from 'firebase/firestore';
 import { subDays, format } from 'date-fns';
-import type { MoodLog } from '@/types';
+import type { MoodLog, JournalEntry } from '@/types';
 import { useMoodTriggers } from '@/hooks/use-mood-triggers';
 
 
@@ -56,6 +56,14 @@ export function useDashboardData(user: User) {
 
     const [moodLogsSnapshot, loadingMoodLogs] = useCollection(moodLogQuery);
     const [journalEntriesSnapshot, loadingJournalEntries] = useCollection(journalQuery);
+
+     const journalEntries = useMemo(
+        () =>
+        journalEntriesSnapshot?.docs.map(
+            (doc) => ({ id: doc.id, ...doc.data() } as JournalEntry)
+        ) || [],
+        [journalEntriesSnapshot]
+    );
 
     const moodChartData = useMemo(() => {
         const last7Days = Array.from({ length: 7 }).map((_, i) => {
@@ -116,7 +124,7 @@ export function useDashboardData(user: User) {
         triggers,
         isLoadingTriggers,
         triggersError,
-        journalEntriesSnapshot,
+        journalEntries,
         loadingJournalEntries
     }
 }

@@ -11,7 +11,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { CircleUser, LogOut, Menu } from "lucide-react"
-import { useAuth } from "@/lib/firebase";
+import { useAuth } from "@/firebase";
 import Link from "next/link";
 import { SidebarNav } from "./sidebar-nav";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";

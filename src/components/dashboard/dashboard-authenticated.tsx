@@ -14,6 +14,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { StreaksCard } from './streaks-card';
 import { useDashboardData } from '@/hooks/use-dashboard-data';
 import { format } from 'date-fns';
+import type { JournalEntry } from '@/types';
 
 interface DashboardAuthenticatedProps {
     user: User;
@@ -32,7 +33,7 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
     triggers,
     isLoadingTriggers,
     triggersError,
-    journalEntriesSnapshot,
+    journalEntries,
     loadingJournalEntries,
   } = useDashboardData(user);
 
@@ -150,16 +151,15 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
         </CardHeader>
         <CardContent>
             {loadingJournalEntries && <div className="flex justify-center p-4"><Loader className="mx-auto animate-spin" /></div>}
-            {!loadingJournalEntries && journalEntriesSnapshot?.empty && (
+            {!loadingJournalEntries && journalEntries?.length === 0 && (
               <p className="text-sm text-muted-foreground p-4 text-center">You have no journal entries yet.</p>
             )}
             <ScrollArea className="h-72">
                 <div className="space-y-4">
-                    {journalEntriesSnapshot?.docs.map(doc => {
-                        const entry = doc.data() as { content: string; timestamp: { toDate: () => Date; } };
+                    {journalEntries?.map((entry: JournalEntry) => {
                         return (
                             <button
-                                key={doc.id}
+                                key={entry.id}
                                 className="block w-full text-left p-3 rounded-md border hover:bg-muted/50"
                                 onClick={() => {
                                     setIssue(entry.content);

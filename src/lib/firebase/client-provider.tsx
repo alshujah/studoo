@@ -1,7 +1,7 @@
 
 'use client';
-import { initializeFirebase } from '.';
-import { FirebaseProvider } from './provider';
+import { initializeFirebase } from '@/firebase';
+import { FirebaseProvider } from '@/firebase/provider';
 
 // This provider is responsible for initializing Firebase on the client side.
 // It should be used as a wrapper around the root layout of the application.

@@ -20,18 +20,18 @@ import { Calendar } from '@/components/ui/calendar';
 import { CalendarIcon, Check, Loader, Trash2, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, add } from 'date-fns';
-import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import { addDoc, collection, serverTimestamp, query, where, orderBy, updateDoc, doc, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
-import type { WorryLog } from '@/lib/types';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { useState, useMemo } from 'react';
+import type { WorryLog } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { FirestorePermissionError } from '@/lib/firebase/errors';
-import { errorEmitter } from '@/lib/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   worry: z.string().min(5, { message: "Please describe your worry in a bit more detail." }),
@@ -48,7 +48,7 @@ export function WorryLogForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingWorry, setEditingWorry] = useState<WorryLog | null>(null);
 
-  const worryLogsQuery = useMemoFirebase(() => {
+  const worryLogsQuery = useMemo(() => {
     if (!user) return null;
     return query(
       collection(firestore, 'users', user.uid, 'worryLogs'),
@@ -262,5 +262,3 @@ function WorryOutcomeEditor({ worry, onSave, onCancel }: { worry: WorryLog, onSa
         </div>
     )
 }
-
-    
