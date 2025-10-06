@@ -45,6 +45,10 @@ firestore,
     [app, auth, firestore]
   );
 
+  if (!value.app || !value.auth || !value.firestore) {
+    return null;
+  }
+
   return (
     <FirebaseContext.Provider value={value}>
       {process.env.NODE_ENV === 'development' && <FirebaseErrorListener />}
