@@ -437,6 +437,20 @@
             "createdAt": { "type": "string", "format": "date-time" }
         },
         "required": ["userId", "situation", "describe", "express", "assert", "reinforce", "createdAt"]
+    },
+    "problemSolvingWorksheet": {
+        "title": "Problem Solving Worksheet",
+        "description": "A record of a DBT Problem Solving worksheet.",
+        "type": "object",
+        "properties": {
+            "userId": { "type": "string" },
+            "problemDescription": { "type": "string" },
+            "goal": { "type": "string" },
+            "brainstormedSolutions": { "type": "string" },
+            "actionPlan": { "type": "string" },
+            "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["userId", "problemDescription", "goal", "brainstormedSolutions", "actionPlan", "createdAt"]
     }
   },
   "auth": {
@@ -554,6 +568,10 @@
     "/users/{userId}/dearManScripts/{scriptId}": {
         "schema": { "$ref": "#/entities/dearManScript" },
         "description": "Stores a user's DEAR MAN scripts."
+    },
+    "/users/{userId}/problemSolvingWorksheets/{worksheetId}": {
+        "schema": { "$ref": "#/entities/problemSolvingWorksheet" },
+        "description": "Stores a user's DBT Problem Solving worksheets."
     }
   }
 }

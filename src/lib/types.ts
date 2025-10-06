@@ -114,7 +114,6 @@ export interface SubstanceUseLog {
 export interface SocialSkillAssessment {
     id: string;
     userId: string;
-    timestamp: Timestamp;
     scores: {
         'Listening': number;
         'Small Talk': number;
@@ -123,6 +122,7 @@ export interface SocialSkillAssessment {
         'Assertiveness': number;
     };
     answers: Record<string, string>;
+    timestamp: Timestamp;
 }
 
 export interface Todo {
@@ -229,5 +229,15 @@ export interface DearManScript {
     mindful: string;
     appearConfident: string;
     negotiate: string;
+    createdAt: Timestamp;
+}
+
+export interface ProblemSolvingWorksheet {
+    id: string;
+    userId: string;
+    problemDescription: string;
+    goal: string;
+    brainstormedSolutions: string;
+    actionPlan: string;
     createdAt: Timestamp;
 }

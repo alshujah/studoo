@@ -24,6 +24,11 @@ const interactiveTools = [
         title: "Opposite Action", 
         description: "Practice acting opposite to your unjustified or ineffective emotional urges." 
     },
+     { 
+        href: "/tools/dbt/emotion-regulation/problem-solving", 
+        title: "Problem Solving", 
+        description: "Practice solving life problems when your emotions are justified." 
+    },
 ];
 
 export default function EmotionRegulationPage() {
