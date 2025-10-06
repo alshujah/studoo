@@ -9,9 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { MoodChart } from './mood-chart';
-import { Badge } from '../ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
-import { ScrollArea } from '../ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { StreaksCard } from './streaks-card';
 import { useToast } from '@/hooks/use-toast';
 import { triageIssue } from '@/services/actions';
@@ -261,5 +261,3 @@ export function DashboardAuthenticated({ user }: DashboardAuthenticatedProps) {
     </div>
   );
 }
-
-    
