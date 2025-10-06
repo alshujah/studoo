@@ -187,3 +187,14 @@ export interface BehavioralChainAnalysis {
     solutions: string;
     createdAt: Timestamp;
 }
+
+export interface BehavioralExperiment {
+    id: string;
+    userId: string;
+    createdAt: Timestamp;
+    beliefToTest: string;
+    experiment: string;
+    prediction: string;
+    outcome: string;
+    whatILearned: string;
+}

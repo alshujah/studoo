@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const cbtTools = [
     { href: "/tools/thought-record", title: "Thought Record", description: "Track and reframe automatic thoughts." },
     { href: "/tools/cbt/behavioral-activation", title: "Behavioral Activation", description: "Schedule activities to combat depression." },
-    { title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
+    { href: "/tools/cbt/behavioral-experiments", title: "Behavioral Experiments", description: "Test beliefs through real-world actions." },
     { title: "Problem-Solving Skills", description: "Structured approach to solving problems." },
     { href: "/tools/thought-record", title: "Cognitive Reappraisal Exercises", description: "Change your interpretation of a situation." },
     { title: "Exposure Therapy Modules", description: "Gradual confrontation of fears." },
