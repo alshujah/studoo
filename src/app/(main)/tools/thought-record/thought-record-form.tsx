@@ -13,14 +13,12 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { Loader, Sparkles, ArrowRight } from 'lucide-react';
+import { Loader, Sparkles, Save } from 'lucide-react';
 import { cognitiveDistortions } from '@/lib/data/cbt-data';
 import { Checkbox } from '@/components/ui/checkbox';
 import { analyzeThoughtRecord } from '@/services/actions';
 import type { AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import Link from 'next/link';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { errorEmitter } from '@/firebase/error-emitter';
 
@@ -204,7 +202,10 @@ export function ThoughtRecordForm() {
                   Saving...
                 </>
               ) : (
-                "Save Thought Record"
+                <>
+                  <Save className="mr-2 h-4 w-4" />
+                   Save Thought Record
+                </>
               )}
             </Button>
         </div>
