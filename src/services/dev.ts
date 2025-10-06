@@ -9,5 +9,4 @@ import './flows/analyze-thought-record';
 import './flows/identify-mood-triggers';
 import './flows/generate-meditation-flow';
 import './flows/triage-user-issue';
-
-    
+import './flows/miracle-question-flow';

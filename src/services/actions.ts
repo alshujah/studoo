@@ -6,6 +6,7 @@ import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRe
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 import { identifyMoodTriggers, type IdentifyMoodTriggersInput, type IdentifyMoodTriggersOutput } from '@/services/flows/identify-mood-triggers';
 import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
+import { miracleQuestion, type MiracleQuestionInput, type MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
 
 
 export async function getJournalAnalysis(
@@ -89,4 +90,15 @@ export async function generateMeditationAudioAction(
     }
 }
 
-    
+
+export async function miracleQuestionAction(
+  input: MiracleQuestionInput
+): Promise<{ success: boolean; data?: MiracleQuestionOutput; error?: string }> {
+  try {
+    const result = await miracleQuestion(input);
+    return { success: true, data: result };
+  } catch (error: any) {
+    console.error('Error in miracle question flow:', error);
+    return { success: false, error: 'Failed to get a response from the AI coach.' };
+  }
+}

@@ -14,7 +14,8 @@ import {
   HeartPulse,
   Brain,
   MessageSquare,
-  BarChart
+  BarChart,
+  CheckSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -29,6 +30,7 @@ import {
 const navItems = [
   { href: '/dashboard', icon: LayoutGrid, label: 'Dashboard' },
   { href: '/chatbot', icon: Bot, label: 'AI Coach' },
+  { href: '/todo', icon: CheckSquare, label: 'Todo List' },
 ];
 
 const mainNavItems = [
