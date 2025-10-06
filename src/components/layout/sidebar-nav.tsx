@@ -59,7 +59,6 @@ const mainNavItems = [
         { href: '/tools/positive-psychology', label: 'Positive Psychology' },
     ]
   },
-  { href: '/programs', icon: BookOpen, label: 'Programs', subItems: [] },
   { href: '/learn', icon: BookOpen, label: 'Learn', subItems: [] },
 ];
 
@@ -74,6 +73,10 @@ function SidebarNavComponent() {
 
   const isActive = (href: string, isMain: boolean) => {
     if (isMain) {
+        // Special case for /tools to avoid being active for all sub-routes of /tools/*
+        if (href === '/tools') {
+            return pathname === href;
+        }
         return pathname.startsWith(href);
     }
     return pathname === href;
