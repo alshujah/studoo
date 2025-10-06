@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview A Genkit flow to score the GAD-7 anxiety assessment.
@@ -7,7 +6,6 @@
  * and provides a brief interpretation of the results.
  */
 
-import { ai } from '@/services/genkit';
 import { z } from 'genkit';
 
 export const ScoreGad7InputSchema = z.object({

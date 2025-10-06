@@ -1,8 +1,7 @@
-
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { useAuth, useFirestore } from '@/lib/firebase/provider';
+import { useAuth, useFirestore } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import {
@@ -22,10 +21,10 @@ import { Button } from '@/components/ui/button';
 import { PlusIcon, Trash2, Loader, Check } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import type { Todo } from '@/types';
+import type { Todo } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { errorEmitter } from '@/lib/firebase/error-emitter';
-import { FirestorePermissionError } from '@/lib/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 export default function TodoPage() {
   const auth = useAuth();
@@ -36,7 +35,7 @@ export default function TodoPage() {
   const { toast } = useToast();
 
   const tasksQuery = useMemo(() => {
-    if (!user) return null;
+    if (!user || !firestore) return null;
     return query(
       collection(firestore, 'users', user.uid, 'todos'),
       orderBy('createdAt', 'desc')
@@ -55,7 +54,7 @@ export default function TodoPage() {
   
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !taskText.trim()) {
+    if (!user || !taskText.trim() || !firestore) {
       return;
     }
     setIsSubmitting(true);
@@ -87,7 +86,7 @@ export default function TodoPage() {
   };
 
   const handleToggleTask = async (id: string, completed: boolean) => {
-    if (!user) return;
+    if (!user || !firestore) return;
     const docRef = doc(firestore, 'users', user.uid, 'todos', id);
     const updatedData = { completed: !completed };
     
@@ -103,7 +102,7 @@ export default function TodoPage() {
   };
 
   const handleDeleteTask = async (id: string) => {
-    if (!user) return;
+    if (!user || !firestore) return;
     const docRef = doc(firestore, 'users', user.uid, 'todos', id);
 
     deleteDoc(docRef)

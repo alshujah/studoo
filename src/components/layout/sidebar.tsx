@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -17,7 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Logo } from '../icons';
 import { SidebarNav } from './sidebar-nav';
-import { useAuth } from '@/lib/firebase';
+import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Skeleton } from '../ui/skeleton';
@@ -74,7 +73,7 @@ export function Sidebar() {
                                     <Link href="/profile">Settings</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => auth.signOut()}>
+                                <DropdownMenuItem onClick={() => auth?.signOut()}>
                                     <LogOut className="mr-2 h-4 w-4" />
                                     <span>Log out</span>
                                 </DropdownMenuItem>

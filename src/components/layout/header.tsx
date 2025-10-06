@@ -1,4 +1,3 @@
-
 'use client';
 import {
   DropdownMenu,
@@ -11,7 +10,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { CircleUser, LogOut, Menu } from "lucide-react"
-import { useAuth } from "@/lib/firebase";
+import { useAuth } from "@/firebase";
 import Link from "next/link";
 import { SidebarNav } from "./sidebar-nav";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -62,7 +61,7 @@ export function Header() {
               <DropdownMenuItem asChild><Link href="/profile">Profile</Link></DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-               <DropdownMenuItem onClick={() => auth.signOut()}>
+               <DropdownMenuItem onClick={() => auth?.signOut()}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>

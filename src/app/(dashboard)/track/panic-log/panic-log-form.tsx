@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,15 +9,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { useAuth, useFirestore } from '@/lib/firebase/provider';
+import { useAuth, useFirestore } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
-import { FirestorePermissionError } from '@/lib/firebase/errors';
-import { errorEmitter } from '@/lib/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const symptoms = [
   "Pounding heart or accelerated heart rate",
@@ -68,7 +67,7 @@ export function PanicLogForm() {
   });
 
   async function onSubmit(data: FormValues) {
-    if (!user) {
+    if (!user || !firestore) {
       toast({ variant: 'destructive', title: 'Not signed in' });
       return;
     }

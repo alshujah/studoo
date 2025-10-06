@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,18 +19,18 @@ import { Calendar } from '@/components/ui/calendar';
 import { CalendarIcon, Check, Loader, Trash2, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, add } from 'date-fns';
-import { useAuth, useFirestore, useMemoFirebase } from '@/lib/firebase/provider';
+import { useAuth, useFirestore } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp, query, where, orderBy, updateDoc, doc, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useMemo } from 'react';
-import type { WorryLog } from '@/types';
+import type { WorryLog } from '@/lib/types';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { FirestorePermissionError } from '@/lib/firebase/errors';
-import { errorEmitter } from '@/lib/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 const formSchema = z.object({
   worry: z.string().min(5, { message: "Please describe your worry in a bit more detail." }),
@@ -49,7 +48,7 @@ export function WorryLogForm() {
   const [editingWorry, setEditingWorry] = useState<WorryLog | null>(null);
 
   const worryLogsQuery = useMemo(() => {
-    if (!user) return null;
+    if (!user || !firestore) return null;
     return query(
       collection(firestore, 'users', user.uid, 'worryLogs'),
       orderBy('createdAt', 'desc')
@@ -67,7 +66,7 @@ export function WorryLogForm() {
   });
 
   async function onSubmit(data: WorryFormValues) {
-    if (!user) return;
+    if (!user || !firestore) return;
     setIsSubmitting(true);
     const logData = {
         userId: user.uid,
@@ -93,7 +92,7 @@ export function WorryLogForm() {
   }
 
   async function handleOutcomeUpdate(worryId: string, didComeTrue: boolean, outcome: string) {
-    if (!user) return;
+    if (!user || !firestore) return;
     const docRef = doc(firestore, 'users', user.uid, 'worryLogs', worryId);
     const updateData = { didComeTrue, outcome };
 
