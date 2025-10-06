@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { SocialSkillsAssessmentForm } from './social-skills-assessment-form';
 import { useState } from 'react';
-import type { SocialSkillAssessment } from '@/types';
+import type { SocialSkillAssessment } from '@/lib/types';
 import { SocialSkillsResults } from './social-skills-results';
 import { PageLayout } from '@/components/layout/page-layout';
 

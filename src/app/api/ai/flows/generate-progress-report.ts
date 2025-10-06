@@ -9,7 +9,7 @@
  * - GenerateProgressReportOutput - The return type for the generateProgressReport function.
  */
 
-import { ai } from '@genkit-ai/next';
+import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { runInUserContext, getCurrentUserId } from '@/services/user-context';
 import { db } from '@/lib/firebase/admin';

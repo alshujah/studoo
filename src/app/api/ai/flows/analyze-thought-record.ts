@@ -9,7 +9,7 @@
  * - AnalyzeThoughtRecordOutput - The return type for the analyzeThoughtRecord function.
  */
 
-import {ai} from '@genkit-ai/next';
+import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const AnalyzeThoughtRecordInputSchema = z.object({

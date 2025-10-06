@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { SocialSkillAssessment } from '@/types';
+import type { SocialSkillAssessment } from '@/lib/types';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
 
 interface SocialSkillsResultsProps {
