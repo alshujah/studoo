@@ -10,11 +10,11 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth, useFirestore } from '@/lib/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, setDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
-import { errorEmitter } from '@/lib/firebase/error-emitter';
-import { FirestorePermissionError } from '@/lib/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 
 const initialMessages: ChatMessage[] = [

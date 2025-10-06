@@ -8,15 +8,15 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { useAuth, useFirestore } from '@/lib/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { addDoc, collection, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { Loader } from 'lucide-react';
 import { socialSkillsAssessment } from '@/lib/data/social-skills-assessment-data';
 import type { SocialSkillAssessment } from '@/lib/types';
-import { FirestorePermissionError } from '@/lib/firebase/errors';
-import { errorEmitter } from '@/lib/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 
 const createFormSchema = () => {
@@ -81,7 +81,7 @@ export function SocialSkillsAssessmentForm({ setAssessmentResult }: SocialSkills
   }
 
   async function onSubmit(data: FormValues) {
-    if (!user) {
+    if (!user || !firestore) {
       toast({ variant: 'destructive', title: 'Not signed in' });
       return;
     }
@@ -160,5 +160,3 @@ export function SocialSkillsAssessmentForm({ setAssessmentResult }: SocialSkills
     </Form>
   );
 }
-
-    

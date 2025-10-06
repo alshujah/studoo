@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useAuth, useFirestore } from "@/lib/firebase";
+import { useAuth, useFirestore } from "@/firebase";
 import type { UserStreak } from "@/lib/types";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { format, isToday, isYesterday } from "date-fns";

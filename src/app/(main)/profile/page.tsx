@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useAuth } from '@/lib/firebase';
+import { useAuth } from '@/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LogOut } from 'lucide-react';
@@ -154,5 +154,3 @@ export default function ProfilePage() {
     </PageLayout>
   );
 }
-
-    

@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useTransition, useCallback, useEffect } from 'react';
-import { useFirestore } from '@/lib/firebase';
+import { useFirestore } from '@/firebase';
 import { collection, getDocs, query, where, orderBy, Timestamp, limit } from 'firebase/firestore';
 import { getMoodTriggers } from '@/services/actions';
 import { subDays } from 'date-fns';

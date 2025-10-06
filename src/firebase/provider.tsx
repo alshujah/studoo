@@ -47,7 +47,7 @@ firestore,
 
   return (
     <FirebaseContext.Provider value={value}>
-      <FirebaseErrorListener />
+      {process.env.NODE_ENV === 'development' && <FirebaseErrorListener />}
       {children}
     </FirebaseContext.Provider>
   );
