@@ -44,7 +44,7 @@ export default function MbsrWeek5Page() {
                     <p>Aim to practice this or another sitting meditation 6 days this week.</p>
                     <Button asChild>
                         <Link href="/tools/mindfulness/guided-meditation?topic=meditation+for+working+with+difficult+emotions">
-                            <Mic className="mr-2" /> Start AI Guided Meditation on Difficulty
+                            <Mic className="mr-2 h-4 w-4" /> Start AI Guided Meditation on Difficulty
                         </Link>
                     </Button>
                      <div className="prose max-w-none text-sm text-muted-foreground pt-4">
@@ -74,12 +74,12 @@ export default function MbsrWeek5Page() {
             <div className="flex justify-between">
                 <Button asChild variant="outline">
                     <Link href="/programs/mbsr/week-4">
-                        <ArrowLeft className="mr-2" /> Back to Week 4
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Week 4
                     </Link>
                 </Button>
                 <Button asChild>
                     <Link href="/programs/mbsr/week-6">
-                        Proceed to Week 6 <ArrowRight className="ml-2" />
+                        Proceed to Week 6 <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </div>

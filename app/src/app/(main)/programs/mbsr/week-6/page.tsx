@@ -44,7 +44,7 @@ export default function MbsrWeek6Page() {
                     <p>Aim to practice this meditation for 20-30 minutes, 6 days this week.</p>
                     <Button asChild>
                         <Link href="/tools/mindfulness/guided-meditation?topic=meditation+for+observing+thoughts">
-                            <Mic className="mr-2" /> Start AI Guided Meditation on Thoughts
+                            <Mic className="mr-2 h-4 w-4" /> Start AI Guided Meditation on Thoughts
                         </Link>
                     </Button>
                 </CardContent>
@@ -60,7 +60,7 @@ export default function MbsrWeek6Page() {
                  <CardContent>
                     <Button asChild variant="outline">
                         <Link href="/tools/thought-record">
-                            <Edit className="mr-2" /> Use a Thought Record
+                            <Edit className="mr-2 h-4 w-4" /> Use a Thought Record
                         </Link>
                     </Button>
                 </CardContent>
@@ -69,12 +69,12 @@ export default function MbsrWeek6Page() {
             <div className="flex justify-between">
                 <Button asChild variant="outline">
                     <Link href="/programs/mbsr/week-5">
-                        <ArrowLeft className="mr-2" /> Back to Week 5
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Week 5
                     </Link>
                 </Button>
                 <Button asChild>
                     <Link href="/programs/mbsr/week-7">
-                        Proceed to Week 7 <ArrowRight className="ml-2" />
+                        Proceed to Week 7 <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </div>

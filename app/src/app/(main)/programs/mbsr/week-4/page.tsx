@@ -44,7 +44,7 @@ export default function MbsrWeek4Page() {
                     <p>Aim to practice Sitting Meditation for 20-30 minutes, 6 days this week.</p>
                     <Button asChild>
                         <Link href="/tools/mindfulness/guided-meditation?topic=20+minute+choiceless+awareness+meditation">
-                            <Mic className="mr-2" /> Start AI Guided Choiceless Awareness
+                            <Mic className="mr-2 h-4 w-4" /> Start AI Guided Choiceless Awareness
                         </Link>
                     </Button>
                      <div className="prose max-w-none text-sm text-muted-foreground pt-4">
@@ -70,7 +70,7 @@ export default function MbsrWeek4Page() {
                  <CardContent>
                     <Button asChild variant="outline">
                         <Link href="/track/journal/freeform">
-                            <Edit className="mr-2" /> Log a Stressful Communication
+                            <Edit className="mr-2 h-4 w-4" /> Log a Stressful Communication
                         </Link>
                     </Button>
                 </CardContent>
@@ -79,12 +79,12 @@ export default function MbsrWeek4Page() {
             <div className="flex justify-between">
                 <Button asChild variant="outline">
                     <Link href="/programs/mbsr/week-3">
-                        <ArrowLeft className="mr-2" /> Back to Week 3
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Week 3
                     </Link>
                 </Button>
                 <Button asChild>
                     <Link href="/programs/mbsr/week-5">
-                        Proceed to Week 5 <ArrowRight className="ml-2" />
+                        Proceed to Week 5 <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </div>

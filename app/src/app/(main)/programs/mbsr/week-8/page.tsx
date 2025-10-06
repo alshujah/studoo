@@ -69,7 +69,7 @@ export default function MbsrWeek8Page() {
             <div className="flex justify-between">
                 <Button asChild variant="outline">
                     <Link href="/programs/mbsr/week-7">
-                        <ArrowLeft className="mr-2" /> Back to Week 7
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Week 7
                     </Link>
                 </Button>
                 <Button asChild>

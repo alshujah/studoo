@@ -45,17 +45,17 @@ export default function MbsrWeek7Page() {
                     <div className="flex flex-wrap gap-2">
                         <Button asChild>
                             <Link href="/tools/mindfulness/guided-meditation?topic=loving-kindness+meditation">
-                                <Mic className="mr-2" /> Try Loving-Kindness
+                                <Mic className="mr-2 h-4 w-4" /> Try Loving-Kindness
                             </Link>
                         </Button>
                         <Button asChild variant="outline">
                             <Link href="/tools/mindfulness/guided-meditation?topic=body+scan+meditation">
-                                <Mic className="mr-2" /> Revisit Body Scan
+                                <Mic className="mr-2 h-4 w-4" /> Revisit Body Scan
                             </Link>
                         </Button>
                         <Button asChild variant="outline">
                             <Link href="/tools/mindfulness/guided-meditation?topic=sitting+meditation">
-                                <Mic className="mr-2" /> Continue Sitting
+                                <Mic className="mr-2 h-4 w-4" /> Continue Sitting
                             </Link>
                         </Button>
                     </div>
@@ -74,12 +74,12 @@ export default function MbsrWeek7Page() {
             <div className="flex justify-between">
                 <Button asChild variant="outline">
                     <Link href="/programs/mbsr/week-6">
-                        <ArrowLeft className="mr-2" /> Back to Week 6
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Week 6
                     </Link>
                 </Button>
                 <Button asChild>
                     <Link href="/programs/mbsr/week-8">
-                        Proceed to Week 8 <ArrowRight className="ml-2" />
+                        Proceed to Week 8 <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </div>
