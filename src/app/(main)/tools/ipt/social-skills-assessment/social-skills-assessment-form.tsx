@@ -15,6 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader } from 'lucide-react';
 import { socialSkillsAssessment } from '@/lib/data/social-skills-assessment-data';
 import type { SocialSkillAssessment } from '@/lib/types';
+import { FirestorePermissionError } from '@/firebase/errors';
+import { errorEmitter } from '@/firebase/error-emitter';
 
 
 const createFormSchema = () => {
@@ -55,7 +57,7 @@ export function SocialSkillsAssessmentForm({ setAssessmentResult }: SocialSkills
 
     socialSkillsAssessment.forEach((item, index) => {
         const answerValue = parseInt(data[`q${index}` as keyof FormValues]);
-        const maxScoreForItem = item.scale[0].value;
+        const maxScoreForItem = item.scale[item.scale.length -1].value;
         maxScores[item.domain] += maxScoreForItem;
 
         if (item.scoring === 'direct') {
@@ -70,6 +72,8 @@ export function SocialSkillsAssessmentForm({ setAssessmentResult }: SocialSkills
         const key = domain as keyof typeof scores;
         if(maxScores[key] > 0) {
            scores[key] = Math.round((scores[key] / maxScores[key]) * 10);
+        } else {
+           scores[key] = 0;
         }
     }
 
@@ -83,30 +87,37 @@ export function SocialSkillsAssessmentForm({ setAssessmentResult }: SocialSkills
     }
     setIsSubmitting(true);
     const scores = calculateScores(data);
-
-    try {
-      const docRef = await addDoc(collection(firestore, 'users', user.uid, 'socialSkillAssessments'), {
+    const assessmentData = {
         userId: user.uid,
         scores,
         answers: data,
         timestamp: serverTimestamp(),
-      });
-      toast({ title: 'Assessment Complete', description: 'Your results have been calculated.' });
-      
-      setAssessmentResult({
-        id: docRef.id,
-        userId: user.uid,
-        scores: scores,
-        answers: data,
-        timestamp: Timestamp.now(),
-      });
+    };
+    const assessmentCollection = collection(firestore, 'users', user.uid, 'socialSkillAssessments');
 
-    } catch (error) {
-      console.error('Error saving assessment:', error);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not save your assessment.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+    addDoc(assessmentCollection, assessmentData)
+        .then(docRef => {
+            toast({ title: 'Assessment Complete', description: 'Your results have been calculated.' });
+            
+            setAssessmentResult({
+                id: docRef.id,
+                userId: user.uid,
+                scores: scores,
+                answers: data,
+                timestamp: Timestamp.now(),
+            });
+        })
+        .catch(err => {
+            const permissionError = new FirestorePermissionError({
+                path: assessmentCollection.path,
+                operation: 'create',
+                requestResourceData: assessmentData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        })
+        .finally(() => {
+            setIsSubmitting(false);
+        });
   }
 
   return (

@@ -28,6 +28,21 @@
       },
       "required": ["displayName", "email", "createdAt"]
     },
+    "thoughtRecord": {
+      "title": "Thought Record",
+      "description": "A CBT thought record to challenge negative thoughts.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "situation": { "type": "string" },
+        "automaticThought": { "type": "string" },
+        "cognitiveDistortions": { "type": "array", "items": { "type": "string" } },
+        "alternativeThought": { "type": "string" },
+        "analysis": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "situation", "automaticThought", "cognitiveDistortions", "timestamp"]
+    },
     "moodLog": {
         "title": "Mood Log",
         "description": "A log of a user's mood at a specific point in time.",
@@ -176,47 +191,6 @@
         },
         "required": ["userId", "score", "answers", "timestamp"]
     },
-    "iptSession": {
-      "title": "IPT Session",
-      "description": "A log of an Interpersonal Therapy exercise.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "timestamp"]
-    },
-    "schema": {
-      "title": "Schema",
-      "description": "A user's identified schema.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "timestamp"]
-    },
-    "sfbtMiracleQuestion": {
-      "title": "SFBT Miracle Question",
-      "description": "A user's response to the SFBT Miracle Question.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "answer": { "type": "string"},
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "answer", "timestamp"]
-    },
-    "narrativeStory": {
-      "title": "Narrative Story",
-      "description": "A user's re-authored story in Narrative Therapy.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "timestamp": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "timestamp"]
-    },
     "socialSkillAssessment": {
       "title": "Social Skill Assessment",
       "description": "A user's score on the social skills assessment.",
@@ -253,97 +227,6 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["userId", "worry", "scheduledTime", "createdAt"]
-    },
-    "behavioralActivationActivity": {
-      "title": "Behavioral Activation Activity",
-      "description": "A scheduled activity for Behavioral Activation.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "title": { "type": "string" },
-        "scheduledDate": { "type": "string", "format": "date-time" },
-        "completed": { "type": "boolean" },
-        "createdAt": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "title", "scheduledDate", "completed", "createdAt"]
-    },
-    "behavioralExperiment": {
-      "title": "Behavioral Experiment",
-      "description": "A record of a CBT behavioral experiment.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "belief": { "type": "string" },
-        "prediction": { "type": "string" },
-        "experiment": { "type": "string" },
-        "outcome": { "type": "string" },
-        "whatILearned": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "belief", "prediction", "experiment", "createdAt"]
-    },
-    "problemSolvingSession": {
-      "title": "Problem Solving Session",
-      "description": "A record of a CBT problem-solving exercise.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "problem": { "type": "string" },
-        "solutions": { 
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "solution": { "type": "string" },
-              "pros": { "type": "string" },
-              "cons": { "type": "string" }
-            }
-          }
-        },
-        "chosenSolution": { "type": "string" },
-        "actionPlan": { "type": "string" },
-        "outcome": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "problem", "createdAt"]
-    },
-    "behavioralChainAnalysis": {
-      "title": "Behavioral Chain Analysis",
-      "description": "A record of a DBT behavioral chain analysis.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "problemBehavior": { "type": "string" },
-        "promptingEvent": { "type": "string" },
-        "vulnerabilityFactors": { "type": "string" },
-        "chainOfEvents": { "type": "string" },
-        "consequences": { "type": "string" },
-        "solutions": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" }
-      },
-      "required": ["userId", "problemBehavior", "promptingEvent", "vulnerabilityFactors", "chainOfEvents", "consequences", "solutions", "createdAt"]
-    },
-    "exposureHierarchy": {
-      "title": "Exposure Hierarchy",
-      "description": "A user's fear ladder for exposure therapy.",
-      "type": "object",
-      "properties": {
-        "userId": { "type": "string" },
-        "fear": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" },
-        "steps": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "step": { "type": "string" },
-              "suds": { "type": "number" }
-            },
-            "required": ["step", "suds"]
-          }
-        }
-      },
-      "required": ["userId", "fear", "createdAt", "steps"]
     },
     "panicLog": {
       "title": "Panic Log",
@@ -420,10 +303,83 @@
         "notes": { "type": "string" }
       },
       "required": ["userId", "timestamp", "substance", "amount"]
+    },
+    "todo": {
+      "title": "Todo Item",
+      "description": "A single todo item.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "text": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "text", "completed", "createdAt"]
+    },
+    "wemwbsScore": {
+      "title": "WEMWBS Score",
+      "description": "A user's score on the Warwick-Edinburgh Mental Well-being Scale.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "score": { "type": "number" },
+        "answers": { "type": "object" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "score", "answers", "timestamp"]
+    },
+    "lifeBalanceScore": {
+      "title": "Life Balance Score",
+      "description": "A user's score on the Life Balance Wheel.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "domains": { 
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "satisfaction": { "type": "number" }
+                }
+            }
+        },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "domains", "timestamp"]
+    },
+     "behavioralActivationActivity": {
+      "title": "Behavioral Activation Activity",
+      "description": "A scheduled activity for Behavioral Activation.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "scheduledDate": { "type": "string", "format": "date-time" },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "scheduledDate", "completed", "createdAt"]
+    },
+    "behavioralChainAnalysis": {
+      "title": "Behavioral Chain Analysis",
+      "description": "A record of a DBT behavioral chain analysis.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "problemBehavior": { "type": "string" },
+        "promptingEvent": { "type": "string" },
+        "vulnerabilityFactors": { "type": "string" },
+        "chainOfEvents": { "type": "string" },
+        "consequences": { "type": "string" },
+        "solutions": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "problemBehavior", "promptingEvent", "vulnerabilityFactors", "chainOfEvents", "consequences", "solutions", "createdAt"]
     }
   },
   "auth": {
-    "providers": ["google.com"]
+    "providers": ["google.com", "password"]
   },
   "firestore": {
     "/users/{userId}": {
@@ -431,6 +387,12 @@
         "$ref": "#/entities/userProfile"
       },
       "description": "Stores public information about a user."
+    },
+    "/users/{userId}/thoughtRecords/{recordId}": {
+      "schema": {
+        "$ref": "#/entities/thoughtRecord"
+      },
+      "description": "Stores a user's thought records."
     },
     "/users/{userId}/moodLogs/{moodLogId}": {
         "schema": {
@@ -468,22 +430,6 @@
         },
         "description": "Stores a user's PHQ-9 assessment scores."
     },
-    "/users/{userId}/iptSessions/{iptSessionId}": {
-      "schema": { "$ref": "#/entities/iptSession" },
-      "description": "Stores a user's Interpersonal Therapy sessions."
-    },
-    "/users/{userId}/schemas/{schemaId}": {
-      "schema": { "$ref": "#/entities/schema" },
-      "description": "Stores a user's identified schemas."
-    },
-    "/users/{userId}/sfbtMiracleQuestions/{sfbtMiracleQuestionId}": {
-      "schema": { "$ref": "#/entities/sfbtMiracleQuestion" },
-      "description": "Stores a user's Solution-Focused Brief Therapy miracle question responses."
-    },
-    "/users/{userId}/narrativeStories/{narrativeStoryId}": {
-      "schema": { "$ref": "#/entities/narrativeStory" },
-      "description": "Stores a user's re-authored stories from Narrative Therapy."
-    },
     "/users/{userId}/socialSkillAssessments/{assessmentId}": {
         "schema": { "$ref": "#/entities/socialSkillAssessment" },
         "description": "Stores a user's social skill assessment results."
@@ -491,26 +437,6 @@
     "/users/{userId}/worryLogs/{worryLogId}": {
       "schema": { "$ref": "#/entities/worryLog" },
       "description": "Stores a user's worry log entries."
-    },
-    "/users/{userId}/behavioralActivation/{activityId}": {
-      "schema": { "$ref": "#/entities/behavioralActivationActivity" },
-      "description": "Stores a user's scheduled activities for Behavioral Activation."
-    },
-    "/users/{userId}/behavioralExperiments/{experimentId}": {
-        "schema": { "$ref": "#/entities/behavioralExperiment" },
-        "description": "Stores a user's CBT behavioral experiments."
-    },
-    "/users/{userId}/problemSolving/{sessionId}": {
-        "schema": { "$ref": "#/entities/problemSolvingSession" },
-        "description": "Stores a user's CBT problem-solving sessions."
-    },
-    "/users/{userId}/behavioralChainAnalyses/{analysisId}": {
-        "schema": { "$ref": "#/entities/behavioralChainAnalysis" },
-        "description": "Stores a user's DBT behavioral chain analyses."
-    },
-    "/users/{userId}/exposureHierarchies/{hierarchyId}": {
-      "schema": { "$ref": "#/entities/exposureHierarchy" },
-      "description": "Stores a user's exposure therapy fear ladders."
     },
     "/users/{userId}/panicLogs/{panicLogId}": {
       "schema": { "$ref": "#/entities/panicLog" },
@@ -531,6 +457,26 @@
     "/users/{userId}/substanceUseLogs/{logId}": {
       "schema": { "$ref": "#/entities/substanceUseLog" },
       "description": "Stores a user's substance use logs."
+    },
+    "/users/{userId}/todos/{todoId}": {
+      "schema": { "$ref": "#/entities/todo" },
+      "description": "Stores a user's todo items."
+    },
+    "/users/{userId}/wemwbsScores/{scoreId}": {
+      "schema": { "$ref": "#/entities/wemwbsScore" },
+      "description": "Stores a user's WEMWBS scores."
+    },
+    "/users/{userId}/lifeBalanceScores/{scoreId}": {
+        "schema": { "$ref": "#/entities/lifeBalanceScore" },
+        "description": "Stores a user's Life Balance Wheel scores."
+    },
+    "/users/{userId}/behavioralActivation/{activityId}": {
+      "schema": { "$ref": "#/entities/behavioralActivationActivity" },
+      "description": "Stores a user's scheduled activities for Behavioral Activation."
+    },
+    "/users/{userId}/behavioralChainAnalyses/{analysisId}": {
+        "schema": { "$ref": "#/entities/behavioralChainAnalysis" },
+        "description": "Stores a user's DBT behavioral chain analyses."
     }
   }
 }
