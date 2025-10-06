@@ -5,13 +5,12 @@ import { useState } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Lightbulb, Loader, Send } from 'lucide-react';
+import { Lightbulb, Loader } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { MiracleQuestionChat } from './miracle-question-chat';
 import { miracleQuestionAction } from '@/services/actions';
 import { useToast } from '@/hooks/use-toast';
-import type { MiracleQuestionOutput } from '@/services/flows/miracle-question-flow';
 
 export type MiracleQuestionMessage = {
     role: 'user' | 'assistant';
