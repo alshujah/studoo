@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { CheckCircle2, Lock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: '8-Week MBSR Program | Rejoyn',
@@ -22,11 +23,7 @@ const programSchedule = [
 
 export default function MBSRProgramPage() {
   return (
-    <main className="flex flex-1 flex-col">
-       <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
-         <h1 className="font-headline text-xl font-semibold">8-Week MBSR Program</h1>
-      </div>
-      <div className="flex-1 p-4 md:p-6">
+    <PageLayout title="8-Week MBSR Program">
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline">Program Overview</CardTitle>
@@ -60,7 +57,6 @@ export default function MBSRProgramPage() {
                 ))}
             </CardContent>
         </Card>
-      </div>
-    </main>
+    </PageLayout>
   );
 }

@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { CheckCircle2, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: '6-Week Social Cognition Training | Rejoyn',
@@ -20,11 +21,7 @@ const programSchedule = [
 
 export default function SocialCognitionProgramPage() {
   return (
-    <main className="flex flex-1 flex-col">
-       <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
-         <h1 className="font-headline text-xl font-semibold">6-Week Social Cognition Training</h1>
-      </div>
-      <div className="flex-1 p-4 md:p-6">
+    <PageLayout title="6-Week Social Cognition Training">
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline">Program Overview</CardTitle>
@@ -55,7 +52,6 @@ export default function SocialCognitionProgramPage() {
                 ))}
             </CardContent>
         </Card>
-      </div>
-    </main>
+    </PageLayout>
   );
 }

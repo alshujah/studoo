@@ -1,5 +1,4 @@
 
-
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 const journalModules = [
     { href: "/track/journal/freeform", title: "Freeform Journal", description: "An open space for your thoughts and feelings." },
-    { href: "/tools/thought-record", title: "Thought Record", description: "A CBT tool to challenge negative thoughts." },
+    { href: "/track/journal/thought-record", title: "Thought Record", description: "A CBT tool to challenge negative thoughts." },
     { href: "/track/journal/gratitude", title: "Gratitude Journal", description: "Daily positive reflections." },
     { href: "/track/journal/photo", title: "Photo Journal", description: "Use images to capture your moments." },
     { href: "/track/journal/voice", title: "Voice Journal", description: "Speak your thoughts instead of writing." },

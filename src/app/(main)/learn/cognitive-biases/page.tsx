@@ -77,7 +77,7 @@ export default function CognitiveBiasesPage() {
               </CardContent>
               <CardFooter>
                  <Button asChild variant="link" className="p-0">
-                    <Link href="/tools/thought-record">
+                    <Link href="/track/journal/thought-record">
                         Challenge this thought <ArrowRight className="ml-2" />
                     </Link>
                 </Button>

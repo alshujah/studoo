@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { VoiceJournalTool } from './voice-journal-tool';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Mic } from 'lucide-react';
+import { PageLayout } from '@/components/layout/page-layout';
 
 export const metadata: Metadata = {
   title: 'Voice Journal | Rejoyn',
@@ -11,11 +12,7 @@ export const metadata: Metadata = {
 
 export default function VoiceJournalPage() {
   return (
-    <main className="flex flex-1 flex-col">
-      <div className="sticky top-0 z-10 flex h-14 items-center border-b bg-background px-6">
-         <h1 className="font-headline text-xl font-semibold">Voice Journal</h1>
-      </div>
-      <div className="flex-1 p-4 md:p-6">
+    <PageLayout title="Voice Journal">
         <Card>
             <CardHeader>
                 <CardTitle className="font-headline">Speak Your Mind</CardTitle>
@@ -34,7 +31,6 @@ export default function VoiceJournalPage() {
                 <VoiceJournalTool />
             </CardContent>
         </Card>
-      </div>
-    </main>
+    </PageLayout>
   );
 }

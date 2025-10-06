@@ -17,7 +17,7 @@ export default function SubstanceUsePage() {
             <CardHeader>
                 <CardTitle className="font-headline">Log Substance Use</CardTitle>
                 <CardDescription>
-                    This is a non-judgmental tool to help you become more aware of your habits and urges around substances like alcohol, caffeine, or nicotine.
+                    This is a non-judgmental tool to help you become more aware of your habits and urges related to substances like alcohol, caffeine, or nicotine.
                 </CardDescription>
             </CardHeader>
             <CardContent>
