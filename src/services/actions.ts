@@ -1,7 +1,7 @@
 
 'use server';
 
-import { analyzeJournalEntry, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
+import { analyzeJournalEntry, type AnalyzeJournalEntryInput, type AnalyzeJournalEntryOutput } from '@/services/flows/analyze-journal-entry';
 import { analyzeThoughtRecord as analyzeThoughtRecordFlow, type AnalyzeThoughtRecordInput, type AnalyzeThoughtRecordOutput } from '@/services/flows/analyze-thought-record';
 import { triageUserIssue as triageUserIssueFlow, type TriageUserIssueInput, type TriageUserIssueOutput } from '@/services/flows/triage-user-issue';
 import { generateMeditationScript, generateMeditationAudio, type GenerateMeditationScriptInput, type GenerateMeditationScriptOutput, type GenerateMeditationAudioInput, type GenerateMeditationAudioOutput } from '@/services/flows/generate-meditation-flow';
@@ -11,13 +11,13 @@ import { scorePhq9, type ScorePhq9Input, type ScorePhq9Output } from '@/services
 
 
 export async function getJournalAnalysis(
-  journalEntry: string
+  input: AnalyzeJournalEntryInput
 ): Promise<{ success: boolean; data?: AnalyzeJournalEntryOutput; error?: string }> {
   try {
-    if (!journalEntry.trim()) {
+    if (!input.journalEntry.trim()) {
       return { success: false, error: 'Journal entry cannot be empty.' };
     }
-    const result = await analyzeJournalEntry({ journalEntry });
+    const result = await analyzeJournalEntry(input);
     return { success: true, data: result };
   } catch (error)
  {
