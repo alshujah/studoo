@@ -1,5 +1,5 @@
 
-import { aiTherapyChatbot } from '@/modules/aiCoach/services/ai-therapy-chatbot';
+import { aiTherapyChatbot } from '@/services/flows/ai-therapy-chatbot';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
