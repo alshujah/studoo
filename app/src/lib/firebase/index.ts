@@ -4,13 +4,10 @@ import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 
 import { firebaseConfig } from './config';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
 
 export * from './provider';
 export * from './auth/google-provider';
 export * from './auth/email-password';
-export { useCollection, useAuthState };
 
 
 // This function is used to initialize Firebase.
